@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="empresas">
+        <item>AgroViru</item>
+        <item>AgroValle</item>
+        <item>AgroPeru</item>
+    </string-array>
+    <string-array name="fundos">
+        <item>San Idelfonso</item>
+        <item>San Nicolas</item>
+        <item>Fundo Virú</item>
+        <item>Canario</item>
+        <item>Vaca</item>
+        <item>Cerdo</item>
+    </string-array>
+    <string-array name="cultivos">
+        <item>Arándano</item>
+        <item>Palto</item>
+        <item>Mandarina</item>
+        <item>Papaya</item>
+    </string-array>
+    <string-array name="variedades">
+        <item>W. Murcott 120.00 Ha.</item>
+        <item>W. Murcott 123.00 Ha.</item>
+        <item>Biloxi 145.00 Ha.</item>
+    </string-array>
+    <string-array name="inspecciones">
+        <item>Fitosanidad Entomológicos</item>
+        <item>Problemas Fisiológicos</item>
+        <item>Estado Fenológico</item>
+        <item>Labores Agronómicas</item>
+        <item>Datos Climatológicos</item>
+        <item>Fitosanidad Fitopatológicos</item>
+    </string-array>
+</resources>
