@@ -10,32 +10,15 @@ public class Criterio {
     private String magnitud;
     private String value;
 
-    List<String> fotos;
 
-    public Criterio(int id, String name, String type,String magnitud, String value) {
+    public Criterio(int id, String name, String type,String magnitud, String valueDefault) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.value = value;
+        this.value = valueDefault;
         this.magnitud = magnitud;
     }
 
-    public Criterio(int id, String name, String type, String magnitud, String value, List<String> fotos) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.magnitud = magnitud;
-        this.value = value;
-        this.fotos = fotos;
-    }
-
-    public List<String> getFotos() {
-        return fotos;
-    }
-
-    public void setFotos(List<String> fotos) {
-        this.fotos = fotos;
-    }
 
     public int getId() {
         return id;

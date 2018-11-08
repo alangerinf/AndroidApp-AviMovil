@@ -86,10 +86,7 @@ public class AdapterListViewCriterio extends BaseAdapter{
 
         nameitem.setText(listCriterios.get(position).getName()+" "+listCriterios.get(position).getMagnitud());
 
-        if(!listCriterios.get(position).getType().equals("string")){
-            ConstraintLayout cl = (ConstraintLayout) v.findViewById(R.id.content_criterio_item);
-            cl.setMaxHeight(80);
-        }
+
 
         switch (listCriterios.get(position).getType()){
             case "boolean":
@@ -127,6 +124,8 @@ public class AdapterListViewCriterio extends BaseAdapter{
                 _list.setVisibility(View.VISIBLE);
                 break;
             case "string":
+
+                _string.setHeight(80);
                 _string.setVisibility(View.VISIBLE);
                 break;
 

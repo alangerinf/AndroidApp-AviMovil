@@ -6,28 +6,26 @@ public class Empresa {
 
     private int id;
     private String name;
-
-    private CollectionFundos collectionFundos;
+    private int idUsuario;
 
     public Empresa(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Empresa(int id, String name, CollectionFundos collectionFundos) {
+    public Empresa(int id, String name, int idUsuario) {
         this.id = id;
         this.name = name;
-        this.collectionFundos = collectionFundos;
+        this.idUsuario = idUsuario;
     }
 
-    public CollectionFundos getCollectionFundos() {
-        return collectionFundos;
+    public int getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setCollectionFundos(CollectionFundos collectionFundos) {
-        this.collectionFundos = collectionFundos;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
-
 
     public int getId() {
         return id;

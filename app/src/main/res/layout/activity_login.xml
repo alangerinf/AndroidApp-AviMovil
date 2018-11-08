@@ -9,6 +9,7 @@
     android:layout_height="match_parent"
 
     android:gravity="center_horizontal"
+    android:background="@color/primary"
 
     tools:context=".views.LoginActivity">
 
@@ -20,6 +21,7 @@
         android:adjustViewBounds="true"
         android:cropToPadding="true"
         android:scaleType="matrix"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/background" />

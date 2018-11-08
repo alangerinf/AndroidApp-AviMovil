@@ -32,6 +32,7 @@ public class CollectionVariedad {
         }
         return pos;
     }
+    
     public int searchById(int id){
         int pos=-1;
         for(int i = 0; i< variedades.size(); i++){

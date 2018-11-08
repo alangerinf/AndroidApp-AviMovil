@@ -7,7 +7,6 @@ public class CollectionFundos {
 
     private List<Fundo> fundos;
 
-
     public CollectionFundos(List<Fundo> fundos) {
         this.fundos = fundos;
     }

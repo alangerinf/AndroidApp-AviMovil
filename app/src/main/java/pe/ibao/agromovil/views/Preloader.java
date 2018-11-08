@@ -63,7 +63,8 @@ public class Preloader extends AppCompatActivity {
                     }else{//si no estas logueado ni tienes conexion a internet por las puras entrarias
                         Toast.makeText(getBaseContext(),"Tampoco estas logueado, conectate a internet, gracias!",
                                 Toast.LENGTH_SHORT).show();
-                        finish();
+                        ingresar();
+                        //finish();
                     }
 
                 }

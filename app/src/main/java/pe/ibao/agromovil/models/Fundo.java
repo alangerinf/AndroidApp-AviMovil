@@ -5,7 +5,6 @@ public class Fundo {
     private int id;
     private String name;
 
-    private CollectionCultivos collectionCultivos;
 
     public Fundo(int id, String name) {
         this.id = id;
