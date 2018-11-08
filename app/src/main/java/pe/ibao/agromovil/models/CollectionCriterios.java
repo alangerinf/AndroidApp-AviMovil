@@ -9,7 +9,7 @@ public class CollectionCriterios {
 
 
     public CollectionCriterios(List<Criterio> criterios) {
-        criterios = criterios;
+        this.criterios = criterios;
     }
 
     public CollectionCriterios() {
@@ -24,10 +24,19 @@ public class CollectionCriterios {
         return criterios;
     }
 
-    public int searchCriterioByName(String name){
+    public int searchByName(String name){
         int pos=-1;
         for(int i=0;i<criterios.size();i++){
             if(criterios.get(i).getName().equals(name)){
+                pos = i;
+            }
+        }
+        return pos;
+    }
+    public int searchById(int id){
+        int pos=-1;
+        for(int i = 0; i< criterios.size(); i++){
+            if(criterios.get(i).getId()==(id)){
                 pos = i;
             }
         }

@@ -18,11 +18,11 @@
         android:layout_marginEnd="16dp"
         android:onClick="openTest"
         android:src="@drawable/ic_add_black_24dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/button_ok"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_ok"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_button_bot_gren"

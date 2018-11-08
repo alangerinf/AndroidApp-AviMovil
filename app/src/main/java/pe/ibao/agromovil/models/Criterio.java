@@ -1,17 +1,40 @@
 package pe.ibao.agromovil.models;
 
+import java.util.List;
+
 public class Criterio {
 
     private int id;
     private String name;
     private String type;
+    private String magnitud;
     private String value;
 
-    public Criterio(int id, String name, String type, String value) {
+    List<String> fotos;
+
+    public Criterio(int id, String name, String type,String magnitud, String value) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.value = value;
+        this.magnitud = magnitud;
+    }
+
+    public Criterio(int id, String name, String type, String magnitud, String value, List<String> fotos) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.magnitud = magnitud;
+        this.value = value;
+        this.fotos = fotos;
+    }
+
+    public List<String> getFotos() {
+        return fotos;
+    }
+
+    public void setFotos(List<String> fotos) {
+        this.fotos = fotos;
     }
 
     public int getId() {
@@ -44,5 +67,13 @@ public class Criterio {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getMagnitud() {
+        return magnitud;
+    }
+
+    public void setMagnitud(String magnitud) {
+        this.magnitud = magnitud;
     }
 }

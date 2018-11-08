@@ -26,7 +26,7 @@ public class BasicsActivity extends AppCompatActivity {
         setupActionBar();
 
         eTextContacto= (EditText) findViewById(R.id.eTextContacto);
-        spnFundo = (Spinner) findViewById(R.id.spnFundo);
+        spnFundo = (Spinner) findViewById(R.id.spnEmpresa);
         spnCultivo = (Spinner) findViewById(R.id.spnCultivo);
         spnVariedad = (Spinner) findViewById(R.id.spnVariedad);
 

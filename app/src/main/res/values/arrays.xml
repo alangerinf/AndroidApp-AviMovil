@@ -5,13 +5,14 @@
         <item>AgroValle</item>
         <item>AgroPeru</item>
     </string-array>
+
     <string-array name="fundos">
-        <item>San Idelfonso</item>
-        <item>San Nicolas</item>
-        <item>Fundo Virú</item>
-        <item>Canario</item>
-        <item>Vaca</item>
-        <item>Cerdo</item>
+        <item>Fundo San Ramon</item>
+        <item>Fundo Santo Domingo</item>
+        <item>Fundo San Juan</item>
+        <item>Fundo Santa Clara</item>
+        <item>Fundo Santa Isabel</item>
+
     </string-array>
     <string-array name="cultivos">
         <item>Arándano</item>

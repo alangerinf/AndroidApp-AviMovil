@@ -9,7 +9,7 @@
 
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_ok"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:background="@drawable/shape_button_bot_blue"
@@ -31,7 +31,7 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_secondary_r15_v2"
         android:paddingBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/button_ok"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
 
@@ -45,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:background="@drawable/shape_secondary_r15_borderlight_v2"
             android:dropDownWidth="match_parent"
             android:entries="@array/fundos"
@@ -56,8 +55,27 @@
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/textView31"
-            app:layout_constraintTop_toBottomOf="@+id/textView31" />
+            app:layout_constraintStart_toStartOf="@+id/tViewFundo"
+            app:layout_constraintTop_toBottomOf="@+id/tViewFundo" />
+
+        <Spinner
+            android:id="@+id/spnEmpresa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_secondary_r15_borderlight_v2"
+            android:dropDownWidth="match_parent"
+            android:entries="@array/empresas"
+            android:minWidth="15dp"
+            android:paddingVertical="5dp"
+            android:spinnerMode="dialog"
+            android:textAlignment="center"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tViewEmpesa"
+            app:layout_constraintTop_toBottomOf="@+id/tViewEmpesa" />
 
         <Spinner
             android:id="@+id/spnCultivo"
@@ -123,17 +141,26 @@
             app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
         <TextView
-            android:id="@+id/textView31"
+            android:id="@+id/tViewEmpesa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="Fundo"
+            android:text="Empresa"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tViewFundo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Fundo"
+            app:layout_constraintStart_toStartOf="@+id/tViewEmpesa"
+            app:layout_constraintTop_toBottomOf="@+id/spnEmpresa" />
 
         <TextView
             android:id="@+id/textView33"
@@ -141,7 +168,7 @@
             android:layout_height="16dp"
             android:layout_marginTop="8dp"
             android:text="Cultivo"
-            app:layout_constraintStart_toStartOf="@+id/textView31"
+            app:layout_constraintStart_toStartOf="@+id/tViewEmpesa"
             app:layout_constraintTop_toBottomOf="@+id/spnFundo" />
 
         <TextView
