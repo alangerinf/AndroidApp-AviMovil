@@ -1,13 +1,19 @@
 package pe.ibao.agromovil.views;
 
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.utilities.CargaInicial;
+import pe.ibao.agromovil.utilities.Utilities;
 import pe.ibao.agromovil.views.Update;
 
 /**
@@ -38,9 +44,13 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
     void eventPressEnter(){
+
+
+        new CargaInicial(this);
+        /*
         Intent intent = new Intent(this,Update.class);
         startActivity(intent);
-
+        */
     }
 
 

@@ -16,7 +16,8 @@ public class Muestra {
         this.id = id;
     }
 
-    public Muestra() {
+    public Muestra(){
+
     }
 
     public int getId() {

@@ -9,8 +9,15 @@ public class Criterio {
     private String value;
     private int idTipoInspseccion;
 
+    public Criterio(int id, String name, String type, String magnitud, int idTipoInspseccion) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.magnitud = magnitud;
+        this.idTipoInspseccion = idTipoInspseccion;
+    }
 
-    public Criterio(int id, String name, String type,String magnitud, String valueDefault) {
+    public Criterio(int id, String name, String type, String magnitud, String valueDefault) {
         this.id = id;
         this.name = name;
         this.type = type;

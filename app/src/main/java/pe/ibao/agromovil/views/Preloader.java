@@ -1,7 +1,10 @@
 package pe.ibao.agromovil.views;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
@@ -9,12 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.DataUserHandler;
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.utilities.CargaInicial;
+import pe.ibao.agromovil.utilities.Utilities;
 
 public class Preloader extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +38,18 @@ public class Preloader extends AppCompatActivity {
                     // Si hay conexión a Internet en este momento
                     Toast.makeText(getBaseContext(),"Online Mode On!",
                             Toast.LENGTH_SHORT).show();
-
-
                     if(duh.isLogin()){
                         if(true){//si tu contraseña sigue siendo la misma
                             verifyUpdate();//verificar actualizacion
                         }else{//si estas logueado y tu contraseña no es la misma
                             Toast.makeText(getBaseContext(),"Contraseña no es la misma",
                                     Toast.LENGTH_SHORT).show();
-                            login();//mostrar activity de de login
+                            openLogin();//mostrar activity de de login
                         }
 
                     }else{
                         //si tienes internet y no estas logueado
-                        login();
+                        openLogin();
 
                     }
 
@@ -75,7 +77,7 @@ public class Preloader extends AppCompatActivity {
 
     }
 
-    void  login(){
+    void  openLogin(){
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);

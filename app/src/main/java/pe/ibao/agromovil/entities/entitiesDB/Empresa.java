@@ -4,26 +4,14 @@ public class Empresa {
 
     private int id;
     private String name;
-    private int idUsuario;
+
 
     public Empresa(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Empresa(int id, String name, int idUsuario) {
-        this.id = id;
-        this.name = name;
-        this.idUsuario = idUsuario;
-    }
 
-    public int getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
-    }
 
     public int getId() {
         return id;
