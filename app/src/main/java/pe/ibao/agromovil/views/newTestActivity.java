@@ -4,11 +4,9 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,7 +16,7 @@ import android.widget.Toast;
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.AdapterListViewCriterio;
 import pe.ibao.agromovil.models.CollectionCriterios;
-import pe.ibao.agromovil.models.Criterio;
+import pe.ibao.agromovil.entities.entitiesDB.Criterio;
 
 public class newTestActivity extends AppCompatActivity {
 

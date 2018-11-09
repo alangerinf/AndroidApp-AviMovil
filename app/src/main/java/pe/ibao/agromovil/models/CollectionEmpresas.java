@@ -3,6 +3,8 @@ package pe.ibao.agromovil.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import pe.ibao.agromovil.entities.entitiesDB.Empresa;
+
 public class CollectionEmpresas {
 
     List<Empresa> empresas;

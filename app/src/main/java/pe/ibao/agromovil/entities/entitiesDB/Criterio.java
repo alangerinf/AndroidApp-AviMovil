@@ -1,6 +1,4 @@
-package pe.ibao.agromovil.models;
-
-import java.util.List;
+package pe.ibao.agromovil.entities.entitiesDB;
 
 public class Criterio {
 
@@ -9,6 +7,7 @@ public class Criterio {
     private String type;
     private String magnitud;
     private String value;
+    private int idTipoInspseccion;
 
 
     public Criterio(int id, String name, String type,String magnitud, String valueDefault) {
@@ -19,6 +18,22 @@ public class Criterio {
         this.magnitud = magnitud;
     }
 
+    public Criterio(int id, String name, String type, String magnitud, String value, int idTipoInspseccion) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.magnitud = magnitud;
+        this.value = value;
+        this.idTipoInspseccion = idTipoInspseccion;
+    }
+
+    public int getIdTipoInspseccion() {
+        return idTipoInspseccion;
+    }
+
+    public void setIdTipoInspseccion(int idTipoInspseccion) {
+        this.idTipoInspseccion = idTipoInspseccion;
+    }
 
     public int getId() {
         return id;

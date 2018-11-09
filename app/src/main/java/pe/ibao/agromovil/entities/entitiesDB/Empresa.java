@@ -1,6 +1,4 @@
-package pe.ibao.agromovil.models;
-
-import java.util.List;
+package pe.ibao.agromovil.entities.entitiesDB;
 
 public class Empresa {
 

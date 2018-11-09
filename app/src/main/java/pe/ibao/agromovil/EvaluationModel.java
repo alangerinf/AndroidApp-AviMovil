@@ -2,7 +2,7 @@ package pe.ibao.agromovil;
 
 import java.util.List;
 
-import pe.ibao.agromovil.models.Criterio;
+import pe.ibao.agromovil.entities.entitiesDB.Criterio;
 
 public class EvaluationModel {
 

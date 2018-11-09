@@ -3,6 +3,8 @@ package pe.ibao.agromovil.models;
 import java.util.ArrayList;
 import java.util.List;
 
+import pe.ibao.agromovil.entities.entitiesDB.Fundo;
+
 public class CollectionFundos {
 
     private List<Fundo> fundos;

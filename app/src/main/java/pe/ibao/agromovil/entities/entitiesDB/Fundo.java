@@ -1,13 +1,24 @@
-package pe.ibao.agromovil.models;
+package pe.ibao.agromovil.entities.entitiesDB;
 
-public class Variedad {
+public class Fundo {
 
     private int id;
     private String name;
+    private int idEmpresa;
 
-    public Variedad(int id, String name) {
+
+    public Fundo(int id, String name, int idEmpresa) {
         this.id = id;
         this.name = name;
+        this.idEmpresa = idEmpresa;
+    }
+
+    public int getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(int idEmpresa) {
+        this.idEmpresa = idEmpresa;
     }
 
     public int getId() {
