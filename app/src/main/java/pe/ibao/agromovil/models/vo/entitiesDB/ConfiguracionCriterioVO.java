@@ -1,11 +1,11 @@
-package pe.ibao.agromovil.entities.entitiesDB;
+package pe.ibao.agromovil.models.vo.entitiesDB;
 
-public class ConfiguracionCriterio {
+public class ConfiguracionCriterioVO {
     private int id;
     private int idCriterio;
     private int idFundoVariedad;
 
-    public ConfiguracionCriterio(int id, int idCriterio, int idFundoVariedad) {
+    public ConfiguracionCriterioVO(int id, int idCriterio, int idFundoVariedad) {
         this.id = id;
         this.idCriterio = idCriterio;
         this.idFundoVariedad = idFundoVariedad;

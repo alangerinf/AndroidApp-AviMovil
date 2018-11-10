@@ -1,10 +1,7 @@
 package pe.ibao.agromovil.views;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
@@ -12,11 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.DataUserHandler;
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.utilities.CargaInicial;
-import pe.ibao.agromovil.utilities.Utilities;
 
 public class Preloader extends AppCompatActivity {
 

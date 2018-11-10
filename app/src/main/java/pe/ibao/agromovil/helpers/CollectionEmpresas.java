@@ -1,15 +1,15 @@
-package pe.ibao.agromovil.models;
+package pe.ibao.agromovil.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.ibao.agromovil.entities.entitiesDB.Empresa;
+import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 
 public class CollectionEmpresas {
 
-    List<Empresa> empresas;
+    List<EmpresaVO> empresas;
 
-    public CollectionEmpresas(List<Empresa> empresas) {
+    public CollectionEmpresas(List<EmpresaVO> empresas) {
         this.empresas = empresas;
     }
 
@@ -17,11 +17,11 @@ public class CollectionEmpresas {
         empresas = new ArrayList<>();
     }
 
-    public void addCriterio(Empresa e){
+    public void addCriterio(EmpresaVO e){
         empresas.add(e);
     }
 
-    public List<Empresa> getEmpresas() {
+    public List<EmpresaVO> getEmpresas() {
         return empresas;
     }
 

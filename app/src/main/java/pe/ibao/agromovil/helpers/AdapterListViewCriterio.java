@@ -1,4 +1,4 @@
-package pe.ibao.agromovil.models;
+package pe.ibao.agromovil.helpers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.entities.entitiesDB.Criterio;
+import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 
 public class AdapterListViewCriterio extends BaseAdapter{
 
     Context ctx;
-    List<Criterio> listCriterios;
+    List<CriterioVO> listCriterios;
 
-    public AdapterListViewCriterio(Context ctx, List<Criterio> listCriterios){
+    public AdapterListViewCriterio(Context ctx, List<CriterioVO> listCriterios){
         this.ctx = ctx;
         this.listCriterios =listCriterios;
     }

@@ -1,11 +1,11 @@
-package pe.ibao.agromovil.entities.entitiesInternal;
+package pe.ibao.agromovil.models.vo.entitiesInternal;
 
-public class Usuario {
+public class UsuarioVO {
     private int id;
     private String user;
     private String password;
 
-    public Usuario(int id, String user, String password) {
+    public UsuarioVO(int id, String user, String password) {
         this.id = id;
         this.user = user;
         this.password = password;

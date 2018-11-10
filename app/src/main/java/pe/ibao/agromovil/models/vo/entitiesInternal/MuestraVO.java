@@ -1,22 +1,22 @@
-package pe.ibao.agromovil.entities.entitiesInternal;
+package pe.ibao.agromovil.models.vo.entitiesInternal;
 
-public class Muestra {
+public class MuestraVO {
     private int id;
     private int idCriterio;
     private int idEvalacion;
     private String value;
 
-    public Muestra(int id, int idCriterio, int idEvalacion) {
+    public MuestraVO(int id, int idCriterio, int idEvalacion) {
         this.id = id;
         this.idCriterio = idCriterio;
         this.idEvalacion = idEvalacion;
     }
 
-    public Muestra(int id) {
+    public MuestraVO(int id) {
         this.id = id;
     }
 
-    public Muestra(){
+    public MuestraVO(){
 
     }
 

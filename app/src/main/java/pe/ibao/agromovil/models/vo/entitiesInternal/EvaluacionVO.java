@@ -1,6 +1,6 @@
-package pe.ibao.agromovil.entities.entitiesInternal;
+package pe.ibao.agromovil.models.vo.entitiesInternal;
 
-public class Evaluacion {
+public class EvaluacionVO {
     private int id;
     private int idTipoInspeccion;
     private int idFundo;
@@ -9,17 +9,17 @@ public class Evaluacion {
     private double lat;
     private String qr;
 
-    public Evaluacion(int id, int idTipoInspeccion, int idFundo, int idVariedad) {
+    public EvaluacionVO(int id, int idTipoInspeccion, int idFundo, int idVariedad) {
         this.id = id;
         this.idTipoInspeccion = idTipoInspeccion;
         this.idFundo = idFundo;
         this.idVariedad = idVariedad;
     }
 
-    public Evaluacion() {
+    public EvaluacionVO() {
     }
 
-    public Evaluacion(int id, int idTipoInspeccion, int idFundo, int idVariedad, double lon, double lat, String qr) {
+    public EvaluacionVO(int id, int idTipoInspeccion, int idFundo, int idVariedad, double lon, double lat, String qr) {
         this.id = id;
         this.idTipoInspeccion = idTipoInspeccion;
         this.idFundo = idFundo;

@@ -1,16 +1,16 @@
-package pe.ibao.agromovil.models;
+package pe.ibao.agromovil.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.ibao.agromovil.entities.entitiesDB.Cultivo;
+import pe.ibao.agromovil.models.vo.entitiesDB.CultivoVO;
 
 public class CollectionCultivos {
 
-    List<Cultivo> cultivos;
+    List<CultivoVO> cultivos;
 
 
-    public CollectionCultivos(List<Cultivo> cultivos) {
+    public CollectionCultivos(List<CultivoVO> cultivos) {
         this.cultivos = cultivos;
     }
 
@@ -18,11 +18,11 @@ public class CollectionCultivos {
         cultivos = new ArrayList<>();
     }
 
-    public void addCultivo(Cultivo c){
+    public void addCultivo(CultivoVO c){
         cultivos.add(c);
     }
 
-    public List<Cultivo> getCriterios() {
+    public List<CultivoVO> getCriterios() {
         return cultivos;
     }
 

@@ -1,19 +1,19 @@
-package pe.ibao.agromovil.entities.entitiesInternal;
+package pe.ibao.agromovil.models.vo.entitiesInternal;
 
-public class FotoMuestra {
+public class FotoMuestraVO {
     private int id;
     private String fecha;
     private String hora;
     private String uri;
 
-    public FotoMuestra(int id, String fecha, String hora, String uri) {
+    public FotoMuestraVO(int id, String fecha, String hora, String uri) {
         this.id = id;
         this.fecha = fecha;
         this.hora = hora;
         this.uri = uri;
     }
 
-    public FotoMuestra() {
+    public FotoMuestraVO() {
     }
 
     public int getId() {

@@ -1,12 +1,12 @@
-package pe.ibao.agromovil.entities.entitiesDB;
+package pe.ibao.agromovil.models.vo.entitiesDB;
 
-public class FundoVariedad {
+public class FundoVariedadVO {
 
     private int id;
     private int idFundo;
     private int idVariedad;
 
-    public FundoVariedad(int id, int idFundo, int idVariedad) {
+    public FundoVariedadVO(int id, int idFundo, int idVariedad) {
         this.id = id;
         this.idFundo = idFundo;
         this.idVariedad = idVariedad;

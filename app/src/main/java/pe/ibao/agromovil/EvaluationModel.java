@@ -2,12 +2,12 @@ package pe.ibao.agromovil;
 
 import java.util.List;
 
-import pe.ibao.agromovil.entities.entitiesDB.Criterio;
+import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 
 public class EvaluationModel {
 
     private String name;
-    private List<Criterio> criterios;
+    private List<CriterioVO> criterios;
 
 
 

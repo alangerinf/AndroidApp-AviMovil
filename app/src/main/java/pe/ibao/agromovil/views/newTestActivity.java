@@ -14,9 +14,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.models.AdapterListViewCriterio;
-import pe.ibao.agromovil.models.CollectionCriterios;
-import pe.ibao.agromovil.entities.entitiesDB.Criterio;
+import pe.ibao.agromovil.helpers.AdapterListViewCriterio;
+import pe.ibao.agromovil.helpers.CollectionCriterios;
+import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 
 public class newTestActivity extends AppCompatActivity {
 
@@ -85,13 +85,13 @@ public class newTestActivity extends AppCompatActivity {
 */
         eTxtPosition = (EditText) findViewById(R.id.eTxtPosition);
 
-        Criterio temp =new Criterio(0,"Precipitacion","float","mm", "");
+        CriterioVO temp =new CriterioVO(0,"Precipitacion","float","mm", "");
         CRITERIOS.addCriterio(temp);
-        temp =new Criterio(1,"Temperatura Maxima","float","C°", "");
+        temp =new CriterioVO(1,"Temperatura Maxima","float","C°", "");
         CRITERIOS.addCriterio(temp);
-        temp =new Criterio(2,"Temperatura Minima","float","C°", "");
+        temp =new CriterioVO(2,"Temperatura Minima","float","C°", "");
         CRITERIOS.addCriterio(temp);
-        temp =new Criterio(3,"Evapotranspiracion","float","mm", "");
+        temp =new CriterioVO(3,"Evapotranspiracion","float","mm", "");
         CRITERIOS.addCriterio(temp);
         /*temp =new Criterio(4,"Antracnosis","list","bajo-medio-critico", "");
         CRITERIOS.addCriterio(temp);
@@ -154,7 +154,7 @@ public class newTestActivity extends AppCompatActivity {
                                 "Seleccionaste: " + CRITERIOS.getCriterios().get(which).getName(),
                                 Toast.LENGTH_SHORT)
                                 .show();
-                        Criterio temp = CRITERIOS.getCriterios().get(which);
+                        CriterioVO temp = CRITERIOS.getCriterios().get(which);
                         saveCriterios.addCriterio(temp);
                         if(saveCriterios.getCriterios().size()!=0){
 

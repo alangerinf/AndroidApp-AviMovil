@@ -1,15 +1,15 @@
-package pe.ibao.agromovil.models;
+package pe.ibao.agromovil.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.ibao.agromovil.entities.entitiesDB.Fundo;
+import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 
 public class CollectionFundos {
 
-    private List<Fundo> fundos;
+    private List<FundoVO> fundos;
 
-    public CollectionFundos(List<Fundo> fundos) {
+    public CollectionFundos(List<FundoVO> fundos) {
         this.fundos = fundos;
     }
 
@@ -17,11 +17,11 @@ public class CollectionFundos {
         fundos = new ArrayList<>();
     }
 
-    public void addFundo(Fundo f){
+    public void addFundo(FundoVO f){
         fundos.add(f);
     }
 
-    public List<Fundo> getFundos() {
+    public List<FundoVO> getFundos() {
         return fundos;
     }
 

@@ -1,8 +1,6 @@
 package pe.ibao.agromovil.views;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -12,9 +10,10 @@ import android.widget.Toast;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.models.dao.EmpresaDAO;
+import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 import pe.ibao.agromovil.utilities.CargaInicial;
 import pe.ibao.agromovil.utilities.Utilities;
-import pe.ibao.agromovil.views.Update;
 
 /**
  * A login screen that offers login via email/password.
@@ -44,13 +43,19 @@ public class LoginActivity extends AppCompatActivity  {
     }
 
     void eventPressEnter(){
-
-
+/*
         new CargaInicial(this);
-        /*
+        EmpresaDAO empresaDAO = new EmpresaDAO(this);
+        EmpresaVO vo = empresaDAO.consultarEmpresaByidFundo(3);
+        Toast.makeText(this,vo.getName(),Toast.LENGTH_SHORT).show();
+        vo = empresaDAO.consultarEmpresaByid(1);
+        Toast.makeText(this,vo.getName(),Toast.LENGTH_SHORT).show();
+        empresaDAO.EmpresaDAOCloseConection();
+*/
+
         Intent intent = new Intent(this,Update.class);
         startActivity(intent);
-        */
+
     }
 
 

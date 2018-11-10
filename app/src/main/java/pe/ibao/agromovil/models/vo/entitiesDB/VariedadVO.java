@@ -1,12 +1,22 @@
-package pe.ibao.agromovil.entities.entitiesDB;
+package pe.ibao.agromovil.models.vo.entitiesDB;
 
-public class TipoInspeccion {
+public class VariedadVO {
+
     private int id;
     private String name;
+    private int idCultivo;
 
-    public TipoInspeccion(int id, String name) {
+    public VariedadVO(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public int getIdCultivo() {
+        return idCultivo;
+    }
+
+    public void setIdCultivo(int idCultivo) {
+        this.idCultivo = idCultivo;
     }
 
     public int getId() {

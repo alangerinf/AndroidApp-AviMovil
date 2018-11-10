@@ -1,12 +1,15 @@
-package pe.ibao.agromovil.entities.entitiesDB;
+package pe.ibao.agromovil.models.vo.entitiesDB;
 
-public class Empresa {
+public class EmpresaVO {
 
     private int id;
     private String name;
 
 
-    public Empresa(int id, String name) {
+    public EmpresaVO() {
+    }
+
+    public EmpresaVO(int id, String name) {
         this.id = id;
         this.name = name;
     }

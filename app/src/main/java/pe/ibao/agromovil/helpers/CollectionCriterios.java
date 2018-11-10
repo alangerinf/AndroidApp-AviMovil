@@ -1,16 +1,16 @@
-package pe.ibao.agromovil.models;
+package pe.ibao.agromovil.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.ibao.agromovil.entities.entitiesDB.Criterio;
+import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 
 public class CollectionCriterios {
 
-    private List<Criterio> criterios;
+    private List<CriterioVO> criterios;
 
 
-    public CollectionCriterios(List<Criterio> criterios) {
+    public CollectionCriterios(List<CriterioVO> criterios) {
         this.criterios = criterios;
     }
 
@@ -18,11 +18,11 @@ public class CollectionCriterios {
         criterios = new ArrayList<>();
     }
 
-    public void addCriterio(Criterio c){
+    public void addCriterio(CriterioVO c){
         criterios.add(c);
     }
 
-    public List<Criterio> getCriterios() {
+    public List<CriterioVO> getCriterios() {
         return criterios;
     }
 

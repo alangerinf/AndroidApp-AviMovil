@@ -1,6 +1,6 @@
-package pe.ibao.agromovil.entities.entitiesDB;
+package pe.ibao.agromovil.models.vo.entitiesDB;
 
-public class Criterio {
+public class CriterioVO {
 
     private int id;
     private String name;
@@ -9,7 +9,7 @@ public class Criterio {
     private String value;
     private int idTipoInspseccion;
 
-    public Criterio(int id, String name, String type, String magnitud, int idTipoInspseccion) {
+    public CriterioVO(int id, String name, String type, String magnitud, int idTipoInspseccion) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -17,7 +17,7 @@ public class Criterio {
         this.idTipoInspseccion = idTipoInspseccion;
     }
 
-    public Criterio(int id, String name, String type, String magnitud, String valueDefault) {
+    public CriterioVO(int id, String name, String type, String magnitud, String valueDefault) {
         this.id = id;
         this.name = name;
         this.type = type;
@@ -25,7 +25,7 @@ public class Criterio {
         this.magnitud = magnitud;
     }
 
-    public Criterio(int id, String name, String type, String magnitud, String value, int idTipoInspseccion) {
+    public CriterioVO(int id, String name, String type, String magnitud, String value, int idTipoInspseccion) {
         this.id = id;
         this.name = name;
         this.type = type;

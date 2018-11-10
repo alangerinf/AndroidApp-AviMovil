@@ -1,15 +1,15 @@
-package pe.ibao.agromovil.models;
+package pe.ibao.agromovil.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import pe.ibao.agromovil.entities.entitiesDB.Variedad;
+import pe.ibao.agromovil.models.vo.entitiesDB.VariedadVO;
 
 public class CollectionVariedad {
 
-    List<Variedad> variedades;
+    List<VariedadVO> variedades;
 
-    public CollectionVariedad(List<Variedad> variedades) {
+    public CollectionVariedad(List<VariedadVO> variedades) {
         this.variedades = variedades;
     }
 
@@ -17,11 +17,11 @@ public class CollectionVariedad {
         variedades = new ArrayList<>();
     }
 
-    public void addVariedad(Variedad v){
+    public void addVariedad(VariedadVO v){
         variedades.add(v);
     }
 
-    public List<Variedad> getVariedades() {
+    public List<VariedadVO> getVariedades() {
         return variedades;
     }
 

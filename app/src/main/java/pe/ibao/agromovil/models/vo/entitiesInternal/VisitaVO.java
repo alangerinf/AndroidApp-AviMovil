@@ -1,18 +1,18 @@
-package pe.ibao.agromovil.entities.entitiesInternal;
+package pe.ibao.agromovil.models.vo.entitiesInternal;
 
-public class Visita {
+public class VisitaVO {
     private int id;
     private String fecha;
     private double lat;
     private long lon;
     private String hora;
 
-    public Visita(int id, String fecha) {
+    public VisitaVO(int id, String fecha) {
         this.id = id;
         this.fecha = fecha;
     }
 
-    public Visita() {
+    public VisitaVO() {
     }
 
     public int getId() {

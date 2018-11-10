@@ -1,15 +1,15 @@
-package pe.ibao.agromovil.entities.entitiesDB;
+package pe.ibao.agromovil.models.vo.entitiesDB;
 
-public class Cultivo {
+public class CultivoVO {
 
     private int id;
     private String name;
 
 
-    public Cultivo() {
+    public CultivoVO() {
     }
 
-    public Cultivo(int id, String name) {
+    public CultivoVO(int id, String name) {
         this.id = id;
         this.name = name;
     }

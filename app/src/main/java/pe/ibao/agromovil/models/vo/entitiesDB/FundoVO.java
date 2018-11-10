@@ -1,13 +1,16 @@
-package pe.ibao.agromovil.entities.entitiesDB;
+package pe.ibao.agromovil.models.vo.entitiesDB;
 
-public class Fundo {
+public class FundoVO {
 
     private int id;
     private String name;
     private int idEmpresa;
 
 
-    public Fundo(int id, String name, int idEmpresa) {
+    public FundoVO() {
+    }
+
+    public FundoVO(int id, String name, int idEmpresa) {
         this.id = id;
         this.name = name;
         this.idEmpresa = idEmpresa;
