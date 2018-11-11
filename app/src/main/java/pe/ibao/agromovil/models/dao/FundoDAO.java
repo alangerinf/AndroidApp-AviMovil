@@ -37,11 +37,12 @@ public class FundoDAO {
         FundoVO temp = null;
         try{
             temp = new FundoVO();
-            Cursor cursor = db.rawQuery("SELECT F."+ TABLE_FUNDO_COL_ID+", F."+TABLE_FUNDO_COL_NAME+
+            Cursor cursor = db.rawQuery("SELECT F."+ TABLE_FUNDO_COL_ID+", F."+TABLE_FUNDO_COL_NAME+", F."+TABLE_FUNDO_COL_IDEMPRESA+
                                             " FROM "+TABLE_FUNDO+" as F",null);
             cursor.moveToFirst();
             temp.setId(cursor.getInt(0));
             temp.setName(cursor.getString(1));
+            temp.setIdEmpresa(cursor.getInt(2));
             cursor.close();
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT);
@@ -49,27 +50,26 @@ public class FundoDAO {
         return temp;
     }
 
-    public List<EmpresaVO> listarFundoByIdEmpresa(int idEmpresa){
+    public List<FundoVO> listarFundoByIdEmpresa(int idEmpresa){
         SQLiteDatabase db = c.getReadableDatabase();
-        List<EmpresaVO> empresaVOS = new ArrayList<EmpresaVO>();
+        List<FundoVO> fundoVOS = new ArrayList<FundoVO>();
         try{
-
             Cursor cursor = db.rawQuery(
-                    " SELECT "+"E."+TABLE_FUNDO_COL_ID+", "+"E."+TABLE_FUNDO_COL_NAME+"E."+TABLE_EMPRESA_COL_ID+
+                    " SELECT "+"F."+TABLE_FUNDO_COL_ID+", F."+TABLE_FUNDO_COL_NAME+", F."+TABLE_FUNDO_COL_IDEMPRESA+
                             " FROM "+TABLE_FUNDO+" as F"+
                             " WHERE "+"F."+TABLE_FUNDO_COL_IDEMPRESA+"="+  String.valueOf(idEmpresa),null);
-            cursor.moveToFirst();
             while (cursor.moveToNext()){
-                EmpresaVO empresaVO = new EmpresaVO();
-                empresaVO.setId(cursor.getInt(0));
-                empresaVO.setName(cursor.getString(1));
-                empresaVOS.add(empresaVO);
+                FundoVO fundoVO = new FundoVO();
+                    fundoVO.setId(cursor.getInt(0));
+                    fundoVO.setName(cursor.getString(1));
+                    fundoVO.setIdEmpresa(cursor.getInt(2));
+                fundoVOS.add(fundoVO);
             }
             cursor.close();
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
-        return empresaVOS;
+        return fundoVOS;
     }
 
 

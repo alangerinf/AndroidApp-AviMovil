@@ -62,14 +62,14 @@ public class CargaInicial {
             values.put(Utilities.TABLE_FUNDO_COL_NAME,"FUNDO21");
             values.put(Utilities.TABLE_FUNDO_COL_IDEMPRESA,"1");
         temp = db.insert(Utilities.TABLE_FUNDO,Utilities.TABLE_FUNDO_COL_ID,values);
-
+        Toast.makeText(ctx,"ingreso:"+temp,Toast.LENGTH_SHORT);
 
         values = new ContentValues();
             values.put(Utilities.TABLE_FUNDO_COL_ID,"3");
             values.put(Utilities.TABLE_FUNDO_COL_NAME,"FUNDO32");
             values.put(Utilities.TABLE_FUNDO_COL_IDEMPRESA,"2");
         temp = db.insert(Utilities.TABLE_FUNDO,Utilities.TABLE_FUNDO_COL_ID,values);
-
+        Toast.makeText(ctx,"ingreso:"+temp,Toast.LENGTH_SHORT);
         db.close();
     }
 

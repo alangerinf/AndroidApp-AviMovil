@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.helpers.AdapterListViewCriterio;
+import pe.ibao.agromovil.helpers.AdapterListCriterio;
 import pe.ibao.agromovil.helpers.CollectionCriterios;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 
@@ -98,11 +98,11 @@ public class newTestActivity extends AppCompatActivity {
         */
 
         listViewCriterios = (ListView) findViewById(R.id.list_criterios);
-        AdapterListViewCriterio adapterListViewCriterio = new AdapterListViewCriterio(getBaseContext(),saveCriterios.getCriterios());
+        AdapterListCriterio adapterListCriterio = new AdapterListCriterio(getBaseContext(),saveCriterios.getCriterios());
 
         if(saveCriterios.getCriterios().size()!=0){
 
-            listViewCriterios.setAdapter(adapterListViewCriterio);
+            listViewCriterios.setAdapter(adapterListCriterio);
 
         }else{
             Toast.makeText(
@@ -158,8 +158,8 @@ public class newTestActivity extends AppCompatActivity {
                         saveCriterios.addCriterio(temp);
                         if(saveCriterios.getCriterios().size()!=0){
 
-                            AdapterListViewCriterio adapterListViewCriterio = new AdapterListViewCriterio(getBaseContext(),saveCriterios.getCriterios());
-                            listViewCriterios.setAdapter(adapterListViewCriterio);
+                            AdapterListCriterio adapterListCriterio = new AdapterListCriterio(getBaseContext(),saveCriterios.getCriterios());
+                            listViewCriterios.setAdapter(adapterListCriterio);
 
                         }
                     }

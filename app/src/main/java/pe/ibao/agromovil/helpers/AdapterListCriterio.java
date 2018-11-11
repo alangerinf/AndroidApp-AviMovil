@@ -21,12 +21,12 @@ import java.util.List;
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 
-public class AdapterListViewCriterio extends BaseAdapter{
+public class AdapterListCriterio extends BaseAdapter{
 
     Context ctx;
     List<CriterioVO> listCriterios;
 
-    public AdapterListViewCriterio(Context ctx, List<CriterioVO> listCriterios){
+    public AdapterListCriterio(Context ctx, List<CriterioVO> listCriterios){
         this.ctx = ctx;
         this.listCriterios =listCriterios;
     }

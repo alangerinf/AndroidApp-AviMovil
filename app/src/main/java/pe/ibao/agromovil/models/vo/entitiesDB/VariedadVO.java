@@ -11,6 +11,10 @@ public class VariedadVO {
         this.name = name;
     }
 
+    public VariedadVO() {
+
+    }
+
     public int getIdCultivo() {
         return idCultivo;
     }

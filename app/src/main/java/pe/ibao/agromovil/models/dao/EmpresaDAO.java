@@ -68,23 +68,23 @@ public class EmpresaDAO {
         List<EmpresaVO> empresas = new  ArrayList<EmpresaVO>();
         try{
             String[] campos = {TABLE_EMPRESA_COL_ID,TABLE_EMPRESA_COL_NAME};
-            Cursor cursor= db.query(TABLE_EMPRESA,campos,"*",null,null,null,null);
-            cursor.moveToFirst();
+            Cursor cursor= db.query(TABLE_EMPRESA,campos,null,null,null,null,null);
             while(cursor.moveToNext()){
                 EmpresaVO temp = new EmpresaVO();
                     temp.setId(cursor.getInt(0));
                     temp.setName(cursor.getString(1));
                 empresas.add(temp);
+                Toast.makeText(ctx,temp.getName(),Toast.LENGTH_SHORT).show();
             }
             cursor.close();
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
-
         return empresas;
     }
     public void EmpresaDAOCloseConection() {
         c.close();
     }
+
 
 }

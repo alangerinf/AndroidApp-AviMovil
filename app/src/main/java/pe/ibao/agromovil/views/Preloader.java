@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import pe.ibao.agromovil.DataUserHandler;
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.utilities.CargaInicial;
 
 public class Preloader extends AppCompatActivity {
 
@@ -19,6 +20,8 @@ public class Preloader extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preloader);
 
+
+        new CargaInicial(this);
         //delay de 1 segundo
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="empresas">
-        <item>AgroViru</item>
+        <item>Seleccione Empresa</item>
         <item>AgroValle</item>
         <item>AgroPeru</item>
     </string-array>
 
     <string-array name="fundos">
-        <item>Fundo San Ramon</item>
+        <item>Selecccione Fundo</item>
         <item>Fundo Santo Domingo</item>
         <item>Fundo San Juan</item>
         <item>Fundo Santa Clara</item>
