@@ -3,6 +3,7 @@ package pe.ibao.agromovil.helpers;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,10 +79,9 @@ public class AdapterListCriterio extends BaseAdapter{
             }
         });
 
+       // Log.d("xdxdxd",position+"    "+listCriterios.get(position).getName());
         nameitem.setText(listCriterios.get(position).getName()+" "+listCriterios.get(position).getMagnitud());
-
-
-
+        _string.setHeight(0);
         switch (listCriterios.get(position).getType()){
             case "boolean":
                 _boolean.setVisibility(View.VISIBLE);
@@ -94,11 +94,9 @@ public class AdapterListCriterio extends BaseAdapter{
                 break;
             case "float":
                 _float.setVisibility(View.VISIBLE);
-
                 nameitem.setText(listCriterios.get(position).getName()+" "+listCriterios.get(position).getMagnitud());
                 break;
             case "list":
-
                 nameitem.setText(listCriterios.get(position).getName());
                 String tempList = listCriterios.get(position).getMagnitud();
 
@@ -114,12 +112,12 @@ public class AdapterListCriterio extends BaseAdapter{
                         android.R.layout.simple_spinner_item, list);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 _list.setAdapter(dataAdapter);
-
                 _list.setVisibility(View.VISIBLE);
+
                 break;
             case "string":
-
-                _string.setHeight(80);
+                Log.d("tttttt", "getView: ");
+                _string.setHeight(150);
                 _string.setVisibility(View.VISIBLE);
                 break;
 

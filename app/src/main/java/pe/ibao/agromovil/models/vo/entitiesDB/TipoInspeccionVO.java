@@ -9,6 +9,10 @@ public class TipoInspeccionVO {
         this.name = name;
     }
 
+    public TipoInspeccionVO() {
+
+    }
+
     public int getId() {
         return id;
     }

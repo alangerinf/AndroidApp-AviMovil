@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -173,10 +172,10 @@ public class BasicsActivity extends AppCompatActivity {
     public void pressListo(View view){
 
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(NewInspectionActivity.REQUEST_FUNDO,spnFundo.getSelectedItem().toString());
-        returnIntent.putExtra(NewInspectionActivity.REQUEST_CULTIVO,spnCultivo.getSelectedItem().toString());
-        returnIntent.putExtra(NewInspectionActivity.REQUEST_VARIEDAD,spnVariedad.getSelectedItem().toString());
-        returnIntent.putExtra(NewInspectionActivity.REQUEST_CONTACTO,eTextContacto.getText().toString());
+        returnIntent.putExtra(NewVisitActivity.REQUEST_FUNDO,spnFundo.getSelectedItem().toString());
+        returnIntent.putExtra(NewVisitActivity.REQUEST_CULTIVO,spnCultivo.getSelectedItem().toString());
+        returnIntent.putExtra(NewVisitActivity.REQUEST_VARIEDAD,spnVariedad.getSelectedItem().toString());
+        returnIntent.putExtra(NewVisitActivity.REQUEST_CONTACTO,eTextContacto.getText().toString());
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }

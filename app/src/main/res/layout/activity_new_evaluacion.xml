@@ -48,7 +48,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".views.NewInspectionActivity">
+            tools:context=".views.NewVisitActivity">
 
 
             <TextView
@@ -128,9 +128,9 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
                 <TextView
-                    android:id="@+id/textView19"
+                    android:id="@+id/tViewFechaHora"
                     android:layout_width="wrap_content"
-                    android:layout_height="15dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:text="14:20"
@@ -146,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="16/08/2018"
-                    app:layout_constraintStart_toStartOf="@+id/textView19"
+                    app:layout_constraintStart_toStartOf="@+id/tViewFechaHora"
                     app:layout_constraintTop_toTopOf="@+id/textView14" />
 
                 <TextView
@@ -195,12 +195,13 @@
 
                 <EditText
                     android:id="@+id/eTxtPosition"
-                    android:layout_width="88dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="20"
                     android:inputType="text"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView17"
+                    app:layout_constraintEnd_toStartOf="@+id/btn_qrcode"
                     app:layout_constraintStart_toStartOf="@+id/spinner"
                     app:layout_constraintTop_toTopOf="@+id/textView17" />
 
@@ -208,7 +209,7 @@
                     android:id="@+id/btn_qrcode"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="24dp"
                     android:layout_marginStart="8dp"
                     android:onClick="getQRCode"
                     app:layout_constraintBottom_toBottomOf="@+id/eTxtPosition"
@@ -236,7 +237,7 @@
             <TextView
                 android:id="@+id/textView29"
                 android:layout_width="0dp"
-                android:layout_height="21dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="28dp"
                 android:layout_marginTop="8dp"
@@ -249,16 +250,22 @@
 
             <ListView
                 android:id="@+id/list_criterios"
-                android:layout_width="0dp"
-                android:layout_height="800dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
                 android:dividerHeight="2dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@+id/list_criterios"></LinearLayout>
 
         </android.support.constraint.ConstraintLayout>
 

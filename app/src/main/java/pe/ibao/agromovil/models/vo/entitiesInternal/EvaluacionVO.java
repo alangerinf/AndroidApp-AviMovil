@@ -3,30 +3,67 @@ package pe.ibao.agromovil.models.vo.entitiesInternal;
 public class EvaluacionVO {
     private int id;
     private int idTipoInspeccion;
-    private int idFundo;
-    private int idVariedad;
+    private String nameInspeccion;
+    private int porcentaje;
     private double lon;
     private double lat;
+    private String timeIni;
+    private String timeFin;
     private String qr;
+    private int idVisita;
 
-    public EvaluacionVO(int id, int idTipoInspeccion, int idFundo, int idVariedad) {
-        this.id = id;
-        this.idTipoInspeccion = idTipoInspeccion;
-        this.idFundo = idFundo;
-        this.idVariedad = idVariedad;
+    private CollectionFotoMuestraVO collectionFotoMuestraVO;
+
+    public String getNameInspeccion() {
+        return nameInspeccion;
+    }
+
+    public void setNameInspeccion(String nameInspeccion) {
+        this.nameInspeccion = nameInspeccion;
+    }
+
+    public int getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(int porcentaje) {
+        this.porcentaje = porcentaje;
     }
 
     public EvaluacionVO() {
+        collectionFotoMuestraVO= new CollectionFotoMuestraVO();
     }
 
-    public EvaluacionVO(int id, int idTipoInspeccion, int idFundo, int idVariedad, double lon, double lat, String qr) {
-        this.id = id;
-        this.idTipoInspeccion = idTipoInspeccion;
-        this.idFundo = idFundo;
-        this.idVariedad = idVariedad;
-        this.lon = lon;
-        this.lat = lat;
-        this.qr = qr;
+    public String getTimeIni() {
+        return timeIni;
+    }
+
+    public void setTimeIni(String timeIni) {
+        this.timeIni = timeIni;
+    }
+
+    public String getTimeFin() {
+        return timeFin;
+    }
+
+    public void setTimeFin(String timeFin) {
+        this.timeFin = timeFin;
+    }
+
+    public int getIdVisita() {
+        return idVisita;
+    }
+
+    public void setIdVisita(int idVisita) {
+        this.idVisita = idVisita;
+    }
+
+    public CollectionFotoMuestraVO getCollectionFotoMuestraVO() {
+        return collectionFotoMuestraVO;
+    }
+
+    public void setCollectionFotoMuestraVO(CollectionFotoMuestraVO collectionFotoMuestraVO) {
+        this.collectionFotoMuestraVO = collectionFotoMuestraVO;
     }
 
     public double getLon() {
@@ -69,19 +106,5 @@ public class EvaluacionVO {
         this.idTipoInspeccion = idTipoInspeccion;
     }
 
-    public int getIdFundo() {
-        return idFundo;
-    }
 
-    public void setIdFundo(int idFundo) {
-        this.idFundo = idFundo;
-    }
-
-    public int getIdVariedad() {
-        return idVariedad;
-    }
-
-    public void setIdVariedad(int idVariedad) {
-        this.idVariedad = idVariedad;
-    }
 }

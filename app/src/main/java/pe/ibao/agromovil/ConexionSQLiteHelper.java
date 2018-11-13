@@ -12,8 +12,6 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
 
     public ConexionSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-
-
     }
 
     @Override
@@ -27,6 +25,10 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONCRITERIO);
         db.execSQL(Utilities.CREATE_TABLE_CRITERIO);
         db.execSQL(Utilities.CREATE_TABLE_TIPOINSPECCION);
+        db.execSQL(Utilities.CREATE_TABLE_VISITA);
+        db.execSQL(Utilities.CREATE_TABLE_EVALUACION);
+        db.execSQL(Utilities.CREATE_TABLE_MUESTRA);
+        db.execSQL(Utilities.CREATE_TABLE_FOTO);
     }
 
     @Override
@@ -40,6 +42,9 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONCRITERIO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPOINSPECCION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VISITA);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EVALUACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_MUESTRA);
         onCreate(db);
     }
 }

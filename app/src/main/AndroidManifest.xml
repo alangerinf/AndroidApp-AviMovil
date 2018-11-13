@@ -47,19 +47,19 @@
             android:name=".views.Update"
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
-            android:name=".views.NewInspectionActivity"
+            android:name=".views.NewVisitActivity"
             android:label="@string/title_activity_new_inspection"
             android:parentActivityName=".views.MainActivity"
             android:theme="@style/AppTheme"></activity>
         <activity
             android:name=".views.BasicsActivity"
             android:label="@string/title_basics_activity"
-            android:parentActivityName=".views.NewInspectionActivity"
+            android:parentActivityName=".views.NewVisitActivity"
             android:theme="@style/AppTheme"></activity>
         <activity
-            android:name=".views.newTestActivity"
+            android:name=".views.newEvaluacionActivity"
             android:label="@string/title_test_activity"
-            android:parentActivityName=".views.NewInspectionActivity"
+            android:parentActivityName=".views.NewVisitActivity"
             android:theme="@style/AppTheme">
 
 

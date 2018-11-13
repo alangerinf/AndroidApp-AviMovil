@@ -135,7 +135,7 @@ public class QRScannerActivity extends AppCompatActivity {
                                 txtResult.setText(qrCodes.valueAt(0).displayValue);
                                 vibrator.vibrate(500);
                             Intent returnIntent = new Intent();
-                            returnIntent.putExtra(newTestActivity.QR_RESULT,txtResult.getText());
+                            returnIntent.putExtra(newEvaluacionActivity.QR_RESULT,txtResult.getText());
                             setResult(Activity.RESULT_OK,returnIntent);
                             finish();
                         }

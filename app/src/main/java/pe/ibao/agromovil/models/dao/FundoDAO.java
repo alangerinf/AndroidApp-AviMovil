@@ -25,50 +25,72 @@ public class FundoDAO {
 
 
     Context ctx;
-    ConexionSQLiteHelper c;
     public FundoDAO(Context ctx) {
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+
 
         this.ctx=ctx;
     }
 
     public FundoVO consultarFundoById(int id) {
+        ConexionSQLiteHelper c;
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         FundoVO temp = null;
         try{
-            temp = new FundoVO();
-            Cursor cursor = db.rawQuery("SELECT F."+ TABLE_FUNDO_COL_ID+", F."+TABLE_FUNDO_COL_NAME+", F."+TABLE_FUNDO_COL_IDEMPRESA+
-                                            " FROM "+TABLE_FUNDO+" as F",null);
-            cursor.moveToFirst();
-            temp.setId(cursor.getInt(0));
-            temp.setName(cursor.getString(1));
-            temp.setIdEmpresa(cursor.getInt(2));
+            Cursor cursor = db.rawQuery(
+                    "SELECT " +
+                            "F."+ TABLE_FUNDO_COL_ID+", " +
+                            "F."+TABLE_FUNDO_COL_NAME+", " +
+                            "F."+TABLE_FUNDO_COL_IDEMPRESA+
+                        " FROM "+
+                            TABLE_FUNDO+" as F"+
+                        " WHERE "+
+                            "F."+TABLE_FUNDO_COL_ID+"="+String.valueOf(id)
+                    ,null);
+
+            if(cursor.getCount()>0){
+                temp = new FundoVO();
+                cursor.moveToFirst();
+                temp.setId(cursor.getInt(0));
+                temp.setName(cursor.getString(1));
+                temp.setIdEmpresa(cursor.getInt(2));
+            }
             cursor.close();
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT);
         }
+        c.close();
         return temp;
     }
 
     public List<FundoVO> listarFundoByIdEmpresa(int idEmpresa){
+        ConexionSQLiteHelper c;
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         List<FundoVO> fundoVOS = new ArrayList<FundoVO>();
         try{
             Cursor cursor = db.rawQuery(
-                    " SELECT "+"F."+TABLE_FUNDO_COL_ID+", F."+TABLE_FUNDO_COL_NAME+", F."+TABLE_FUNDO_COL_IDEMPRESA+
-                            " FROM "+TABLE_FUNDO+" as F"+
-                            " WHERE "+"F."+TABLE_FUNDO_COL_IDEMPRESA+"="+  String.valueOf(idEmpresa),null);
+                    " SELECT "+
+                            "F."+TABLE_FUNDO_COL_ID+", " +
+                            "F."+TABLE_FUNDO_COL_NAME+", " +
+                            "F."+TABLE_FUNDO_COL_IDEMPRESA+
+                        " FROM "+
+                            TABLE_FUNDO+" as F"+
+                        " WHERE "+
+                            "F."+TABLE_FUNDO_COL_IDEMPRESA+"="+  String.valueOf(idEmpresa)
+                    ,null);
             while (cursor.moveToNext()){
-                FundoVO fundoVO = new FundoVO();
-                    fundoVO.setId(cursor.getInt(0));
-                    fundoVO.setName(cursor.getString(1));
-                    fundoVO.setIdEmpresa(cursor.getInt(2));
-                fundoVOS.add(fundoVO);
+                FundoVO temp = new FundoVO();
+                    temp.setId(cursor.getInt(0));
+                    temp.setName(cursor.getString(1));
+                    temp.setIdEmpresa(cursor.getInt(2));
+                fundoVOS.add(temp);
             }
             cursor.close();
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
+        c.close();
         return fundoVOS;
     }
 

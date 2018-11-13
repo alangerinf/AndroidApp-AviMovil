@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_new_inspection) {
             isFrame=false;
-            i = new Intent(this, NewInspectionActivity.class);
+            i = new Intent(this, NewVisitActivity.class);
             myFragment= new MainFragment();
         } else if (id == R.id.nav_recent_visits){
             Toast.makeText(getBaseContext(),"recent visit!",

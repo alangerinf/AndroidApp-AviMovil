@@ -3,6 +3,7 @@ package pe.ibao.agromovil.utilities;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
@@ -23,7 +24,9 @@ public class CargaInicial {
         cargarTipoInspeccion();
         cargarCriterio();
         cargarConfiguracionCriterio();
-
+        cargarVisitas();
+        cargarEvaluaciones();
+        cargarMuestras();
     }
 
 
@@ -292,13 +295,58 @@ public class CargaInicial {
                 values.put(Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO,i);
                 values.put(Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD,j);
                 Long temp = db.insert(Utilities.TABLE_CONFIGURACIONCRITERIO,Utilities.TABLE_CONFIGURACIONCRITERIO_COL_ID,values);
-
             }
         }
-
-
-
         db.close();
     }
+
+
+    public void cargarVisitas(){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        Log.d("cargarVisita","asdasdsad");
+        ContentValues values = new ContentValues();
+        values.put(Utilities.TABLE_VISITA_COL_ID,1);
+        values.put(Utilities.TABLE_VISITA_COL_EDITING,false);
+        values.put(Utilities.TABLE_VISITA_COL_IDVARIEDAD,"1");
+        values.put(Utilities.TABLE_VISITA_COL_IDFUNDO,"1");
+        Long temp = db.insert(Utilities.TABLE_VISITA,Utilities.TABLE_VISITA_COL_ID,values);
+        Log.d("cargarVisita",String.valueOf(temp));
+        values = new ContentValues();
+        values.put(Utilities.TABLE_VISITA_COL_ID,2);
+        values.put(Utilities.TABLE_VISITA_COL_EDITING,true);
+        values.put(Utilities.TABLE_VISITA_COL_IDVARIEDAD,"1");
+        values.put(Utilities.TABLE_VISITA_COL_IDFUNDO,"1");
+        temp = db.insert(Utilities.TABLE_VISITA,Utilities.TABLE_VISITA_COL_ID,values);
+        Log.d("cargarVisita",String.valueOf(temp));
+        db.close();
+    }
+
+
+    public void cargarEvaluaciones(){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Utilities.TABLE_EVALUACION_COL_QR,"QR_EXAMPLE");
+        values.put(Utilities.TABLE_EVALUACION_COL_LATITUD,1231.123);
+        values.put(Utilities.TABLE_EVALUACION_COL_LONGITUD,-12312.555999);
+        values.put(Utilities.TABLE_EVALUACION_COL_IDVISITA,"2");
+        values.put(Utilities.TABLE_EVALUACION_COL_IDTIPOINSPECCION,1);
+        Long temp = db.insert(Utilities.TABLE_EVALUACION,Utilities.TABLE_EVALUACION_COL_ID,values);
+        db.close();
+    }
+
+    public void cargarMuestras(){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Utilities.TABLE_MUESTRA_COL_ID,1);
+        values.put(Utilities.TABLE_MUESTRA_COL_VALUE,"");
+        values.put(Utilities.TABLE_MUESTRA_COL_IDCRITERIO,1);
+        values.put(Utilities.TABLE_MUESTRA_COL_IDEVALUACION,1);
+        Long temp = db.insert(Utilities.TABLE_MUESTRA,Utilities.TABLE_MUESTRA_COL_ID,values);
+        db.close();
+    }
+
 
 }

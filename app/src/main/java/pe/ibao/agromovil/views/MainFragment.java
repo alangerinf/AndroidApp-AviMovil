@@ -113,6 +113,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+
                 openNewInspection();
 
             }
@@ -143,8 +144,10 @@ public class MainFragment extends Fragment {
     }
 
     void openNewInspection(){
+
+
         Intent intent;
-        intent = new Intent(getActivity(), NewInspectionActivity.class);
+        intent = new Intent(getActivity(), NewVisitActivity.class);
         startActivity(intent);
     }
 

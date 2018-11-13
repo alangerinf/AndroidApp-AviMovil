@@ -1,19 +1,32 @@
 package pe.ibao.agromovil.models.vo.entitiesInternal;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class VisitaVO {
     private int id;
-    private String fecha;
+    private String fechaHora;
     private double lat;
-    private long lon;
-    private String hora;
-
-    public VisitaVO(int id, String fecha) {
-        this.id = id;
-        this.fecha = fecha;
-    }
+    private double lon;
+    private int idFundo;
+    private int idVariedad;
+    private boolean editing;
+    private CollectionEvaluationVO collectionEvaluationVO;
 
     public VisitaVO() {
+        collectionEvaluationVO = new CollectionEvaluationVO();
     }
+
+    public CollectionEvaluationVO getCollectionEvaluationVO() {
+        return collectionEvaluationVO;
+    }
+
+    public void setCollectionEvaluationVO(CollectionEvaluationVO collectionEvaluationVO) {
+        this.collectionEvaluationVO = collectionEvaluationVO;
+    }
+
+
 
     public int getId() {
         return id;
@@ -23,12 +36,12 @@ public class VisitaVO {
         this.id = id;
     }
 
-    public String getFecha() {
-        return fecha;
+    public String getFechaHora() {
+        return fechaHora;
     }
 
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
+    public void setFechaHora(String fechaHora) {
+        this.fechaHora = fechaHora;
     }
 
     public double getLat() {
@@ -39,19 +52,35 @@ public class VisitaVO {
         this.lat = lat;
     }
 
-    public long getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public void setLon(long lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 
-    public String getHora() {
-        return hora;
+    public int getIdFundo() {
+        return idFundo;
     }
 
-    public void setHora(String hora) {
-        this.hora = hora;
+    public void setIdFundo(int idFundo) {
+        this.idFundo = idFundo;
+    }
+
+    public int getIdVariedad() {
+        return idVariedad;
+    }
+
+    public void setIdVariedad(int idVariedad) {
+        this.idVariedad = idVariedad;
+    }
+
+    public boolean isEditing() {
+        return editing;
+    }
+
+    public void setEditing(boolean editing) {
+        this.editing = editing;
     }
 }

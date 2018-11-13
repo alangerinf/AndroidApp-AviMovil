@@ -6,7 +6,6 @@ public class CriterioVO {
     private String name;
     private String type;
     private String magnitud;
-    private String value;
     private int idTipoInspseccion;
 
     public CriterioVO(int id, String name, String type, String magnitud, int idTipoInspseccion) {
@@ -17,21 +16,15 @@ public class CriterioVO {
         this.idTipoInspseccion = idTipoInspseccion;
     }
 
-    public CriterioVO(int id, String name, String type, String magnitud, String valueDefault) {
+    public CriterioVO(int id, String name, String type, String magnitud) {
         this.id = id;
         this.name = name;
         this.type = type;
-        this.value = valueDefault;
         this.magnitud = magnitud;
     }
 
-    public CriterioVO(int id, String name, String type, String magnitud, String value, int idTipoInspseccion) {
-        this.id = id;
-        this.name = name;
-        this.type = type;
-        this.magnitud = magnitud;
-        this.value = value;
-        this.idTipoInspseccion = idTipoInspseccion;
+    public CriterioVO() {
+
     }
 
     public int getIdTipoInspseccion() {
@@ -64,14 +57,6 @@ public class CriterioVO {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     public String getMagnitud() {
