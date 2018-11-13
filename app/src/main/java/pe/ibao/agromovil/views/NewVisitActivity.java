@@ -49,11 +49,15 @@ public class NewVisitActivity extends AppCompatActivity {
 
     private String TAG="newvisit";
 
+    public static Context ctx;
+    static Bundle xx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        xx= savedInstanceState;
         setContentView(R.layout.activity_new_visita);
         setupActionBar();
+        ctx=this;
         tViewContacto = (TextView) findViewById(R.id.tViewContacto);
         tViewFundo = (TextView) findViewById(R.id.tViewFundo);
         tViewCultivo = (TextView) findViewById(R.id.tViewCultivo);
@@ -104,7 +108,8 @@ public class NewVisitActivity extends AppCompatActivity {
                             EvaluacionDAO evaluacionDAO = new EvaluacionDAO(getBaseContext());
                             evaluacionDAO.borrarById(evaluacionVOList.get(position).getId());
                             evaluacionVOList.remove(position);
-                            autoAdapter();
+                            baseAdapter.notifyDataSetChanged();
+                            //autoAdapter();
                         }catch (Exception e){
                             Toast.makeText(getBaseContext(),e.toString(),Toast.LENGTH_LONG).show();
                             Log.d("qwerty",e.toString());
@@ -137,22 +142,6 @@ public class NewVisitActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-    }
-
-    public void autoAdapter(){
-        visita = visitaDAO.intentarNuevo();
-        EvaluacionDAO evaluacionDAO = new EvaluacionDAO(this);
-        evaluacionVOList.addAll(evaluacionDAO.listarByIdVisita(visita.getId()));
-        if(evaluacionVOList.size()!=0){
-            listViewEvaluaciones.setAdapter(baseAdapter);
-            setListViewHeightBasedOnChildren(listViewEvaluaciones);
-        }else{
-            Toast.makeText(
-                    this,
-                    "Agrege Evaluaciones",
-                    Toast.LENGTH_SHORT)
-                    .show();
-        }
     }
 
     public void openTest(View view){
