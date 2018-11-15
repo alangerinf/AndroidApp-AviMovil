@@ -49,9 +49,15 @@ public class VariedadDAO {
         List<VariedadVO> variedadVOS = new ArrayList<VariedadVO>();
         try{
             Cursor cursor = db.rawQuery(
-                    " SELECT "+"F."+TABLE_VARIEDAD_COL_ID+", F."+TABLE_VARIEDAD_COL_NAME+", F."+TABLE_VARIEDAD_COL_IDCULTIVO+
-                            " FROM "+TABLE_VARIEDAD+" as F"+
-                            " WHERE "+"F."+TABLE_VARIEDAD_COL_IDCULTIVO+"="+  String.valueOf(idCultivo),null);
+                    " SELECT "+
+                            "F."+TABLE_VARIEDAD_COL_ID+", " +
+                            "F."+TABLE_VARIEDAD_COL_NAME+", " +
+                            "F."+TABLE_VARIEDAD_COL_IDCULTIVO+
+                        " FROM "+
+                            TABLE_VARIEDAD+" as F"+
+                        " WHERE "+
+                            "F."+TABLE_VARIEDAD_COL_IDCULTIVO+"="+  String.valueOf(idCultivo)
+                    ,null);
             while (cursor.moveToNext()){
                 VariedadVO temp = new VariedadVO();
                 temp.setId(cursor.getInt(0));

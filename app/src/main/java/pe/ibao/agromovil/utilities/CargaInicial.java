@@ -24,9 +24,9 @@ public class CargaInicial {
         cargarTipoInspeccion();
         cargarCriterio();
         cargarConfiguracionCriterio();
-        cargarVisitas();
-        cargarEvaluaciones();
-        cargarMuestras();
+        //cargarVisitas();
+        //cargarEvaluaciones();
+        //cargarMuestras();
     }
 
 
@@ -34,17 +34,15 @@ public class CargaInicial {
 
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_EMPRESA_COL_ID,"1");
-        values.put(Utilities.TABLE_EMPRESA_COL_NAME,"EMPRESA1");
+        values.put(Utilities.TABLE_EMPRESA_COL_NAME,"AgroValle");
         Long temp = db.insert(Utilities.TABLE_EMPRESA,Utilities.TABLE_EMPRESA_COL_ID,values);
 
         values = new ContentValues();
         values.put(Utilities.TABLE_EMPRESA_COL_ID,"2");
-        values.put(Utilities.TABLE_EMPRESA_COL_NAME,"EMPRESA2");
+        values.put(Utilities.TABLE_EMPRESA_COL_NAME,"AgroPeru");
         temp =db.insert(Utilities.TABLE_EMPRESA,Utilities.TABLE_EMPRESA_COL_ID,values);
-
         db.close();
 
     }
@@ -55,24 +53,27 @@ public class CargaInicial {
 
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_FUNDO_COL_ID,"1");
-            values.put(Utilities.TABLE_FUNDO_COL_NAME,"FUNDO11");
+            values.put(Utilities.TABLE_FUNDO_COL_NAME,"Santo Domingo");
             values.put(Utilities.TABLE_FUNDO_COL_IDEMPRESA,"1");
         Long temp = db.insert(Utilities.TABLE_FUNDO,Utilities.TABLE_FUNDO_COL_ID,values);
 
-
         values = new ContentValues();
             values.put(Utilities.TABLE_FUNDO_COL_ID,"2");
-            values.put(Utilities.TABLE_FUNDO_COL_NAME,"FUNDO21");
+            values.put(Utilities.TABLE_FUNDO_COL_NAME,"San Juan");
             values.put(Utilities.TABLE_FUNDO_COL_IDEMPRESA,"1");
         temp = db.insert(Utilities.TABLE_FUNDO,Utilities.TABLE_FUNDO_COL_ID,values);
-        Toast.makeText(ctx,"ingreso:"+temp,Toast.LENGTH_SHORT);
+
+                values = new ContentValues();
+        values.put(Utilities.TABLE_FUNDO_COL_ID,"3");
+        values.put(Utilities.TABLE_FUNDO_COL_NAME,"Santa Clara");
+        values.put(Utilities.TABLE_FUNDO_COL_IDEMPRESA,"2");
+        temp = db.insert(Utilities.TABLE_FUNDO,Utilities.TABLE_FUNDO_COL_ID,values);
 
         values = new ContentValues();
-            values.put(Utilities.TABLE_FUNDO_COL_ID,"3");
-            values.put(Utilities.TABLE_FUNDO_COL_NAME,"FUNDO32");
-            values.put(Utilities.TABLE_FUNDO_COL_IDEMPRESA,"2");
+        values.put(Utilities.TABLE_FUNDO_COL_ID,"4");
+        values.put(Utilities.TABLE_FUNDO_COL_NAME,"Santa Isabel");
+        values.put(Utilities.TABLE_FUNDO_COL_IDEMPRESA,"2");
         temp = db.insert(Utilities.TABLE_FUNDO,Utilities.TABLE_FUNDO_COL_ID,values);
-        Toast.makeText(ctx,"ingreso:"+temp,Toast.LENGTH_SHORT);
         db.close();
     }
 
@@ -83,12 +84,12 @@ public class CargaInicial {
 
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_CULTIVO_COL_ID,"1");
-            values.put(Utilities.TABLE_CULTIVO_COL_NAME,"CULTIVO1");
+            values.put(Utilities.TABLE_CULTIVO_COL_NAME,"Arándano");
         Long temp = db.insert(Utilities.TABLE_CULTIVO,Utilities.TABLE_CULTIVO_COL_ID,values);
 
         values = new ContentValues();
             values.put(Utilities.TABLE_CULTIVO_COL_ID,"2");
-            values.put(Utilities.TABLE_CULTIVO_COL_NAME,"CULTIVO2");
+            values.put(Utilities.TABLE_CULTIVO_COL_NAME,"Palto");
         temp = db.insert(Utilities.TABLE_CULTIVO,Utilities.TABLE_CULTIVO_COL_ID,values);
 
 
@@ -101,21 +102,19 @@ public class CargaInicial {
 
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_VARIEDAD_COL_ID,"1");
-            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"VARIEDAD11");
+            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"W. Murcott 120.00 Ha.");
             values.put(Utilities.TABLE_VARIEDAD_COL_IDCULTIVO,"1");
         Long temp = db.insert(Utilities.TABLE_VARIEDAD,Utilities.TABLE_VARIEDAD_COL_ID,values);
 
         values = new ContentValues();
             values.put(Utilities.TABLE_VARIEDAD_COL_ID,"2");
-            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"VARIEDAD21");
+            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"W. Murcott 123.00 Ha.");
             values.put(Utilities.TABLE_VARIEDAD_COL_IDCULTIVO,"1");
         temp = db.insert(Utilities.TABLE_VARIEDAD,Utilities.TABLE_VARIEDAD_COL_ID,values);
 
-
-
         values = new ContentValues();
             values.put(Utilities.TABLE_VARIEDAD_COL_ID,"3");
-            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"VARIEDAD32");
+            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"Biloxi 145.00 Ha.");
             values.put(Utilities.TABLE_VARIEDAD_COL_IDCULTIVO,"2");
         temp = db.insert(Utilities.TABLE_VARIEDAD,Utilities.TABLE_VARIEDAD_COL_ID,values);
         db.close();
@@ -161,7 +160,6 @@ public class CargaInicial {
             values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD,"3");
         temp = db.insert(Utilities.TABLE_FUNDOVARIEDAD,Utilities.TABLE_FUNDOVARIEDAD_COL_ID,values);
 
-
         db.close();
     }
 
@@ -172,17 +170,17 @@ public class CargaInicial {
 
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_TIPOINSPECCION_COL_ID,"1");
-            values.put(Utilities.TABLE_TIPOINSPECCION_COL_NAME,"TipoInspeccion1");
+            values.put(Utilities.TABLE_TIPOINSPECCION_COL_NAME,"Fitosanidad Entomológicos");
         Long temp = db.insert(Utilities.TABLE_TIPOINSPECCION,Utilities.TABLE_TIPOINSPECCION_COL_ID,values);
 
         values = new ContentValues();
             values.put(Utilities.TABLE_TIPOINSPECCION_COL_ID,"2");
-            values.put(Utilities.TABLE_TIPOINSPECCION_COL_NAME,"TipoInspeccion2");
+            values.put(Utilities.TABLE_TIPOINSPECCION_COL_NAME,"Problemas Fisiológicos");
         temp =db.insert(Utilities.TABLE_TIPOINSPECCION,Utilities.TABLE_TIPOINSPECCION_COL_ID,values);
 
         values = new ContentValues();
             values.put(Utilities.TABLE_TIPOINSPECCION_COL_ID,"3");
-            values.put(Utilities.TABLE_TIPOINSPECCION_COL_NAME,"TipoInspeccion3");
+            values.put(Utilities.TABLE_TIPOINSPECCION_COL_NAME,"Estado Fenológico");
         temp =db.insert(Utilities.TABLE_TIPOINSPECCION,Utilities.TABLE_TIPOINSPECCION_COL_ID,values);
 
         db.close();
@@ -317,6 +315,7 @@ public class CargaInicial {
         values.put(Utilities.TABLE_VISITA_COL_EDITING,true);
         values.put(Utilities.TABLE_VISITA_COL_IDVARIEDAD,"1");
         values.put(Utilities.TABLE_VISITA_COL_IDFUNDO,"1");
+        values.put(Utilities.TABLE_VISITA_COL_CONTACTO,"Alan Geronimo");
         temp = db.insert(Utilities.TABLE_VISITA,Utilities.TABLE_VISITA_COL_ID,values);
         Log.d("cargarVisita",String.valueOf(temp));
         db.close();
@@ -324,15 +323,38 @@ public class CargaInicial {
 
 
     public void cargarEvaluaciones(){
+        Log.d("cargar","hola00");
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(Utilities.TABLE_EVALUACION_COL_ID,"1");
         values.put(Utilities.TABLE_EVALUACION_COL_QR,"QR_EXAMPLE");
         values.put(Utilities.TABLE_EVALUACION_COL_LATITUD,1231.123);
         values.put(Utilities.TABLE_EVALUACION_COL_LONGITUD,-12312.555999);
         values.put(Utilities.TABLE_EVALUACION_COL_IDVISITA,"2");
         values.put(Utilities.TABLE_EVALUACION_COL_IDTIPOINSPECCION,1);
         Long temp = db.insert(Utilities.TABLE_EVALUACION,Utilities.TABLE_EVALUACION_COL_ID,values);
+
+        values = new ContentValues();
+
+        values.put(Utilities.TABLE_EVALUACION_COL_ID,"2");
+        values.put(Utilities.TABLE_EVALUACION_COL_QR,"QR_EXAMPLE");
+        values.put(Utilities.TABLE_EVALUACION_COL_LATITUD,1231.123);
+        values.put(Utilities.TABLE_EVALUACION_COL_LONGITUD,-12312.555999);
+        values.put(Utilities.TABLE_EVALUACION_COL_IDVISITA,"2");
+        values.put(Utilities.TABLE_EVALUACION_COL_IDTIPOINSPECCION,1);
+        temp = db.insert(Utilities.TABLE_EVALUACION,Utilities.TABLE_EVALUACION_COL_ID,values);
+
+        values = new ContentValues();
+
+        values.put(Utilities.TABLE_EVALUACION_COL_ID,"3");
+        values.put(Utilities.TABLE_EVALUACION_COL_QR,"QR_EXAMPLE");
+        values.put(Utilities.TABLE_EVALUACION_COL_LATITUD,1231.123);
+        values.put(Utilities.TABLE_EVALUACION_COL_LONGITUD,-12312.555999);
+        values.put(Utilities.TABLE_EVALUACION_COL_IDVISITA,"2");
+        values.put(Utilities.TABLE_EVALUACION_COL_IDTIPOINSPECCION,1);
+        temp = db.insert(Utilities.TABLE_EVALUACION,Utilities.TABLE_EVALUACION_COL_ID,values);
+
         db.close();
     }
 
@@ -346,7 +368,7 @@ public class CargaInicial {
         values.put(Utilities.TABLE_MUESTRA_COL_IDEVALUACION,1);
         Long temp = db.insert(Utilities.TABLE_MUESTRA,Utilities.TABLE_MUESTRA_COL_ID,values);
         db.close();
-    }
 
+    }
 
 }

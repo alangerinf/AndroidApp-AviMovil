@@ -94,7 +94,9 @@ public class Utilities {
             TABLE_VISITA_COL_IDFUNDO        ="idFundo",
             TABLE_VISITA_TYPECOL_IDFUNDO    ="INTEGER",
             TABLE_VISITA_COL_IDVARIEDAD     ="idVariedad",
-            TABLE_VISITA_TYPECOL_IDVARIEDAD ="INTEGER";
+            TABLE_VISITA_TYPECOL_IDVARIEDAD ="INTEGER",
+            TABLE_VISITA_COL_CONTACTO       ="contacto",
+            TABLE_VISITA_TYPECOL_CONTACTO   ="VARCHAR(80)";
 
     public static final String TABLE_EVALUACION="evaluacion",
             TABLE_EVALUACION_COL_ID                     ="id",
@@ -128,16 +130,17 @@ public class Utilities {
             TABLE_FOTO_TYPECOL_ID ="INTEGER",
             TABLE_FOTO_COL_HORAFECHA ="horaFecha",
             TABLE_FOTO_TYPECOL_HORAFECHA ="DATE",
-            TABLE_FOTO_COL_DIR = "dir",
-            TABLE_FOTO_TYPECOL_DIR = "VARCHAR(80)",
+            TABLE_FOTO_COL_NAME = "dir",
+            TABLE_FOTO_TYPECOL_NAME = "VARCHAR(80)",
             TABLE_FOTO_COL_IDMUESTRA="idMuestra",
             TABLE_FOTO_TYPECOL_IDMUESTRA="INTEGER";
+
 
     //SCRIPTS SQL CREATE TABLES
     public static final String CREATE_TABLE_FOTO =
             "CREATE TABLE "+TABLE_FOTO+" ("+
-                    TABLE_FOTO_COL_ID        +" "+TABLE_FOTO_TYPECOL_ID+" PRIMARY KEY AUTOINCREMENT, "+
-                    TABLE_FOTO_COL_DIR +" "+TABLE_FOTO_TYPECOL_DIR+", "+
+                    TABLE_FOTO_COL_ID       +" "+TABLE_FOTO_TYPECOL_ID       +" PRIMARY KEY AUTOINCREMENT, "+
+                    TABLE_FOTO_COL_NAME     +" "+ TABLE_FOTO_TYPECOL_NAME    +", "+
                     TABLE_FOTO_COL_HORAFECHA+" "+TABLE_FOTO_TYPECOL_HORAFECHA+" NOT NULL, "+
                     TABLE_FOTO_COL_IDMUESTRA+" "+TABLE_FOTO_TYPECOL_IDMUESTRA+" NOT NULL"+
             ")";
@@ -170,7 +173,8 @@ public class Utilities {
                     TABLE_VISITA_COL_LATITUD    +" "+TABLE_VISITA_TYPECOL_LATITUD   +", "+
                     TABLE_VISITA_COL_LONGITUD   +" "+TABLE_VISITA_TYPECOL_LONGITUD  +", "+
                     TABLE_VISITA_COL_IDFUNDO    +" "+TABLE_VISITA_TYPECOL_IDFUNDO   +", "+
-                    TABLE_VISITA_COL_IDVARIEDAD +" "+TABLE_VISITA_TYPECOL_IDVARIEDAD+
+                    TABLE_VISITA_COL_IDVARIEDAD +" "+TABLE_VISITA_TYPECOL_IDVARIEDAD+", "+
+                    TABLE_VISITA_COL_CONTACTO   +" "+TABLE_VISITA_TYPECOL_CONTACTO+
             ")";
 
     public static final String CREATE_TABLE_TIPOINSPECCION=
@@ -235,5 +239,6 @@ public class Utilities {
                     TABLE_USUARIO_COL_NAME      +" "+TABLE_USUARIO_TYPECOL_NAME+","+
                     TABLE_USUARIO_COL_LASTNAME  +" "+TABLE_USUARIO_TYPECOL_LASTNAME+
             ")";
+
 
 }

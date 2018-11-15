@@ -21,18 +21,26 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_VARIEDAD_COL_IDCULTIVO
 public class CultivoDAO {
 
     Context ctx;
-    ConexionSQLiteHelper c;
+
     public CultivoDAO(Context ctx) {
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+
         this.ctx=ctx;
     }
 
     public CultivoVO consultarCultivoByid(int id){
+        ConexionSQLiteHelper c;
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         CultivoVO temp = null;
         try{
             temp = new CultivoVO();
-            Cursor cursor = db.rawQuery("SELECT C."+TABLE_CULTIVO_COL_ID+", C."+TABLE_CULTIVO_COL_NAME+" FROM "+TABLE_CULTIVO+" as C",null);
+            Cursor cursor = db.rawQuery(
+                    "SELECT " +
+                            "C."+TABLE_CULTIVO_COL_ID+", " +
+                            "C."+TABLE_CULTIVO_COL_NAME+
+                        " FROM "+
+                            TABLE_CULTIVO+" as C"
+                    ,null);
             cursor.moveToFirst();
             temp.setId(cursor.getInt(0));
             temp.setName(cursor.getString(1));
@@ -40,11 +48,13 @@ public class CultivoDAO {
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT);
         }
+        c.close();
         return temp;
     }
 
     public CultivoVO consultarCultivoByIdVariedad(int idVariedad){
-
+        ConexionSQLiteHelper c;
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         CultivoVO cultivoVO = null;
         try{
@@ -61,9 +71,12 @@ public class CultivoDAO {
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
+        c.close();
         return cultivoVO;
     }
     public List<CultivoVO> listCultivos(){
+        ConexionSQLiteHelper c;
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         List<CultivoVO> cultivos = new ArrayList<CultivoVO>();
         try{
@@ -74,16 +87,14 @@ public class CultivoDAO {
                 temp.setId(cursor.getInt(0));
                 temp.setName(cursor.getString(1));
                 cultivos.add(temp);
-                Toast.makeText(ctx,temp.getName(),Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ctx,temp.getName(),Toast.LENGTH_SHORT).show();
             }
             cursor.close();
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
-        return cultivos;
-    }
-    public void cultivoDAOCloseConection() {
         c.close();
+        return cultivos;
     }
 
 }

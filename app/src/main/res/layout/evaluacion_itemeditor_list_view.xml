@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/fecha_hora"
-        android:layout_width="68dp"
+        android:layout_width="wrap_content"
         android:layout_height="16dp"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"

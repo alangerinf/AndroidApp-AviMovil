@@ -20,9 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.helpers.AdapterListCriterio;
+import pe.ibao.agromovil.helpers.AdapterListMuestras;
 import pe.ibao.agromovil.models.dao.CriterioDAO;
+import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 
 public class newEvaluacionActivity extends AppCompatActivity {
 
@@ -35,15 +37,18 @@ public class newEvaluacionActivity extends AppCompatActivity {
 
 
     Button buttonOk;
-    ListView listViewCriterios;
+    static ListView listViewCriterios;
 
-    private static List<CriterioVO> CRITERIOS=new  ArrayList<>();
+    private static List<CriterioVO> CRITERIOS =new  ArrayList<>();
 
-    private static List<CriterioVO> saveCriterios=new ArrayList<>();
+    private static List<MuestraVO> saveMuestras =new ArrayList<>();
 
-    private int lastItemSelected=0;
-
-
+    private static int lastItemSelected=0;
+    private static int primeraEdicion;
+    private static int idEvaluacion;
+    private static int idTipoInspeccion;
+    private static int idFundo;
+    private static int idVariedad;
 
 
     @Override
@@ -87,24 +92,43 @@ public class newEvaluacionActivity extends AppCompatActivity {
         cl.setMinHeight(altoTotal);
 */
         eTxtPosition = (EditText) findViewById(R.id.eTxtPosition);
+        listViewCriterios = (ListView) findViewById(R.id.list_criterios);
+
+        Intent i = getIntent();
+        Bundle mybundle = i.getExtras();
+        idEvaluacion = mybundle.getInt("idEvaluacion");
+        idFundo = mybundle.getInt("idFundo");
+        idVariedad = mybundle.getInt("idVariedad");
+        Log.d("locomata","encontrados 1.0 "+idEvaluacion+" "+idFundo);
 
         CriterioDAO criterioDAO = new CriterioDAO(getBaseContext());
-        CRITERIOS = criterioDAO.listarByIdTipoInspeccion(1);//filtrar ṕor el tipo elegido
-
-
-        listViewCriterios = (ListView) findViewById(R.id.list_criterios);
-        AdapterListCriterio adapterListCriterio = new AdapterListCriterio(getBaseContext(),saveCriterios);
-
-        if(saveCriterios.size()!=0){
-            listViewCriterios.setAdapter(adapterListCriterio);
-            setListViewHeightBasedOnChildren(listViewCriterios);
+        /**camvbiar  por tipoInspeccion**/
+        CRITERIOS = criterioDAO.listarByIdTipoInspeccion(1);
+        if(mybundle.getInt("isNewTest")>0){ //si no es la primera vez q  ingresa
+            Log.d("locomata","no es primera vez");
+            primeraEdicion=1;
+            idTipoInspeccion = mybundle.getInt("idTipoInspeccion",0);
+            //cargar filtros por tipo inspeccion
 
         }else{
+            Log.d("locomata","es primera vez");
+            primeraEdicion=0;
+
+
+        }
+
+        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras);
+        listViewCriterios.setAdapter(adapterListMuestras);
+        setListViewHeightBasedOnChildren(listViewCriterios);
+
+        if(saveMuestras.size()==0){
+            Log.d("locomata","pila vacia");
             Toast.makeText(
                     getBaseContext(),
-                    "bsidasdsad",
+                    "vacio",
                     Toast.LENGTH_SHORT)
                     .show();
+
         }
     }
     public static void setListViewHeightBasedOnChildren(ListView listView) {
@@ -154,8 +178,8 @@ public class newEvaluacionActivity extends AppCompatActivity {
         final CharSequence[] items = new CharSequence[ CRITERIOS.size()];
 
 
-        for(int i=0; i< CRITERIOS.size();i++){
-            items[i]=CRITERIOS.get(i).getName();
+        for(int i = 0; i< CRITERIOS.size(); i++){
+            items[i]= CRITERIOS.get(i).getName();
         }
 
 
@@ -171,12 +195,15 @@ public class newEvaluacionActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT)
                                 .show();
                         CriterioVO temp = CRITERIOS.get(which);
-                        saveCriterios.add(temp);
-                        if(saveCriterios.size()!=0){
-                            AdapterListCriterio adapterListCriterio = new AdapterListCriterio(getBaseContext(),saveCriterios);
-                            listViewCriterios.setAdapter(adapterListCriterio);
-                            setListViewHeightBasedOnChildren(listViewCriterios);
-                        }
+                        Log.d("locomata","antes de mandar "+idEvaluacion+" "+temp.getId());
+                        MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId());
+
+                        saveMuestras.add(temp2);
+
+                        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras);
+                        listViewCriterios.setAdapter(adapterListMuestras);
+                        setListViewHeightBasedOnChildren(listViewCriterios);
+
                     }
                 });
         dialogo.show();

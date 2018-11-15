@@ -3,6 +3,7 @@ package pe.ibao.agromovil.models.dao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -40,22 +41,31 @@ public class CriterioDAO {
         try{
             Cursor cursor = db.rawQuery(
                     "SELECT " +
-                            "F."+TABLE_CRITERIO_COL_ID+", " +
-                            "F."+TABLE_CRITERIO_COL_NAME+", " +
-                            "F."+TABLE_CRITERIO_COL_IDTIPOINSPECCION+
-                    " FROM "+TABLE_FUNDO+" as F",null);
+                            "C."+TABLE_CRITERIO_COL_ID+", " +
+                            "C."+TABLE_CRITERIO_COL_NAME+", " +
+                            "C."+TABLE_CRITERIO_COL_TIPO+", "+
+                            "C."+TABLE_CRITERIO_COL_MAGNITUD+", "+
+                            "C."+TABLE_CRITERIO_COL_IDTIPOINSPECCION+
+                    " FROM "+TABLE_CRITERIO+" as C"+
+                    " WHERE "+
+                            "C."+TABLE_CRITERIO_COL_ID+"="+String.valueOf(id)
+                    ,null);
             if(cursor.getCount()>0){
+                Log.d("locomata","criterio encontrado");
                 temp = new CriterioVO();
                 cursor.moveToFirst();
                 temp.setId(cursor.getInt(0));
                 temp.setName(cursor.getString(1));
-                temp.setIdTipoInspseccion(cursor.getInt(2));
-                cursor.close();
-            }
+                temp.setType(cursor.getString(2));
+                temp.setMagnitud(cursor.getString(3));
+                temp.setIdTipoInspseccion(cursor.getInt(4));
 
+            }
+            cursor.close();
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT);
         }
+
         c.close();
         return temp;
     }

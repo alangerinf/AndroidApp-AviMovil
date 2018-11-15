@@ -20,31 +20,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 
-public class AdapterListCriterio extends BaseAdapter{
+public class AdapterListMuestras extends BaseAdapter{
 
     Context ctx;
-    List<CriterioVO> listCriterios;
+    List<MuestraVO> listMuestas;
 
-    public AdapterListCriterio(Context ctx, List<CriterioVO> listCriterios){
+    public AdapterListMuestras(Context ctx, List<MuestraVO> listMuestas){
         this.ctx = ctx;
-        this.listCriterios =listCriterios;
+        this.listMuestas =listMuestas;
     }
 
     @Override
     public int getCount() {
-        return listCriterios.size();
+        return listMuestas.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listCriterios.get(position);
+        return listMuestas.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return listCriterios.get(position).getId();
+        return listMuestas.get(position).getId();
     }
 
 
@@ -59,7 +59,7 @@ public class AdapterListCriterio extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
         LayoutInflater inflater = LayoutInflater.from(ctx);
-        v = inflater.inflate(R.layout.criterio_itemeditor_list_view,null);
+        v = inflater.inflate(R.layout.muestra_itemeditor_list_view,null);
 
         TextView nameitem = (TextView) v.findViewById(R.id.name_criterio);
         EditText _int =(EditText) v.findViewById(R.id._int);
@@ -80,25 +80,25 @@ public class AdapterListCriterio extends BaseAdapter{
         });
 
        // Log.d("xdxdxd",position+"    "+listCriterios.get(position).getName());
-        nameitem.setText(listCriterios.get(position).getName()+" "+listCriterios.get(position).getMagnitud());
+        nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
         _string.setHeight(0);
-        switch (listCriterios.get(position).getType()){
+        switch (listMuestas.get(position).getType()){
             case "boolean":
                 _boolean.setVisibility(View.VISIBLE);
-                nameitem.setText(listCriterios.get(position).getName());
+                nameitem.setText(listMuestas.get(position).getName());
                 break;
             case "int":
                 _int.setVisibility(View.VISIBLE);
 
-                nameitem.setText(listCriterios.get(position).getName()+" "+listCriterios.get(position).getMagnitud());
+                nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
                 break;
             case "float":
                 _float.setVisibility(View.VISIBLE);
-                nameitem.setText(listCriterios.get(position).getName()+" "+listCriterios.get(position).getMagnitud());
+                nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
                 break;
             case "list":
-                nameitem.setText(listCriterios.get(position).getName());
-                String tempList = listCriterios.get(position).getMagnitud();
+                nameitem.setText(listMuestas.get(position).getName());
+                String tempList = listMuestas.get(position).getMagnitud();
 
                 String[] parts = tempList.split("-");
 
@@ -120,6 +120,9 @@ public class AdapterListCriterio extends BaseAdapter{
                 _string.setHeight(150);
                 _string.setVisibility(View.VISIBLE);
                 break;
+                default:
+                    Log.d("tamano","error no encontrado el tipo");
+                    break;
 
         }
 

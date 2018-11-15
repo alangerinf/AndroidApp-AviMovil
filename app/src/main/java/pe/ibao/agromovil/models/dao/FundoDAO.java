@@ -31,7 +31,7 @@ public class FundoDAO {
         this.ctx=ctx;
     }
 
-    public FundoVO consultarFundoById(int id) {
+    public FundoVO consultarById(int id) {
         ConexionSQLiteHelper c;
         c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
@@ -63,7 +63,7 @@ public class FundoDAO {
         return temp;
     }
 
-    public List<FundoVO> listarFundoByIdEmpresa(int idEmpresa){
+    public List<FundoVO> listarByIdEmpresa(int idEmpresa){
         ConexionSQLiteHelper c;
         c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();

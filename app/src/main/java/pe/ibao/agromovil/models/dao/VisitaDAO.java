@@ -11,16 +11,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
+import pe.ibao.agromovil.models.vo.entitiesDB.CultivoVO;
+import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.CollectionEvaluationVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO_COL_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_CONTACTO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_EDITING;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_FECHAHORA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_ID;
@@ -44,26 +50,24 @@ public class VisitaDAO {
 
         VisitaVO temp = null;
         try{
-            String[] campos = {
-                    TABLE_VISITA_COL_ID,
-                    TABLE_VISITA_COL_FECHAHORA,
-                    TABLE_VISITA_COL_EDITING,
-                    TABLE_VISITA_COL_LATITUD,
-                    TABLE_VISITA_COL_LONGITUD,
-                    TABLE_VISITA_COL_IDFUNDO,
-                    TABLE_VISITA_COL_IDVARIEDAD};
-            String[]clausulas={
-                    "1"
-            };
-            Cursor cursor= db.query(
-                    TABLE_VISITA,
-                    campos,
-                    TABLE_VISITA_COL_EDITING+"=1",
-                    null,
-                    null,
-                    null,
-                    null);
-                    if(cursor.getCount()>0){
+            Cursor cursor = db.rawQuery(
+                    "SELECT " +
+                            "V."+TABLE_VISITA_COL_ID        +", " +//0
+                            "V."+TABLE_VISITA_COL_FECHAHORA +", " +//1
+                            "V."+TABLE_VISITA_COL_EDITING   +", " +//2
+                            "V."+TABLE_VISITA_COL_LATITUD   +", " +//3
+                            "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
+                            "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
+                            "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
+                            "V."+TABLE_VISITA_COL_CONTACTO  +//7
+                        " FROM "+
+                            TABLE_VISITA+" as V "+
+
+                        " WHERE "+
+                            TABLE_VISITA_COL_EDITING+"="+"1"
+                    ,null);
+
+            if(cursor.getCount()>0){
                         cursor.moveToFirst() ;
                         Log.d(TAG,"hay primero");
                         temp = new VisitaVO();
@@ -82,6 +86,34 @@ public class VisitaDAO {
                         Log.d(TAG,"6");
                         temp.setIdVariedad(cursor.getInt(6));
                         Log.d(TAG,"7");
+                        temp.setContacto(cursor.getString(7));
+                        Log.d(TAG,"8");
+
+                        if(temp.getIdFundo()>0){//verifica si devuelve un id fundo
+                            //obteniedo datos d e fundo
+                            FundoDAO fundoDAO = new FundoDAO(ctx);
+                            temp.setNameFundo(fundoDAO.consultarById(temp.getIdFundo()).getName());
+                           //obteniedno datos d e empresa
+                            EmpresaVO empresaVO = new EmpresaDAO(ctx).consultarEmpresaByid(temp.getIdFundo());
+                            temp.setIdEmpresa(empresaVO.getId());
+                            temp.setNameEmpresa(empresaVO.getName());
+
+                        }
+                        if(temp.getIdVariedad()>0){
+                            //obteniendo datos  de cultivo
+                            CultivoDAO cultivoDAO = new CultivoDAO(ctx);
+                            CultivoVO cultivoVO = cultivoDAO.consultarCultivoByIdVariedad(temp.getIdVariedad());
+                            temp.setNameCultivo(cultivoVO.getName());
+                            temp.setIdCultivo(cultivoVO.getId());
+                            //obteiedno datos de  variedad
+                            VariedadDAO variedadDAO = new VariedadDAO(ctx);
+                            temp.setNameVariedad(variedadDAO.consultarVariedadById(temp.getIdVariedad()).getName());
+
+                        }
+
+
+
+
                     }
                 cursor.close();
 
@@ -90,6 +122,27 @@ public class VisitaDAO {
             Toast.makeText(ctx,"getEditing "+e.toString(),Toast.LENGTH_SHORT).show();
         }
         return temp;
+    }
+
+
+    public boolean cambiarIdFundoIdVariedadContacto(int id,int idFundo, int idVariedad,String contacto){
+      boolean flag = false;
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        SQLiteDatabase db = c.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+        ContentValues values = new ContentValues();
+            values.put(TABLE_VISITA_COL_IDFUNDO,String.valueOf(idFundo));
+            values.put(TABLE_VISITA_COL_IDVARIEDAD,String.valueOf(idVariedad));
+            values.put(TABLE_VISITA_COL_CONTACTO,contacto);
+        int res = db.update(TABLE_VISITA,values,TABLE_VISITA_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        c.close();
+        return  flag;
     }
 
 
@@ -103,11 +156,9 @@ public class VisitaDAO {
                 SQLiteDatabase db = c.getWritableDatabase();
                 ContentValues values = new ContentValues();
                 values.put(Utilities.TABLE_VISITA_COL_EDITING, true);
-                values.put(Utilities.TABLE_VISITA_COL_IDFUNDO, "1");
-                values.put(Utilities.TABLE_VISITA_COL_IDVARIEDAD, "1");
                 id = db.insert(Utilities.TABLE_VISITA, Utilities.TABLE_VISITA_COL_ID, values);
                 c.close();
-                resVisita = buscarById(id);
+                resVisita = getEditing();
                 Log.d(TAG,"--->"+resVisita.getFechaHora());
                 Toast.makeText(ctx, "Nueva Visita Registrada:" + id, Toast.LENGTH_SHORT).show();
             }
@@ -150,7 +201,7 @@ public class VisitaDAO {
                 temp.setLon(cursor.getDouble(4));
                 temp.setIdFundo(cursor.getInt(5));
                 temp.setIdVariedad(cursor.getInt(6));
-                Toast.makeText(ctx, "**"+temp.getFechaHora().toString(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ctx, "**"+temp.getFechaHora().toString(), Toast.LENGTH_SHORT).show();
             }
             cursor.close();
             c.close();

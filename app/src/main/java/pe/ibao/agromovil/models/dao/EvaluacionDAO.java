@@ -41,25 +41,25 @@ public class EvaluacionDAO {
         SQLiteDatabase db = c.getReadableDatabase();
         EvaluacionVO temp = null;
         try{
-            Cursor cursor = db.rawQuery(
-                    "SELECT " +
-                            "E."+TABLE_EVALUACION_COL_ID+", " +
-                            "E."+TABLE_EVALUACION_COL_TIMEINI+", " +
-                            "E."+TABLE_EVALUACION_COL_TIMEFIN+", "+
-                            "E."+TABLE_EVALUACION_COL_QR+", "+
-                            "E."+TABLE_EVALUACION_COL_LATITUD+", "+
-                            "E."+TABLE_EVALUACION_COL_LONGITUD+", "+
-                            "E."+TABLE_EVALUACION_COL_IDTIPOINSPECCION+", "+
-                            "E."+TABLE_EVALUACION_COL_IDVISITA+
-                            "TI."+TABLE_TIPOINSPECCION_COL_NAME+
+            String consulta = "SELECT " +
+                    "E."+TABLE_EVALUACION_COL_ID+       ", "+
+                    "E."+TABLE_EVALUACION_COL_TIMEINI+  ", "+
+                    "E."+TABLE_EVALUACION_COL_TIMEFIN+  ", "+
+                    "E."+TABLE_EVALUACION_COL_QR+       ", "+
+                    "E."+TABLE_EVALUACION_COL_LATITUD+  ", "+
+                    "E."+TABLE_EVALUACION_COL_LONGITUD+ ", "+
+                    "E."+TABLE_EVALUACION_COL_IDTIPOINSPECCION+", "+
+                    "E."+TABLE_EVALUACION_COL_IDVISITA+
                     " FROM "+
-                            TABLE_EVALUACION+" as E, " +
-                            TABLE_TIPOINSPECCION+" AS TI"+
+                    TABLE_EVALUACION+" as E "+
                     " WHERE "+
-                            "E."+TABLE_EVALUACION_COL_ID+" = "+String.valueOf(id)+" AND "+
-                            "TI."+TABLE_TIPOINSPECCION_COL_ID+" = "+"E."+TABLE_EVALUACION_COL_IDTIPOINSPECCION
-                    ,null);
-            if(cursor.getCount()>0) {
+                    "E."+TABLE_EVALUACION_COL_ID+"="+String.valueOf(id);
+
+            Cursor cursor = db.rawQuery(consulta,null);
+            Log.d("consult",consulta);
+            Log.d("consult",""+cursor.getCount());
+            Log.d("consult","contando por "+id);
+            if(cursor.getCount()>=0) {
                 cursor.moveToFirst();
                 temp = new EvaluacionVO();
                 temp.setId(cursor.getInt(0));
@@ -70,12 +70,14 @@ public class EvaluacionDAO {
                 temp.setLon(cursor.getDouble(5));
                 temp.setIdTipoInspeccion(cursor.getInt(6));
                 temp.setIdVisita(cursor.getInt(7));
-                temp.setNameInspeccion(cursor.getString(8));
+                if (temp.getIdTipoInspeccion()>0){
+                    temp.setNameInspeccion(new TipoInspeccionDAO(ctx).consultarByid(temp.getIdTipoInspeccion()).getName());
+                }
             }
             cursor.close();
 
         }catch (Exception e){
-            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT);
+            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
         c.close();
         return temp;
@@ -87,11 +89,13 @@ public class EvaluacionDAO {
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_EVALUACION_COL_LATITUD,lat);
             values.put(Utilities.TABLE_EVALUACION_COL_LONGITUD,lon);
-            values.put(Utilities.TABLE_EVALUACION_COL_IDVISITA,idVisita);
+            values.put(Utilities.TABLE_EVALUACION_COL_IDVISITA,idVisita.toString());
         int temp = (int) db.insert(TABLE_EVALUACION,TABLE_EVALUACION_COL_ID,values);
-        consultarById(temp);
+        Log.d("consultasuccess","idEva->"+temp);
+        EvaluacionVO ev  = consultarById(temp);
+        Log.d("consultasuccess","idEva-->"+ev.getId());
         db.close();
-        return consultarById(temp);
+        return ev;
     }
 
     public int borrarById(int id){
@@ -112,30 +116,32 @@ public class EvaluacionDAO {
         try{
             Cursor cursor = db.rawQuery(
                     "SELECT " +
-                            "E."+TABLE_EVALUACION_COL_ID+", " +
-                            "E."+TABLE_EVALUACION_COL_TIMEINI+", " +
-                            "E."+TABLE_EVALUACION_COL_TIMEFIN+", "+
-                            "E."+TABLE_EVALUACION_COL_QR+", "+
-                            "E."+TABLE_EVALUACION_COL_LATITUD+", "+
-                            "E."+TABLE_EVALUACION_COL_LONGITUD+", "+
-                            "E."+TABLE_EVALUACION_COL_IDTIPOINSPECCION+", "+
-                            "E."+TABLE_EVALUACION_COL_IDVISITA+
-                            " FROM "+
-                            TABLE_EVALUACION+" as E "+
-                            " WHERE "+
+                            "E."+TABLE_EVALUACION_COL_ID+", " +//0
+                            "E."+TABLE_EVALUACION_COL_TIMEINI+", " +//1
+                            "E."+TABLE_EVALUACION_COL_TIMEFIN+", "+//2
+                            "E."+TABLE_EVALUACION_COL_QR+", "+//3
+                            "E."+TABLE_EVALUACION_COL_LATITUD+", "+//4
+                            "E."+TABLE_EVALUACION_COL_LONGITUD+", "+//5
+                            "E."+TABLE_EVALUACION_COL_IDTIPOINSPECCION+", "+//6
+                            "E."+TABLE_EVALUACION_COL_IDVISITA+" "+//7
+                        " FROM "+
+                            TABLE_EVALUACION+" as E " +
+                        " WHERE "+
                             "E."+TABLE_EVALUACION_COL_IDVISITA+" = "+String.valueOf(idVisita)
                     ,null);
             while (cursor.moveToNext() && cursor.getCount()>0){
                 EvaluacionVO temp = new EvaluacionVO();
-                temp = new EvaluacionVO();
-                temp.setId(cursor.getInt(0));
-                temp.setTimeIni(cursor.getString(1));
-                temp.setTimeFin(cursor.getString(2));
-                temp.setQr(cursor.getString(3));
-                temp.setLat(cursor.getDouble(4));
-                temp.setLon(cursor.getDouble(5));
-                temp.setIdTipoInspeccion(cursor.getInt(6));
-                temp.setIdVisita(cursor.getInt(7));
+                    temp.setId(cursor.getInt(0));
+                    temp.setTimeIni(cursor.getString(1));
+                    temp.setTimeFin(cursor.getString(2));
+                    temp.setQr(cursor.getString(3));
+                    temp.setLat(cursor.getDouble(4));
+                    temp.setLon(cursor.getDouble(5));
+                    temp.setIdTipoInspeccion(cursor.getInt(6));
+                    temp.setIdVisita(cursor.getInt(7));
+                if (temp.getIdTipoInspeccion()>0){
+                    temp.setNameInspeccion(new TipoInspeccionDAO(ctx).consultarByid(temp.getIdTipoInspeccion()).getName());
+                }
                 evaluacionVOS.add(temp);
             }
             cursor.close();

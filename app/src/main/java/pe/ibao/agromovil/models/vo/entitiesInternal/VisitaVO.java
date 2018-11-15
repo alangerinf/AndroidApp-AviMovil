@@ -9,8 +9,15 @@ public class VisitaVO {
     private String fechaHora;
     private double lat;
     private double lon;
+    private int idEmpresa;
+    private String nameEmpresa;
     private int idFundo;
+    private String nameFundo;
+    private int idCultivo;
+    private String nameCultivo;
     private int idVariedad;
+    private String nameVariedad;
+    private String contacto;
     private boolean editing;
     private CollectionEvaluationVO collectionEvaluationVO;
 
@@ -26,7 +33,45 @@ public class VisitaVO {
         this.collectionEvaluationVO = collectionEvaluationVO;
     }
 
+    public int getIdEmpresa() {
+        return idEmpresa;
+    }
 
+    public void setIdEmpresa(int idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
+    public String getContacto() {
+        return contacto;
+    }
+
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
+    }
+
+    public String getNameEmpresa() {
+        return nameEmpresa;
+    }
+
+    public void setNameEmpresa(String nameEmpresa) {
+        this.nameEmpresa = nameEmpresa;
+    }
+
+    public String getNameFundo() {
+        return nameFundo;
+    }
+
+    public void setNameFundo(String nameFundo) {
+        this.nameFundo = nameFundo;
+    }
+
+    public String getNameVariedad() {
+        return nameVariedad;
+    }
+
+    public void setNameVariedad(String nameVariedad) {
+        this.nameVariedad = nameVariedad;
+    }
 
     public int getId() {
         return id;
@@ -82,5 +127,21 @@ public class VisitaVO {
 
     public void setEditing(boolean editing) {
         this.editing = editing;
+    }
+
+    public int getIdCultivo() {
+        return idCultivo;
+    }
+
+    public void setIdCultivo(int idCultivo) {
+        this.idCultivo = idCultivo;
+    }
+
+    public String getNameCultivo() {
+        return nameCultivo;
+    }
+
+    public void setNameCultivo(String nameCultivo) {
+        this.nameCultivo = nameCultivo;
     }
 }

@@ -74,7 +74,7 @@ public class EmpresaDAO {
                     temp.setId(cursor.getInt(0));
                     temp.setName(cursor.getString(1));
                 empresas.add(temp);
-                Toast.makeText(ctx,temp.getName(),Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ctx,temp.getName(),Toast.LENGTH_SHORT).show();
             }
             cursor.close();
         }catch (Exception e){

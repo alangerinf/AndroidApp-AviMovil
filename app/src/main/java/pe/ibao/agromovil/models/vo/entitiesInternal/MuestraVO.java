@@ -1,31 +1,42 @@
 package pe.ibao.agromovil.models.vo.entitiesInternal;
 
-public class MuestraVO {
-    private int id;
+import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
+
+public class MuestraVO extends CriterioVO {
+    private int ids;
+
+    private int idEvaluacion;
     private int idCriterio;
-    private int idEvalacion;
-    private String value;
-
-    public MuestraVO(int id, int idCriterio, int idEvalacion) {
-        this.id = id;
-        this.idCriterio = idCriterio;
-        this.idEvalacion = idEvalacion;
-    }
-
-    public MuestraVO(int id) {
-        this.id = id;
-    }
-
+    private String value;//parsearlo a int float o boolean segun se crea conveniente
     public MuestraVO(){
+        super();
+    }
 
+
+    public String getValue() {
+        return value;
+
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 
     public int getId() {
-        return id;
+        return ids;
     }
 
+
     public void setId(int id) {
-        this.id = id;
+        this.ids = id;
+    }
+
+    public int getIdEvaluacion() {
+        return idEvaluacion;
+    }
+
+    public void setIdEvaluacion(int idEvaluacion) {
+        this.idEvaluacion = idEvaluacion;
     }
 
     public int getIdCriterio() {
@@ -34,13 +45,5 @@ public class MuestraVO {
 
     public void setIdCriterio(int idCriterio) {
         this.idCriterio = idCriterio;
-    }
-
-    public int getIdEvalacion() {
-        return idEvalacion;
-    }
-
-    public void setIdEvalacion(int idEvalacion) {
-        this.idEvalacion = idEvalacion;
     }
 }

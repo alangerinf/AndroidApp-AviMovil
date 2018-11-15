@@ -145,7 +145,6 @@ public class MainFragment extends Fragment {
 
     void openNewInspection(){
 
-
         Intent intent;
         intent = new Intent(getActivity(), NewVisitActivity.class);
         startActivity(intent);
