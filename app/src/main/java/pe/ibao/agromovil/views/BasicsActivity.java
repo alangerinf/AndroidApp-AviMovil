@@ -92,6 +92,7 @@ public class BasicsActivity extends AppCompatActivity {
                 idVariedad=recibidos.getInt("idVariedad");
 
                 Log.d(TAG,""+idEmpresa+" "+idFundo+" "+idCultivo+" "+idVariedad+" "+idVisita);
+
                 for(int i=0;i<listEmpresas.size();i++){
                     if(listEmpresas.get(i).getId()==idEmpresa){
                         Log.d(TAG,"EMPRESA ENCONTRADA POS = "+i+1);
@@ -136,7 +137,6 @@ public class BasicsActivity extends AppCompatActivity {
                                     for(int j = 0 ; j<listVariedades.size();j++){
                                         if(listVariedades.get(j).getId()==idVariedad){
                                             spnVariedad.setSelection(j+1);
-
                                         }
                                     }
                                 }else{

@@ -36,6 +36,26 @@ public class EvaluacionDAO {
         this.ctx = ctx;
     }
 
+    public boolean editarIdTipoInspeccion(int id,int idTipoInspeccion){
+        boolean flag = false;
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        SQLiteDatabase db = c.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+        ContentValues values = new ContentValues();
+        values.put(TABLE_EVALUACION_COL_IDTIPOINSPECCION,String.valueOf(idTipoInspeccion));
+        int res = db.update(TABLE_EVALUACION,values,TABLE_EVALUACION_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        c.close();
+
+
+        return flag;
+    }
+
     public EvaluacionVO consultarById(int  id) {
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();

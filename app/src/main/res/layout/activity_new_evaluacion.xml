@@ -10,6 +10,18 @@
     android:focusableInTouchMode="true">
 
 
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -20,6 +32,7 @@
         android:layout_marginEnd="16dp"
         android:onClick="showList"
         android:src="@drawable/ic_add_black_24dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/button_ok"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -27,6 +40,7 @@
         android:id="@+id/button_ok"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/shape_button_bot_gren"
         android:onClick="end"
         android:text="100%"
@@ -34,13 +48,20 @@
         android:textAllCaps="false"
         android:textColor="@color/divider"
         android:textSize="24sp"
+
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
 
 
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -93,19 +114,9 @@
                     android:layout_marginTop="16dp"
                     android:text=":"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.41"
+                    app:layout_constraintHorizontal_bias="0.31"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="19dp"
-                    android:layout_marginTop="16dp"
-                    android:text=":"
-                    app:layout_constraintEnd_toEndOf="@+id/textView12"
-                    app:layout_constraintStart_toStartOf="@+id/textView12"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
                 <TextView
                     android:id="@+id/textView16"
@@ -113,9 +124,9 @@
                     android:layout_height="19dp"
                     android:layout_marginTop="16dp"
                     android:text=":"
-                    app:layout_constraintEnd_toEndOf="@+id/textView14"
-                    app:layout_constraintStart_toStartOf="@+id/textView14"
-                    app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                    app:layout_constraintEnd_toEndOf="@+id/textView12"
+                    app:layout_constraintStart_toStartOf="@+id/textView12"
+                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
                 <TextView
                     android:id="@+id/textView17"
@@ -142,14 +153,6 @@
                     app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
-                    android:id="@+id/tViewCultivo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="16/08/2018"
-                    app:layout_constraintStart_toStartOf="@+id/tViewFechaHora"
-                    app:layout_constraintTop_toTopOf="@+id/textView14" />
-
-                <TextView
                     android:id="@+id/textView22"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -162,19 +165,12 @@
                     app:layout_constraintTop_toTopOf="@+id/textView12" />
 
                 <TextView
-                    android:id="@+id/textView23"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fecha"
-                    app:layout_constraintEnd_toEndOf="@+id/textView22"
-                    app:layout_constraintTop_toTopOf="@+id/textView14" />
-
-                <TextView
                     android:id="@+id/textView26"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:text="Evaluación"
-                    app:layout_constraintEnd_toEndOf="@+id/textView23"
+                    app:layout_constraintEnd_toEndOf="@+id/textView22"
                     app:layout_constraintTop_toTopOf="@+id/textView16" />
 
                 <TextView
@@ -186,15 +182,15 @@
                     app:layout_constraintTop_toTopOf="@+id/textView17" />
 
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/spnTipoInspeccion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:entries="@array/inspecciones"
-                    app:layout_constraintStart_toStartOf="@+id/tViewCultivo"
+                    app:layout_constraintStart_toStartOf="@+id/tViewFechaHora"
                     app:layout_constraintTop_toTopOf="@+id/textView16" />
 
                 <EditText
-                    android:id="@+id/eTxtPosition"
+                    android:id="@+id/eTextQR"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:ems="20"
@@ -202,21 +198,18 @@
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView17"
                     app:layout_constraintEnd_toStartOf="@+id/btn_qrcode"
-                    app:layout_constraintStart_toStartOf="@+id/spinner"
+                    app:layout_constraintStart_toStartOf="@+id/spnTipoInspeccion"
                     app:layout_constraintTop_toTopOf="@+id/textView17" />
 
                 <ImageView
                     android:id="@+id/btn_qrcode"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginEnd="24dp"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
                     android:onClick="getQRCode"
-                    app:layout_constraintBottom_toBottomOf="@+id/eTxtPosition"
+                    app:layout_constraintBottom_toBottomOf="@+id/eTextQR"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.03"
-                    app:layout_constraintStart_toEndOf="@+id/eTxtPosition"
-                    app:layout_constraintTop_toTopOf="@+id/eTxtPosition"
+                    app:layout_constraintTop_toTopOf="@+id/eTextQR"
                     app:srcCompat="@drawable/barcode"
                     tools:ignore="MissingConstraints" />
 
@@ -261,14 +254,31 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/list_criterios"></LinearLayout>
-
         </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
+
+    <ImageButton
+        android:id="@+id/imageView8"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:background="@drawable/shape_button_bot_leftgren"
+        android:src="@drawable/ic_comment_30"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout4"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageView10"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:background="@drawable/shape_button_bot_rightgren"
+        android:onClick="showList"
+        android:src="@drawable/ic_add_white_40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView8" />
+
 
 </android.support.constraint.ConstraintLayout>

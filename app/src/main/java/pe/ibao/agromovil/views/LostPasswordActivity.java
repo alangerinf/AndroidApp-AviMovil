@@ -11,7 +11,6 @@ import pe.ibao.agromovil.R;
  * A login screen that offers login via email/password.
  */
 public class LostPasswordActivity extends AppCompatActivity  {
-
     /**
      * Id to identity READ_CONTACTS permission request.
      */

@@ -102,19 +102,19 @@ public class CargaInicial {
 
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_VARIEDAD_COL_ID,"1");
-            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"W. Murcott 120.00 Ha.");
+            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"Biloxi");
             values.put(Utilities.TABLE_VARIEDAD_COL_IDCULTIVO,"1");
         Long temp = db.insert(Utilities.TABLE_VARIEDAD,Utilities.TABLE_VARIEDAD_COL_ID,values);
 
         values = new ContentValues();
             values.put(Utilities.TABLE_VARIEDAD_COL_ID,"2");
-            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"W. Murcott 123.00 Ha.");
-            values.put(Utilities.TABLE_VARIEDAD_COL_IDCULTIVO,"1");
+            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"Hass");
+            values.put(Utilities.TABLE_VARIEDAD_COL_IDCULTIVO,"2");
         temp = db.insert(Utilities.TABLE_VARIEDAD,Utilities.TABLE_VARIEDAD_COL_ID,values);
 
         values = new ContentValues();
             values.put(Utilities.TABLE_VARIEDAD_COL_ID,"3");
-            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"Biloxi 145.00 Ha.");
+            values.put(Utilities.TABLE_VARIEDAD_COL_NAME,"Fuerte");
             values.put(Utilities.TABLE_VARIEDAD_COL_IDCULTIVO,"2");
         temp = db.insert(Utilities.TABLE_VARIEDAD,Utilities.TABLE_VARIEDAD_COL_ID,values);
         db.close();
@@ -170,7 +170,7 @@ public class CargaInicial {
 
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_TIPOINSPECCION_COL_ID,"1");
-            values.put(Utilities.TABLE_TIPOINSPECCION_COL_NAME,"Fitosanidad Entomológicos");
+            values.put(Utilities.TABLE_TIPOINSPECCION_COL_NAME,"Estado Fenológico");
         Long temp = db.insert(Utilities.TABLE_TIPOINSPECCION,Utilities.TABLE_TIPOINSPECCION_COL_ID,values);
 
         values = new ContentValues();
@@ -194,24 +194,24 @@ public class CargaInicial {
 
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_CRITERIO_COL_ID,"1");
-            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"CRITERIO11");
-            values.put(Utilities.TABLE_CRITERIO_COL_TIPO,"int");
+            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"Prefloración");
+            values.put(Utilities.TABLE_CRITERIO_COL_TIPO,"float");
             values.put(Utilities.TABLE_CRITERIO_COL_MAGNITUD,"°C");
             values.put(Utilities.TABLE_CRITERIO_COL_IDTIPOINSPECCION,"1");
         Long temp = db.insert(Utilities.TABLE_CRITERIO,Utilities.TABLE_CRITERIO_COL_ID,values);
 
         values = new ContentValues();
             values.put(Utilities.TABLE_CRITERIO_COL_ID,"2");
-            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"CRITERIO21");
-            values.put(Utilities.TABLE_CRITERIO_COL_TIPO,"float");
+            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"Floración");
+            values.put(Utilities.TABLE_CRITERIO_COL_TIPO,"int");
             values.put(Utilities.TABLE_CRITERIO_COL_MAGNITUD,"ml");
             values.put(Utilities.TABLE_CRITERIO_COL_IDTIPOINSPECCION,"1");
         temp = db.insert(Utilities.TABLE_CRITERIO,Utilities.TABLE_CRITERIO_COL_ID,values);
 
         values = new ContentValues();
             values.put(Utilities.TABLE_CRITERIO_COL_ID,"3");
-            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"CRITERIO31");
-            values.put(Utilities.TABLE_CRITERIO_COL_TIPO,"string");
+            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"Cuajado");
+            values.put(Utilities.TABLE_CRITERIO_COL_TIPO,"boolean");
             values.put(Utilities.TABLE_CRITERIO_COL_MAGNITUD,"");
             values.put(Utilities.TABLE_CRITERIO_COL_IDTIPOINSPECCION,"1");
         temp = db.insert(Utilities.TABLE_CRITERIO,Utilities.TABLE_CRITERIO_COL_ID,values);
@@ -219,7 +219,7 @@ public class CargaInicial {
 
         values = new ContentValues();
             values.put(Utilities.TABLE_CRITERIO_COL_ID,"4");
-            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"CRITERIO41");
+            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"Brote vegetativo de primavera");
             values.put(Utilities.TABLE_CRITERIO_COL_TIPO,"list");
             values.put(Utilities.TABLE_CRITERIO_COL_MAGNITUD,"poco-medio-alto");
             values.put(Utilities.TABLE_CRITERIO_COL_IDTIPOINSPECCION,"1");
@@ -227,7 +227,7 @@ public class CargaInicial {
 
         values = new ContentValues();
             values.put(Utilities.TABLE_CRITERIO_COL_ID,"5");
-            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"CRITERIO51");
+            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"Brote vegetativo de verano");
             values.put(Utilities.TABLE_CRITERIO_COL_TIPO,"boolean");
             values.put(Utilities.TABLE_CRITERIO_COL_MAGNITUD,"");
             values.put(Utilities.TABLE_CRITERIO_COL_IDTIPOINSPECCION,"1");
@@ -236,7 +236,7 @@ public class CargaInicial {
 
         values = new ContentValues();
             values.put(Utilities.TABLE_CRITERIO_COL_ID,"6");
-            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"CRITERIO62");
+            values.put(Utilities.TABLE_CRITERIO_COL_NAME,"Crecimiento de fruto");
             values.put(Utilities.TABLE_CRITERIO_COL_TIPO,"boolean");
             values.put(Utilities.TABLE_CRITERIO_COL_MAGNITUD,"");
             values.put(Utilities.TABLE_CRITERIO_COL_IDTIPOINSPECCION,"2");
@@ -321,7 +321,6 @@ public class CargaInicial {
         db.close();
     }
 
-
     public void cargarEvaluaciones(){
         Log.d("cargar","hola00");
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
@@ -368,7 +367,6 @@ public class CargaInicial {
         values.put(Utilities.TABLE_MUESTRA_COL_IDEVALUACION,1);
         Long temp = db.insert(Utilities.TABLE_MUESTRA,Utilities.TABLE_MUESTRA_COL_ID,values);
         db.close();
-
     }
 
 }

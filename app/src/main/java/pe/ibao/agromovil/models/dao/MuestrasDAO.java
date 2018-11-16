@@ -25,6 +25,7 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDCRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDEVALUACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_TIME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_VALUE;
 
 public class MuestrasDAO {
@@ -45,21 +46,33 @@ public class MuestrasDAO {
                         "M."+TABLE_MUESTRA_COL_ID+", " +
                         "M."+TABLE_MUESTRA_COL_VALUE+", " +
                         "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
-                        "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
-                        "C."+TABLE_CRITERIO_COL_TIPO+", "+
-                        "C."+TABLE_CRITERIO_COL_MAGNITUD+", "+
-                        "C."+TABLE_CRITERIO_COL_NAME+
+                        "M."+TABLE_MUESTRA_COL_IDEVALUACION+" "+
                     " FROM "+
-                        TABLE_MUESTRA+" as M, "+
-                        TABLE_CRITERIO+" as C"+
+                        TABLE_MUESTRA+" as M"+
                     " WHERE "+
-                        "M."+TABLE_MUESTRA_COL_IDEVALUACION+"="+String.valueOf(idEvaluacion)+
-                        " AND "+
-                        "M."+TABLE_MUESTRA_COL_IDCRITERIO+"="+"C."+TABLE_CRITERIO_COL_ID
+                        "M."+TABLE_MUESTRA_COL_IDEVALUACION+"="+String.valueOf(idEvaluacion)
                 ,null);
         if(cursor.getCount()>0){
-            cursor.moveToFirst();
-            MuestraVO temp= new MuestraVO();
+            while(cursor.moveToNext()){
+                MuestraVO temp= new MuestraVO();
+                temp.setId(cursor.getInt(0));
+                temp.setValue(cursor.getString(1));
+                temp.setIdCriterio(cursor.getInt(2));
+                temp.setIdEvaluacion(cursor.getInt(3));
+
+                CriterioDAO criterioDAO = new CriterioDAO(ctx);
+                CriterioVO cri = criterioDAO.consultarById(temp.getIdCriterio());
+                if(temp!=null){
+                    Log.d("locomata","temp is null");
+                    temp.setIdTipoInspseccion(cri.getIdTipoInspseccion());
+                    temp.setName(cri.getName());
+                    temp.setType(cri.getType());
+                    temp.setMagnitud(cri.getMagnitud());
+                }else{
+                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                }
+                muestraVOList.add(temp);
+            }
 
         }
         cursor.close();
@@ -67,6 +80,9 @@ public class MuestrasDAO {
         return muestraVOList;
 
     }
+
+
+
 
     public MuestraVO nuevoByIdEvaluacionIdCriterio(int idEvaluacion, int idCriterio) {
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
@@ -88,7 +104,8 @@ public class MuestrasDAO {
                     "M."+TABLE_MUESTRA_COL_ID+", " +
                     "M."+TABLE_MUESTRA_COL_VALUE+", " +
                     "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
-                    "M."+TABLE_MUESTRA_COL_IDEVALUACION+
+                    "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
+                    "M."+TABLE_MUESTRA_COL_TIME+
                 " FROM "+
                 TABLE_MUESTRA+" as M"+
                 " WHERE "+
@@ -102,6 +119,7 @@ public class MuestrasDAO {
             res.setValue(cursor.getString(1));
             res.setIdCriterio(cursor.getInt(2));
             res.setIdEvaluacion(cursor.getInt(3));
+            res.setTime(cursor.getString(4));
             CriterioDAO criterioDAO = new CriterioDAO(ctx);
             CriterioVO temp = criterioDAO.consultarById(res.getIdCriterio());
             if(temp!=null){

@@ -33,6 +33,7 @@ public class NewVisitActivity extends AppCompatActivity {
 
 
     static final public int REQUEST_BASICS_DATA = 1;  // The request code
+    static final public int REQUEST_EDIT_EVALUATION=2;
     static final public String REQUEST_EMPRESA = "empresa_request";
     static final public String REQUEST_FUNDO = "fundo_request";
     static final public String REQUEST_CULTIVO = "cultivo_request";
@@ -119,9 +120,10 @@ public class NewVisitActivity extends AppCompatActivity {
                             mybundle.putInt("idVariedad",visita.getIdVariedad());
                             mybundle.putInt("idFundo",visita.getIdFundo());
                             mybundle.putInt("isNewTest",0);
-
+                            mybundle.putString("fechaHora",visita.getFechaHora());
                         intent.putExtras(mybundle);
-                        startActivity(intent);
+                        startActivityForResult(intent,REQUEST_EDIT_EVALUATION);
+
 
                     }
                 });
@@ -257,6 +259,15 @@ public class NewVisitActivity extends AppCompatActivity {
                 }
 
             break;
+            case REQUEST_EDIT_EVALUATION :
+
+                evaluacionVOList = new EvaluacionDAO(this)
+                        .listarByIdVisita(
+                                new VisitaDAO(this)
+                                .getEditing().getId()
+                        );
+                baseAdapter.notifyDataSetChanged();
+                setListViewHeightBasedOnChildren(listViewEvaluaciones);
         }
 
     }

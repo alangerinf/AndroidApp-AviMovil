@@ -14,6 +14,10 @@ import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_IDTIPOINSPECCION;
@@ -21,9 +25,14 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_MAGNITUD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_TIPO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_IDEMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VARIEDAD;
 
 public class CriterioDAO {
 
@@ -70,7 +79,7 @@ public class CriterioDAO {
         return temp;
     }
 
-    public List<CriterioVO> listarByIdTipoInspeccion(int idTipoInspeccion){
+    public List<CriterioVO> listarByIdTipoInspeccionIdFundoIdVariedad(int idTipoInspeccion, int idFundo, int idVariedad){
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         List<CriterioVO> criterioVOS = new ArrayList<CriterioVO>();
@@ -83,9 +92,19 @@ public class CriterioDAO {
                             "C."+TABLE_CRITERIO_COL_MAGNITUD+", "+
                             "C."+TABLE_CRITERIO_COL_IDTIPOINSPECCION+
                         " FROM "+
-                            TABLE_CRITERIO+" as C"+
+                            TABLE_CRITERIO+" AS C, "+
+                            TABLE_FUNDOVARIEDAD+" AS FV, "+
+                            TABLE_CONFIGURACIONCRITERIO+" AS CC"+
                         " WHERE "+
-                            "c."+TABLE_CRITERIO_COL_IDTIPOINSPECCION+"="+  String.valueOf(idTipoInspeccion)
+                            "C."+TABLE_CRITERIO_COL_IDTIPOINSPECCION+"="+  String.valueOf(idTipoInspeccion)+
+                            " AND "+
+                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDFUNDO+"="+String.valueOf(idFundo)+
+                            " AND "+
+                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)+
+                            " AND "+
+                            "FV."+TABLE_FUNDOVARIEDAD_COL_ID+"="+"CC."+TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD+
+                            " AND "+
+                            "CC."+TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO+"="+"C."+TABLE_CRITERIO_COL_ID
                     ,null);
             while (cursor.moveToNext()){
                 CriterioVO temp = new CriterioVO();

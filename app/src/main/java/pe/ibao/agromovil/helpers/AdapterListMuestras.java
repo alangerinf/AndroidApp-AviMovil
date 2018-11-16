@@ -3,12 +3,16 @@ package pe.ibao.agromovil.helpers;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -16,10 +20,13 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 
 public class AdapterListMuestras extends BaseAdapter{
@@ -56,7 +63,7 @@ public class AdapterListMuestras extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View v = convertView;
         LayoutInflater inflater = LayoutInflater.from(ctx);
         v = inflater.inflate(R.layout.muestra_itemeditor_list_view,null);
@@ -65,11 +72,11 @@ public class AdapterListMuestras extends BaseAdapter{
         EditText _int =(EditText) v.findViewById(R.id._int);
         EditText _float = (EditText) v.findViewById(R.id._float);
         EditText _string = (EditText) v.findViewById(R.id._string);
-        Spinner _list = (Spinner) v.findViewById(R.id._list);
+        final Spinner _list = (Spinner) v.findViewById(R.id._list);
         Switch _boolean = (Switch) v.findViewById(R.id._boolean);
-
         ImageView btnCam = (ImageView) v.findViewById(R.id.btn_cam);
-
+        TextView time = (TextView) v.findViewById(R.id.tViewHoraMuestra);
+        time.setText(listMuestas.get(position).getTime());
         btnCam.setClickable(true);
         btnCam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +86,9 @@ public class AdapterListMuestras extends BaseAdapter{
             }
         });
 
+
+
+
        // Log.d("xdxdxd",position+"    "+listCriterios.get(position).getName());
         nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
         _string.setHeight(0);
@@ -86,15 +96,57 @@ public class AdapterListMuestras extends BaseAdapter{
             case "boolean":
                 _boolean.setVisibility(View.VISIBLE);
                 nameitem.setText(listMuestas.get(position).getName());
+
+
+                _boolean.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        listMuestas.get(position).setValue(String.valueOf(isChecked));
+                    }
+                });
+
                 break;
             case "int":
                 _int.setVisibility(View.VISIBLE);
 
                 nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
+
+                _int.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        listMuestas.get(position).setValue(String.valueOf(s));
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
+
                 break;
             case "float":
                 _float.setVisibility(View.VISIBLE);
                 nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
+                _float.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        listMuestas.get(position).setValue(String.valueOf(s));
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
                 break;
             case "list":
                 nameitem.setText(listMuestas.get(position).getName());
@@ -114,21 +166,51 @@ public class AdapterListMuestras extends BaseAdapter{
                 _list.setAdapter(dataAdapter);
                 _list.setVisibility(View.VISIBLE);
 
+                _list.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        listMuestas.get(position).setValue(String.valueOf(i));
+                        /**falta cambiar en la base de  datos
+                         */
+                    }
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+                        return;
+                    }
+                });
                 break;
             case "string":
                 Log.d("tttttt", "getView: ");
                 _string.setHeight(150);
                 _string.setVisibility(View.VISIBLE);
+                _string.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        listMuestas.get(position).setValue(String.valueOf(s));
+                        /**
+                         * falta cambir valor  en db
+                         */
+
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+
+                    }
+                });
                 break;
-                default:
-                    Log.d("tamano","error no encontrado el tipo");
-                    break;
+            default:
+                Log.d("tamano","error no encontrado el tipo");
+                break;
 
         }
 
         return v;
     }
-
 
 
 

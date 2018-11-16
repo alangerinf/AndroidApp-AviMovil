@@ -8,6 +8,7 @@ public class MuestraVO extends CriterioVO {
     private int idEvaluacion;
     private int idCriterio;
     private String value;//parsearlo a int float o boolean segun se crea conveniente
+    private String time;
     public MuestraVO(){
         super();
     }
@@ -16,6 +17,14 @@ public class MuestraVO extends CriterioVO {
     public String getValue() {
         return value;
 
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setValue(String value) {

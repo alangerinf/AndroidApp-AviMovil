@@ -57,7 +57,7 @@ public class TipoInspeccionDAO {
 
 
 
-    public List<TipoInspeccionVO> consultarListByIdFundoAndIdVariedad(int idFundo, int idVariedad){
+    public List<TipoInspeccionVO> listarByIdFundoAndIdVariedad(int idFundo, int idVariedad){
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         List<TipoInspeccionVO> tipoInspeccionVOS = new ArrayList<>();
@@ -74,21 +74,24 @@ public class TipoInspeccionDAO {
                             TABLE_CRITERIO+" as C,"+
                             TABLE_CONFIGURACIONCRITERIO+" as CC"+
                             " WHERE "+
-                            "F."+TABLE_FUNDO_COL_ID+"="+  String.valueOf(idFundo)+" AND "+
-                            "V."+TABLE_VARIEDAD_COL_ID+"="+String.valueOf(idVariedad)+" AND "+
-                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDFUNDO+"="+"F."+TABLE_FUNDO_COL_ID+" AND "+
-                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+"="+"V."+TABLE_VARIEDAD_COL_ID+" AND "+
+                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDFUNDO+"="+String.valueOf(idFundo)+" AND "+
+                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)+" AND "+
                             "FV."+TABLE_FUNDOVARIEDAD_COL_ID+"="+"CC."+TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD+" AND "+
                             "CC."+TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO+"="+"C."+TABLE_CRITERIO_COL_ID+" AND "+
                             "C."+TABLE_CRITERIO_COL_IDTIPOINSPECCION+"="+"TI."+TABLE_TIPOINSPECCION_COL_ID+
                             " GROUP BY "+
                             "TI."+TABLE_TIPOINSPECCION_COL_ID
                     , null);
-            while (cursor.moveToNext()){
-                TipoInspeccionVO temp = new TipoInspeccionVO();
+            Log.d("eva123","idFundo "+idFundo);
+            Log.d("eva123","idVariedad "+idVariedad);
+            Log.d("eva123","consulta dir retorna "+cursor.getCount());
+            if(cursor.getCount()>0){
+                while (cursor.moveToNext()){
+                    TipoInspeccionVO temp = new TipoInspeccionVO();
                     temp.setId(cursor.getInt(0));
                     temp.setName(cursor.getString(1));
-                tipoInspeccionVOS.add(temp);
+                    tipoInspeccionVOS.add(temp);
+                }
             }
             cursor.close();
         }catch (Exception e){

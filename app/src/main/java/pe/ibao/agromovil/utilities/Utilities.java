@@ -62,12 +62,12 @@ public class Utilities {
             TABLE_CONFIGURACIONCRITERIO_TYPECOL_IDCRITERIO      ="INTEGER";
 
     public static final String TABLE_CRITERIO       ="criterio",
-            TABLE_CRITERIO_COL_ID                   ="id",
-            TABLE_CRITERIO_TYPECOL_ID               ="INTEGER",
-            TABLE_CRITERIO_COL_NAME                 ="name",
-            TABLE_CRITERIO_TYPECOL_NAME             ="varchar(50)",
-            TABLE_CRITERIO_COL_TIPO                 ="tipo",
-            TABLE_CRITERIO_TYPECOL_TIPO             ="varchar(50)", //"int","string","list",float
+            TABLE_CRITERIO_COL_ID                   ="id",//
+            TABLE_CRITERIO_TYPECOL_ID               ="INTEGER",//
+            TABLE_CRITERIO_COL_NAME                 ="name",//
+            TABLE_CRITERIO_TYPECOL_NAME             ="varchar(50)",//
+            TABLE_CRITERIO_COL_TIPO                 ="tipo",//
+            TABLE_CRITERIO_TYPECOL_TIPO             ="varchar(50)", //"int","string","list",float,boolean
             TABLE_CRITERIO_COL_MAGNITUD             ="magnitud",
             TABLE_CRITERIO_TYPECOL_MAGNITUD         ="varchar(50)",//"°C" , "mm." , "ml/s²" , "bajo-medio-alto"
             TABLE_CRITERIO_COL_IDTIPOINSPECCION     ="idTipoInspeccion",
@@ -119,12 +119,16 @@ public class Utilities {
     public static final String TABLE_MUESTRA="muestra",
             TABLE_MUESTRA_COL_ID = "id",
             TABLE_MUESTRA_TYPECOL_ID = "INTEGER",
+            TABLE_MUESTRA_COL_TIME = "time",
+            TABLE_MUESTRA_TYPECOL_TIME= "varchar(50)",
             TABLE_MUESTRA_COL_VALUE = "value",
             TABLE_MUESTRA_TYPECOL_VALUE="VACHAR(80)",
             TABLE_MUESTRA_COL_IDEVALUACION="idEvaluacion",
             TABLE_MUESTRA_TYPECOL_IDEVALUACION="INTEGER",
             TABLE_MUESTRA_COL_IDCRITERIO="idCriterio",
             TABLE_MUESTRA_TYPECOL_IDCRITERIO="INTEGER";
+
+
     public static final String TABLE_FOTO="foto",
             TABLE_FOTO_COL_ID = "id",
             TABLE_FOTO_TYPECOL_ID ="INTEGER",
@@ -148,6 +152,7 @@ public class Utilities {
     public static final String CREATE_TABLE_MUESTRA =
             "CREATE TABLE "+TABLE_MUESTRA+" ("+
                     TABLE_MUESTRA_COL_ID            +" "+TABLE_MUESTRA_TYPECOL_ID           +" PRIMARY KEY AUTOINCREMENT, "+
+                    TABLE_MUESTRA_COL_TIME          +" "+TABLE_MUESTRA_TYPECOL_TIME         + " DEFAULT (datetime('now','localtime')), "+
                     TABLE_MUESTRA_COL_VALUE         +" "+TABLE_MUESTRA_TYPECOL_VALUE        +" DEFAULT '', "+
                     TABLE_MUESTRA_COL_IDCRITERIO    +" "+TABLE_MUESTRA_TYPECOL_IDCRITERIO   +" NOT NULL, "+
                     TABLE_MUESTRA_COL_IDEVALUACION  +" "+TABLE_MUESTRA_TYPECOL_IDEVALUACION +" NOT NULL"+
