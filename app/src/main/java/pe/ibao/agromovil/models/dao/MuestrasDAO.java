@@ -21,6 +21,7 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_MAGNITUD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_TIPO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_EVALUACION_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDCRITERIO;
@@ -36,7 +37,6 @@ public class MuestrasDAO {
         this.ctx = ctx;
     }
 
-
     public List<MuestraVO> listarByIdEvaluacion(int idEvaluacion){
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
@@ -46,7 +46,8 @@ public class MuestrasDAO {
                         "M."+TABLE_MUESTRA_COL_ID+", " +
                         "M."+TABLE_MUESTRA_COL_VALUE+", " +
                         "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
-                        "M."+TABLE_MUESTRA_COL_IDEVALUACION+" "+
+                        "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
+                        "M."+TABLE_MUESTRA_COL_TIME+
                     " FROM "+
                         TABLE_MUESTRA+" as M"+
                     " WHERE "+
@@ -59,7 +60,7 @@ public class MuestrasDAO {
                 temp.setValue(cursor.getString(1));
                 temp.setIdCriterio(cursor.getInt(2));
                 temp.setIdEvaluacion(cursor.getInt(3));
-
+                temp.setTime(cursor.getString(4     ));
                 CriterioDAO criterioDAO = new CriterioDAO(ctx);
                 CriterioVO cri = criterioDAO.consultarById(temp.getIdCriterio());
                 if(temp!=null){
@@ -80,8 +81,6 @@ public class MuestrasDAO {
         return muestraVOList;
 
     }
-
-
 
 
     public MuestraVO nuevoByIdEvaluacionIdCriterio(int idEvaluacion, int idCriterio) {
@@ -144,6 +143,64 @@ public class MuestrasDAO {
         }
         cursor.close();
         db.close();
+        conn.close();
         return res;
     }
+
+    public boolean editarValorById(int id,String valor){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+        ContentValues values = new ContentValues();
+        values.put(TABLE_MUESTRA_COL_VALUE,valor);
+        int res = db.update(TABLE_MUESTRA,values,TABLE_MUESTRA_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
+
+    public boolean borrarValorById(int id){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+
+        int res = db.delete(TABLE_MUESTRA,TABLE_MUESTRA_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
+
+    public boolean borrarValorByIdEvaluacion(int idEvaluacion){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(idEvaluacion),
+                };
+
+        int res = db.delete(TABLE_MUESTRA,TABLE_MUESTRA_COL_IDEVALUACION+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
+
+
 }

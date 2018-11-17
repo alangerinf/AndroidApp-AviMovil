@@ -68,6 +68,7 @@ public class newEvaluacionActivity extends AppCompatActivity {
                 if(resultCode == Activity.RESULT_OK){
                     String qrCode=data.getStringExtra(QR_RESULT);
                     eTextQR.setText(qrCode);
+                    new EvaluacionDAO(getBaseContext()).editarQR(idEvaluacion,qrCode);
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {
                     //Write your code if there's no result
@@ -119,6 +120,9 @@ public class newEvaluacionActivity extends AppCompatActivity {
 
         idTipoInspeccion = mybundle.getInt("idTipoInspeccion",0);
         primeraEdicion = mybundle.getInt("isNewTest");
+
+        eTextQR.setText(new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getQr());
+
 
         cargarTipoInspeccion();
         Log.d("eva123","tipotam"+listTipoInspeccion.size());

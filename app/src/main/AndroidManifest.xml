@@ -10,8 +10,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission  android:name = "android.hardware.camera.autofocus" />
-    <uses-permission  android:name = "android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    ...
+    <!-- Needed only if your app targets Android 5.0 (API level 21) or higher. -->
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
@@ -19,17 +23,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-
         android:theme="@style/AppTheme">
         <activity
             android:name=".views.Preloader"
             android:theme="@style/AppTheme2.NoActionBar">
-            <intent-filter >
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".views.MainActivity"
@@ -50,21 +51,17 @@
             android:name=".views.NewVisitActivity"
             android:label="@string/title_activity_new_inspection"
             android:parentActivityName=".views.MainActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".views.BasicsActivity"
             android:label="@string/title_basics_activity"
             android:parentActivityName=".views.NewVisitActivity"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".views.newEvaluacionActivity"
             android:label="@string/title_test_activity"
             android:parentActivityName=".views.NewVisitActivity"
-            android:theme="@style/AppTheme">
-
-
-
-        </activity>
+            android:theme="@style/AppTheme"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
@@ -73,19 +70,20 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".views.QRScannerActivity">
-
-        </activity>
+        <activity android:name=".views.QRScannerActivity"></activity>
         <activity
-            android:label="@string/app_name"
             android:name=".views.CamTestActivity"
-            android:screenOrientation="landscape" >
+            android:label="@string/app_name"
+            android:screenOrientation="landscape"></activity>
+        <activity
+            android:name=".recomendaciones"
+            android:label="@string/title_activity_recomendaciones">
+
+
+
+
 
         </activity>
-
-
-
-
     </application>
 
 </manifest>

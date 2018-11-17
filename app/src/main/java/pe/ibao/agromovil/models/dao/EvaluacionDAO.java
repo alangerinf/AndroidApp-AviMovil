@@ -13,6 +13,7 @@ import java.util.List;
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
@@ -46,6 +47,26 @@ public class EvaluacionDAO {
                 };
         ContentValues values = new ContentValues();
         values.put(TABLE_EVALUACION_COL_IDTIPOINSPECCION,String.valueOf(idTipoInspeccion));
+        int res = db.update(TABLE_EVALUACION,values,TABLE_EVALUACION_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        c.close();
+
+
+        return flag;
+    }
+
+    public boolean editarQR(int id,String qr){
+        boolean flag = false;
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        SQLiteDatabase db = c.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+        ContentValues values = new ContentValues();
+        values.put(TABLE_EVALUACION_COL_QR,String.valueOf(qr));
         int res = db.update(TABLE_EVALUACION,values,TABLE_EVALUACION_COL_ID+"=?",parametros);
         if(res>0){
             flag=true;
@@ -125,7 +146,15 @@ public class EvaluacionDAO {
         int res =db.delete(Utilities.TABLE_EVALUACION,TABLE_EVALUACION_COL_ID+"=?",parametros);
         Log.d("borrando",String.valueOf(res));
 
+        //eliminando muestras
+        List<MuestraVO> muestras = new MuestrasDAO(ctx).listarByIdEvaluacion(id);
+
+        for(MuestraVO m : muestras){
+            new MuestrasDAO(ctx).borrarValorById(m.getId());
+        }
+
         return res;
+
     }
 
 
