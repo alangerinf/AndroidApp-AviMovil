@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -107,7 +108,6 @@ public class newEvaluacionActivity extends AppCompatActivity {
         listViewMuestas = (ListView) findViewById(R.id.list_criterios);
         tViewFechaHora = (TextView) findViewById(R.id.tViewFechaHora);
 
-
         Intent intent = getIntent();
         Bundle mybundle = intent.getExtras();
         idEvaluacion = mybundle.getInt("idEvaluacion");
@@ -131,7 +131,7 @@ public class newEvaluacionActivity extends AppCompatActivity {
         spnTipoInspeccion.setAdapter(adaptadorInspecciones);
 
         saveMuestras = new MuestrasDAO(this).listarByIdEvaluacion(idEvaluacion);
-        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras);
+        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas, spnTipoInspeccion);
         listViewMuestas.setAdapter(adapterListMuestras);//seteanis ek adaotadir
 
         setListViewHeightBasedOnChildren(listViewMuestas);//tamañap respecto a hijos
@@ -216,6 +216,9 @@ public class newEvaluacionActivity extends AppCompatActivity {
     }
 
 
+
+
+
     public void getQRCode(View view){
         Intent i = new Intent(this, QRScannerActivity.class);
         startActivityForResult(i, 1);
@@ -267,10 +270,17 @@ public class newEvaluacionActivity extends AppCompatActivity {
                         Log.d("locomata","antes de mandar "+idEvaluacion+" "+temp.getId());
                         MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId());
                         saveMuestras.add(temp2);
-                        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras);
+                        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas,spnTipoInspeccion );
                         listViewMuestas.setAdapter(adapterListMuestras);
                         setListViewHeightBasedOnChildren(listViewMuestas);
-
+                        spnTipoInspeccion.setEnabled(false);
+                        final ScrollView scrollView = findViewById(R.id.ScrollEva);
+                        scrollView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                            }
+                        });
                     }
                 });
         dialogo.show();

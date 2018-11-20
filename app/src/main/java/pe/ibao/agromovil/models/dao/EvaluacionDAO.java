@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
-import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 import pe.ibao.agromovil.utilities.Utilities;
@@ -26,9 +25,6 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_EVALUACION_COL_LONGITU
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EVALUACION_COL_QR;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EVALUACION_COL_TIMEFIN;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EVALUACION_COL_TIMEINI;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_TIPOINSPECCION;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_TIPOINSPECCION_COL_ID;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_TIPOINSPECCION_COL_NAME;
 
 public class EvaluacionDAO {
     private Context ctx;
@@ -150,7 +146,7 @@ public class EvaluacionDAO {
         List<MuestraVO> muestras = new MuestrasDAO(ctx).listarByIdEvaluacion(id);
 
         for(MuestraVO m : muestras){
-            new MuestrasDAO(ctx).borrarValorById(m.getId());
+            new MuestrasDAO(ctx).borrarMuestraById(m.getId());
         }
 
         return res;

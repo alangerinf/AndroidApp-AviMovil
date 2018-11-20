@@ -23,6 +23,7 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_TIPO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EVALUACION_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_COMENTARIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDCRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDEVALUACION;
@@ -47,7 +48,8 @@ public class MuestrasDAO {
                         "M."+TABLE_MUESTRA_COL_VALUE+", " +
                         "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
                         "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
-                        "M."+TABLE_MUESTRA_COL_TIME+
+                        "M."+TABLE_MUESTRA_COL_TIME+", "+
+                        "M."+TABLE_MUESTRA_COL_COMENTARIO+
                     " FROM "+
                         TABLE_MUESTRA+" as M"+
                     " WHERE "+
@@ -61,6 +63,12 @@ public class MuestrasDAO {
                 temp.setIdCriterio(cursor.getInt(2));
                 temp.setIdEvaluacion(cursor.getInt(3));
                 temp.setTime(cursor.getString(4     ));
+                temp.setComent(cursor.getString(5));
+                if(temp.getComent().equals("") || temp.getComent()==null){
+                    temp.setStatusComent(false);
+                }else{
+                    temp.setStatusComent(true);
+                }
                 CriterioDAO criterioDAO = new CriterioDAO(ctx);
                 CriterioVO cri = criterioDAO.consultarById(temp.getIdCriterio());
                 if(temp!=null){
@@ -104,7 +112,8 @@ public class MuestrasDAO {
                     "M."+TABLE_MUESTRA_COL_VALUE+", " +
                     "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
                     "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
-                    "M."+TABLE_MUESTRA_COL_TIME+
+                    "M."+TABLE_MUESTRA_COL_TIME+", "+
+                    "M."+TABLE_MUESTRA_COL_COMENTARIO+
                 " FROM "+
                 TABLE_MUESTRA+" as M"+
                 " WHERE "+
@@ -119,6 +128,12 @@ public class MuestrasDAO {
             res.setIdCriterio(cursor.getInt(2));
             res.setIdEvaluacion(cursor.getInt(3));
             res.setTime(cursor.getString(4));
+            res.setComent(cursor.getString(5));
+            if(res.getComent().equals("") || res.getComent()==null){
+                res.setStatusComent(false);
+            }else{
+                res.setStatusComent(true);
+            }
             CriterioDAO criterioDAO = new CriterioDAO(ctx);
             CriterioVO temp = criterioDAO.consultarById(res.getIdCriterio());
             if(temp!=null){
@@ -166,7 +181,27 @@ public class MuestrasDAO {
         return flag;
     }
 
-    public boolean borrarValorById(int id){
+
+    public boolean editarComentById(int id,String coment){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+        ContentValues values = new ContentValues();
+        values.put(TABLE_MUESTRA_COL_COMENTARIO,coment);
+        int res = db.update(TABLE_MUESTRA,values,TABLE_MUESTRA_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
+
+    public boolean borrarMuestraById(int id){
         boolean flag = false;
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();

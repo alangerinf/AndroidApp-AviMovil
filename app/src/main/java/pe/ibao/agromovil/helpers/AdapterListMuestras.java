@@ -15,12 +15,12 @@ import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +33,13 @@ public class AdapterListMuestras extends BaseAdapter{
 
     private Context ctx;
     private List<MuestraVO> listMuestas;
-
-    public AdapterListMuestras(Context ctx, List<MuestraVO> listMuestas){
+    private ListView list;
+    private Spinner spnEva;
+    public AdapterListMuestras(Context ctx, List<MuestraVO> listMuestas, ListView lv, Spinner spnEva){
         this.ctx = ctx;
         this.listMuestas =listMuestas;
+        this.list = lv;
+        this.spnEva = spnEva;
     }
 
     @Override
@@ -68,7 +71,7 @@ public class AdapterListMuestras extends BaseAdapter{
         LayoutInflater inflater = LayoutInflater.from(ctx);
         v = inflater.inflate(R.layout.muestra_itemeditor_list_view,null);
 
-        TextView nameitem = (TextView) v.findViewById(R.id.name_criterio);
+        final TextView nameitem = (TextView) v.findViewById(R.id.name_criterio);
         final EditText _int =(EditText) v.findViewById(R.id._int);
         final EditText _float = (EditText) v.findViewById(R.id._float);
         final EditText _string = (EditText) v.findViewById(R.id._string);
@@ -76,8 +79,15 @@ public class AdapterListMuestras extends BaseAdapter{
         final Switch _boolean = (Switch) v.findViewById(R.id._boolean);
         final ImageView btnDelete = (ImageView) v.findViewById(R.id.muestra_delete);
         ImageView btnCam = (ImageView) v.findViewById(R.id.btn_cam);
-        TextView time = (TextView) v.findViewById(R.id.tViewHoraMuestra);
-        time.setText(listMuestas.get(position).getTime());
+        TextView tViewTime = (TextView) v.findViewById(R.id.tViewHoraMuestra);
+        final EditText eTextComent = (EditText) v.findViewById(R.id.eTextComentario);
+
+        tViewTime.setText(listMuestas.get(position).getTime());
+
+
+        eTextComent.setText(listMuestas.get(position).getComent());
+
+
         btnCam.setClickable(true);
         btnCam.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,11 +98,10 @@ public class AdapterListMuestras extends BaseAdapter{
         });
 
         final int _id = listMuestas.get(position).getId();
-
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean x=new MuestrasDAO(ctx).borrarValorById(listMuestas.get(position).getId());
+                boolean x=new MuestrasDAO(ctx).borrarMuestraById(listMuestas.get(position).getId());
                 if(!x){
                     Toast.makeText(ctx,"Error al eliminar",Toast.LENGTH_SHORT).show();
                 }else{
@@ -100,17 +109,48 @@ public class AdapterListMuestras extends BaseAdapter{
                 }
                 listMuestas.remove(position);
                 AdapterListMuestras.super.notifyDataSetChanged();
+                setListViewHeightBasedOnChildren(list);
+                if(listMuestas.size()==0){
+                    spnEva.setEnabled(true);
+                }
             }
         });
-
-
-
-
 
 
        // Log.d("xdxdxd",position+"    "+listCriterios.get(position).getName());
         nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
         _string.setHeight(0);
+        _float.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    nameitem.setText("123");
+                }else{
+                    nameitem.setText("321");
+                }
+            }
+        });
+
+        eTextComent.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                listMuestas.get(position).setComent(eTextComent.getText().toString());
+                new MuestrasDAO(ctx).editarComentById(_id,listMuestas.get(position).getComent());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+
+
         switch (listMuestas.get(position).getType()){
             case "boolean":
 
@@ -168,6 +208,7 @@ public class AdapterListMuestras extends BaseAdapter{
                 _float.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
 
                     }
                     @Override
@@ -260,6 +301,28 @@ public class AdapterListMuestras extends BaseAdapter{
         }
 
         return v;
+    }
+
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+
+        Log.d("tamano",""+listAdapter.getCount());
+        if (listAdapter == null) {
+            return;
+        }
+
+        int totalHeight = 0;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            View listItem = listAdapter.getView(i, null, listView);
+            listItem.measure(0, 0);
+            totalHeight += listItem.getMeasuredHeight();
+        }
+
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
+        listView.requestLayout();
+        //listView.setDividerHeight(params.height);
     }
 
 

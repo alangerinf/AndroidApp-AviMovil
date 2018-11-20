@@ -119,6 +119,8 @@ public class Utilities {
     public static final String TABLE_MUESTRA="muestra",
             TABLE_MUESTRA_COL_ID = "id",
             TABLE_MUESTRA_TYPECOL_ID = "INTEGER",
+            TABLE_MUESTRA_COL_COMENTARIO = "coment",
+            TABLE_MUESTRA_TYPECOL_COMENTARIO = "VARCHAR(50)",
             TABLE_MUESTRA_COL_TIME = "time",
             TABLE_MUESTRA_TYPECOL_TIME= "varchar(50)",
             TABLE_MUESTRA_COL_VALUE = "value",
@@ -152,7 +154,8 @@ public class Utilities {
     public static final String CREATE_TABLE_MUESTRA =
             "CREATE TABLE "+TABLE_MUESTRA+" ("+
                     TABLE_MUESTRA_COL_ID            +" "+TABLE_MUESTRA_TYPECOL_ID           +" PRIMARY KEY AUTOINCREMENT, "+
-                    TABLE_MUESTRA_COL_TIME          +" "+TABLE_MUESTRA_TYPECOL_TIME         + " DEFAULT (datetime('now','localtime')), "+
+                    TABLE_MUESTRA_COL_TIME          +" "+TABLE_MUESTRA_TYPECOL_TIME         +" DEFAULT (datetime('now','localtime')), "+
+                    TABLE_MUESTRA_COL_COMENTARIO    +" "+TABLE_MUESTRA_TYPECOL_COMENTARIO   +" DEFAULT '', "+
                     TABLE_MUESTRA_COL_VALUE         +" "+TABLE_MUESTRA_TYPECOL_VALUE        +" DEFAULT '', "+
                     TABLE_MUESTRA_COL_IDCRITERIO    +" "+TABLE_MUESTRA_TYPECOL_IDCRITERIO   +" NOT NULL, "+
                     TABLE_MUESTRA_COL_IDEVALUACION  +" "+TABLE_MUESTRA_TYPECOL_IDEVALUACION +" NOT NULL"+

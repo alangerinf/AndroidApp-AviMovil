@@ -1,7 +1,10 @@
 package pe.ibao.agromovil.views;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -46,6 +50,9 @@ public class NewVisitActivity extends AppCompatActivity {
     private TextView tViewVariedad;
     private TextView tViewHora;
 
+    private Dialog dialogClose;
+    private Button btnDialogClose;
+    private ImageView iViewDialogClose;
 
     private  ListView listViewEvaluaciones;
     private VisitaDAO visitaDAO;
@@ -70,6 +77,10 @@ public class NewVisitActivity extends AppCompatActivity {
         tViewHora       = (TextView) findViewById(R.id.tViewHora);
 
         listViewEvaluaciones = (ListView) findViewById(R.id.list_evaluaciones);
+
+        dialogClose = new Dialog(this);
+
+
 
 
 
@@ -302,8 +313,6 @@ public class NewVisitActivity extends AppCompatActivity {
 
             Intent intent = new Intent(this,BasicsActivity.class);
 
-
-
             Bundle mybundle = new Bundle();
             if(visita.getIdFundo()>0 && visita.getIdVariedad()>0){
                 mybundle.putInt("isFirst",0);
@@ -327,6 +336,38 @@ public class NewVisitActivity extends AppCompatActivity {
 
     public void end(View view){
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        showClosePopup();
+        //    moveTaskToBack(true);
+
+    }
+
+    private void showClosePopup(){
+        dialogClose.setContentView(R.layout.dialog_guardar_progreso);
+        btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_close_dialog);
+        iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);
+
+        iViewDialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogClose.dismiss();
+            }
+        });
+        btnDialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialogClose.dismiss();
+                finish();
+            }
+        });
+
+        dialogClose.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogClose.show();
     }
 
 }

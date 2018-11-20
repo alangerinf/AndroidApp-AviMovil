@@ -48,6 +48,7 @@
             android:background="@drawable/shape_secondary_r15_borderlight_v2"
             android:dropDownWidth="match_parent"
             android:entries="@array/fundos"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
             android:minWidth="15dp"
             android:paddingVertical="5dp"
             android:spinnerMode="dialog"
@@ -60,14 +61,16 @@
 
         <Spinner
             android:id="@+id/spnEmpresa"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/shape_secondary_r15_borderlight_v2"
-            android:dropDownWidth="wrap_content"
+            android:dropDownWidth="match_parent"
             android:entries="@array/empresas"
+            android:spinnerMode="dialog"
             android:minWidth="15dp"
             android:paddingVertical="5dp"
             android:textAlignment="center"
@@ -87,6 +90,7 @@
             android:dropDownWidth="match_parent"
             android:entries="@array/cultivos"
             android:minWidth="15dp"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
             android:paddingVertical="5dp"
             android:spinnerMode="dialog"
             android:textAlignment="center"
@@ -110,6 +114,7 @@
             android:paddingVertical="5dp"
             android:spinnerMode="dialog"
             android:textAlignment="center"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -137,7 +142,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textView35"
-            app:layout_constraintTop_toBottomOf="@+id/textView35" />
+            app:layout_constraintTop_toBottomOf="@+id/textView35"
+            android:inputType="" />
 
         <TextView
             android:id="@+id/tViewEmpesa"

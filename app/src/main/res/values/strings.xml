@@ -49,6 +49,7 @@
     <string name="camera_not_found">Camara no encontrada</string>
     <string name="take_photo_help">Toca en cualquier parte de la pantalla para tomar una foto</string>
     <string name="title_activity_recomendaciones">Recomendaciones</string>
+    <string name="title_activity_photo_gallery">PhotoGallery</string>
 
 
 </resources>
