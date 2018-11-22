@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.MediaStore;
@@ -28,6 +29,11 @@ import java.util.List;
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
+import pe.ibao.agromovil.views.PhotoGallery;
+import pe.ibao.agromovil.views.Update;
+
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
+import static pe.ibao.agromovil.views.NewVisitActivity.REQUEST_BASICS_DATA;
 
 public class AdapterListMuestras extends BaseAdapter{
 
@@ -68,6 +74,7 @@ public class AdapterListMuestras extends BaseAdapter{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View v = convertView;
+        ctx = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(ctx);
         v = inflater.inflate(R.layout.muestra_itemeditor_list_view,null);
 
@@ -87,13 +94,19 @@ public class AdapterListMuestras extends BaseAdapter{
 
         eTextComent.setText(listMuestas.get(position).getComent());
 
-
         btnCam.setClickable(true);
         btnCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //tomarFoto();
-                Toast.makeText(ctx,"Tomar Fotografia",Toast.LENGTH_LONG);
+                //Toast.makeText(ctx,"Tomar Fotografia",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(ctx,PhotoGallery.class);
+                intent.putExtra("idMuestra",listMuestas.get(position).getId());
+                intent.putExtra("value",listMuestas.get(position).getValue());
+                intent.putExtra("name",listMuestas.get(position).getName());
+                intent.putExtra("fechaHora",listMuestas.get(position).getTime());
+
+                ((Activity) ctx).startActivityForResult(intent, 123);
             }
         });
 

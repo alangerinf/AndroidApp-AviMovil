@@ -134,10 +134,10 @@ public class Utilities {
     public static final String TABLE_FOTO="foto",
             TABLE_FOTO_COL_ID = "id",
             TABLE_FOTO_TYPECOL_ID ="INTEGER",
-            TABLE_FOTO_COL_HORAFECHA ="horaFecha",
+            TABLE_FOTO_COL_HORAFECHA ="fechaHora",
             TABLE_FOTO_TYPECOL_HORAFECHA ="DATE",
-            TABLE_FOTO_COL_NAME = "dir",
-            TABLE_FOTO_TYPECOL_NAME = "VARCHAR(80)",
+            TABLE_FOTO_COL_PATH = "path",
+            TABLE_FOTO_TYPECOL_PATH = "VARCHAR(100)",
             TABLE_FOTO_COL_IDMUESTRA="idMuestra",
             TABLE_FOTO_TYPECOL_IDMUESTRA="INTEGER";
 
@@ -146,8 +146,8 @@ public class Utilities {
     public static final String CREATE_TABLE_FOTO =
             "CREATE TABLE "+TABLE_FOTO+" ("+
                     TABLE_FOTO_COL_ID       +" "+TABLE_FOTO_TYPECOL_ID       +" PRIMARY KEY AUTOINCREMENT, "+
-                    TABLE_FOTO_COL_NAME     +" "+ TABLE_FOTO_TYPECOL_NAME    +", "+
-                    TABLE_FOTO_COL_HORAFECHA+" "+TABLE_FOTO_TYPECOL_HORAFECHA+" NOT NULL, "+
+                    TABLE_FOTO_COL_PATH +" "+ TABLE_FOTO_TYPECOL_PATH +", "+
+                    TABLE_FOTO_COL_HORAFECHA+" "+TABLE_FOTO_TYPECOL_HORAFECHA+" DEFAULT (datetime('now','localtime')), "+
                     TABLE_FOTO_COL_IDMUESTRA+" "+TABLE_FOTO_TYPECOL_IDMUESTRA+" NOT NULL"+
             ")";
 

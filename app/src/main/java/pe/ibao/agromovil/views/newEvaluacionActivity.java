@@ -135,6 +135,8 @@ public class newEvaluacionActivity extends AppCompatActivity {
         listViewMuestas.setAdapter(adapterListMuestras);//seteanis ek adaotadir
 
         setListViewHeightBasedOnChildren(listViewMuestas);//tamañap respecto a hijos
+
+        //seleccional en el spn el q esta seleccionado anteriormente
         for(int i=0;i<listTipoInspeccion.size();i++){
             if(listTipoInspeccion.get(i).getId()==idTipoInspeccion){
                 spnTipoInspeccion.setSelection(i+1);

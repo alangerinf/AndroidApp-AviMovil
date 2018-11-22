@@ -3,21 +3,21 @@ package pe.ibao.agromovil.models.vo.entitiesInternal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionFotoMuestraVO implements Collection<FotoMuestraVO> {
+public class CollectionFotoMuestraVO implements Collection<FotoVO> {
 
-    private List<FotoMuestraVO> fotoMuestraVOList;
+    private List<FotoVO> fotoMuestraVOList;
 
     CollectionFotoMuestraVO(){
         fotoMuestraVOList = new ArrayList<>();
     }
 
     @Override
-    public void agregar(FotoMuestraVO element) {
+    public void agregar(FotoVO element) {
         fotoMuestraVOList.add(element);
     }
 
     @Override
-    public void agregar(List<FotoMuestraVO> elements) {
+    public void agregar(List<FotoVO> elements) {
         fotoMuestraVOList.addAll(elements);
     }
 
@@ -38,8 +38,8 @@ public class CollectionFotoMuestraVO implements Collection<FotoMuestraVO> {
     }
 
     @Override
-    public FotoMuestraVO buscarnById(int id) {
-        FotoMuestraVO res=null;
+    public FotoVO buscarnById(int id) {
+        FotoVO res=null;
         int pos=positionById(id);
         if(pos!= -1){
             res=fotoMuestraVOList.get(pos);

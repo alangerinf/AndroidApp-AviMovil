@@ -72,7 +72,6 @@ public class AdapterListEvaluacion extends BaseAdapter{
                 try{
                     listEvaluacion.remove(listEvaluacion.get(position));
                     EvaluacionDAO evaluacionDAO = new EvaluacionDAO(ctx);
-
                     evaluacionDAO.borrarById(listEvaluacion.get(position).getId());
                 }catch (Exception e){
                     Toast.makeText(ctx,e.toString(),Toast.LENGTH_LONG).show();
