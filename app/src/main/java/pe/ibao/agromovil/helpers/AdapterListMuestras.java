@@ -91,7 +91,6 @@ public class AdapterListMuestras extends BaseAdapter{
 
         tViewTime.setText(listMuestas.get(position).getTime());
 
-
         eTextComent.setText(listMuestas.get(position).getComent());
 
         btnCam.setClickable(true);
@@ -133,6 +132,7 @@ public class AdapterListMuestras extends BaseAdapter{
        // Log.d("xdxdxd",position+"    "+listCriterios.get(position).getName());
         nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
         _string.setHeight(0);
+        /*
         _float.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -143,7 +143,7 @@ public class AdapterListMuestras extends BaseAdapter{
                 }
             }
         });
-
+*/
         eTextComent.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {

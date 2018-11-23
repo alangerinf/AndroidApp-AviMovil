@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import pe.ibao.agromovil.DataUserHandler;
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.helpers.LoginHelper;
+import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
 import pe.ibao.agromovil.utilities.CargaInicial;
 
 public class Preloader extends AppCompatActivity {
@@ -26,7 +28,7 @@ public class Preloader extends AppCompatActivity {
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                DataUserHandler duh = new DataUserHandler(getBaseContext());
+
                 //verificamos si tenemos internet
                 ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
@@ -35,37 +37,20 @@ public class Preloader extends AppCompatActivity {
                     // Si hay conexión a Internet en este momento
                     Toast.makeText(getBaseContext(),"Online Mode On!",
                             Toast.LENGTH_SHORT).show();
-                    if(duh.isLogin()){
-                        if(true){//si tu contraseña sigue siendo la misma
-                            verifyUpdate();//verificar actualizacion
-                        }else{//si estas logueado y tu contraseña no es la misma
-                            Toast.makeText(getBaseContext(),"Contraseña no es la misma",
-                                    Toast.LENGTH_SHORT).show();
-                            openLogin();//mostrar activity de de login
-                        }
-
-                    }else{
-                        //si tienes internet y no estas logueado
-                        openLogin();
-
-                    }
-
 
                 } else {
                     Toast.makeText(getBaseContext(),"Offline Mode On!",
                             Toast.LENGTH_SHORT).show();
                     //varieble para comprovar si esas logueado
 
-                    //si no hay internet pero estas logueado
-                    if(duh.isLogin()){
-                        ingresar();
-                    }else{//si no estas logueado ni tienes conexion a internet por las puras entrarias
-                        Toast.makeText(getBaseContext(),"Tampoco estas logueado, conectate a internet, gracias!",
-                                Toast.LENGTH_SHORT).show();
-                        ingresar();
-                        //finish();
-                    }
+                }
 
+                LoginHelper loginHelper = new LoginHelper(getBaseContext());
+                UsuarioVO temp =loginHelper.verificarLogueo();
+                if(temp!=null){
+                    ingresar();
+                }else{
+                    openLogin();
                 }
 
             }
@@ -93,6 +78,8 @@ public class Preloader extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
     }
+
+
 
 
 

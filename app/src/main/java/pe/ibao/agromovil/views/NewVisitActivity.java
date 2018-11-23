@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.views;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -67,7 +68,7 @@ public class NewVisitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         xx= savedInstanceState;
         setContentView(R.layout.activity_new_visita);
-        setupActionBar();
+       // setupActionBar();
         ctx=this;
 
         tViewContacto   = (TextView) findViewById(R.id.tViewContacto);
@@ -237,20 +238,32 @@ public class NewVisitActivity extends AppCompatActivity {
         }
 
     }
-
+/*
     private void setupActionBar(){
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+*/
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
+    }
+    @Override
+    public void onBackPressed() {
 
+        showClosePopup();
+        //    moveTaskToBack(true);
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
 
-        Toast.makeText(this,"onactivity resytk",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"onactivity resytk",Toast.LENGTH_LONG).show();
         visita = new VisitaDAO(ctx).getEditing();
         switch (requestCode){
             case REQUEST_BASICS_DATA :
@@ -338,13 +351,7 @@ public class NewVisitActivity extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public void onBackPressed() {
 
-        showClosePopup();
-        //    moveTaskToBack(true);
-
-    }
 
     private void showClosePopup(){
         dialogClose.setContentView(R.layout.dialog_guardar_progreso);

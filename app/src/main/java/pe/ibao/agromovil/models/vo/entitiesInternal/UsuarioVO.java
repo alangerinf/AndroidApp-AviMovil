@@ -4,11 +4,33 @@ public class UsuarioVO {
     private int id;
     private String user;
     private String password;
+    private String name;
+    private String lastName;
 
     public UsuarioVO(int id, String user, String password) {
         this.id = id;
         this.user = user;
         this.password = password;
+    }
+
+    public UsuarioVO() {
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public int getId() {

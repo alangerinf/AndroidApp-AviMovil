@@ -2,6 +2,10 @@ package pe.ibao.agromovil.utilities;
 
 public class Utilities {
 
+
+    public static final String URL_AUTENTIFICATION="http://apps.ibao.pe/agromovil/requests/autenticar.php";
+
+
     public static final String DATABASE_NAME="data";
 
     public static final String TABLE_USUARIO="usuario",

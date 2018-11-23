@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +105,10 @@ public class newEvaluacionActivity extends AppCompatActivity {
         cl.setMinWidth(anchoTotal);
         cl.setMinHeight(altoTotal);
 */
+
+
+
+
         spnTipoInspeccion = (Spinner) findViewById(R.id.spnTipoInspeccion);
         eTextQR = (EditText) findViewById(R.id.eTextQR);
         listViewMuestas = (ListView) findViewById(R.id.list_criterios);
@@ -123,6 +129,23 @@ public class newEvaluacionActivity extends AppCompatActivity {
 
         eTextQR.setText(new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getQr());
 
+
+        eTextQR.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                new EvaluacionDAO(getBaseContext()).editarQR(idEvaluacion,String.valueOf(s));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         cargarTipoInspeccion();
         Log.d("eva123","tipotam"+listTipoInspeccion.size());
