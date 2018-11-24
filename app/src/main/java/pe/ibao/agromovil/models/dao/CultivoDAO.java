@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.models.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.CultivoVO;
+
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO_COL_ID;
@@ -27,6 +29,17 @@ public class CultivoDAO {
         this.ctx=ctx;
     }
 
+    public boolean insertarCultivo(int id, String name){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TABLE_CULTIVO_COL_ID,id);
+        values.put(TABLE_CULTIVO_COL_NAME,name);
+        Long temp = db.insert(TABLE_CULTIVO,TABLE_CULTIVO_COL_ID,values);
+        db.close();
+        return temp > 0;
+    }
+
     public CultivoVO consultarCultivoByid(int id){
         ConexionSQLiteHelper c;
         c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
@@ -39,7 +52,9 @@ public class CultivoDAO {
                             "C."+TABLE_CULTIVO_COL_ID+", " +
                             "C."+TABLE_CULTIVO_COL_NAME+
                         " FROM "+
-                            TABLE_CULTIVO+" as C"
+                            TABLE_CULTIVO+" as C"+
+                        " WHERE "+
+                            "C."+TABLE_CULTIVO_COL_ID+" = "+String.valueOf(id)
                     ,null);
             cursor.moveToFirst();
             temp.setId(cursor.getInt(0));

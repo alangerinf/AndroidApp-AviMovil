@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.models.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,7 +31,17 @@ public class FundoDAO {
 
         this.ctx=ctx;
     }
-
+    public boolean insertarFundo(int id, String name,int idEmpresa){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TABLE_FUNDO_COL_ID,id);
+        values.put(TABLE_FUNDO_COL_NAME,name);
+        values.put(TABLE_FUNDO_COL_IDEMPRESA,idEmpresa);
+        Long temp = db.insert(TABLE_FUNDO,TABLE_FUNDO_COL_ID,values);
+        db.close();
+        return temp > 0;
+    }
     public FundoVO consultarById(int id) {
         ConexionSQLiteHelper c;
         c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.utilities.UploaderDB;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener, ListInspectionsFragment.OnFragmentInteractionListener{
@@ -37,8 +38,8 @@ public class MainActivity extends AppCompatActivity
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_main,myFragment).commit();
 
-
-
+        //verificar y estan actualizar de inmediato
+        new UploaderDB(this);
 
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

@@ -1,15 +1,19 @@
 package pe.ibao.agromovil.models.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
+import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
+import pe.ibao.agromovil.utilities.Utilities;
+
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_ID;
@@ -27,12 +31,24 @@ public class EmpresaDAO {
         this.ctx=ctx;
     }
 
+
+    public boolean insertarEmpresa(int id, String name){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Utilities.TABLE_EMPRESA_COL_ID,id);
+        values.put(Utilities.TABLE_EMPRESA_COL_NAME,name);
+        Long temp = db.insert(Utilities.TABLE_EMPRESA,Utilities.TABLE_EMPRESA_COL_ID,values);
+        db.close();
+        return (temp>0)?true:false;
+    }
+
     public EmpresaVO consultarEmpresaByid(int id){
         SQLiteDatabase db = c.getReadableDatabase();
         EmpresaVO temp = null;
         try{
             temp = new EmpresaVO();
-            Cursor cursor = db.rawQuery("SELECT E."+TABLE_EMPRESA_COL_ID+", E."+TABLE_EMPRESA_COL_NAME+" FROM "+TABLE_EMPRESA+" as E",null);
+            Cursor cursor = db.rawQuery("SELECT E."+TABLE_EMPRESA_COL_ID+", E."+TABLE_EMPRESA_COL_NAME+" FROM "+TABLE_EMPRESA+" as E"+" WHERE "+"E."+TABLE_EMPRESA_COL_ID+" = "+String.valueOf(id),null);
             cursor.moveToFirst();
                 temp.setId(cursor.getInt(0));
                 temp.setName(cursor.getString(1));

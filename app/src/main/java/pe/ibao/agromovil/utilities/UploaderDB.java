@@ -4,18 +4,72 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
-import android.widget.Toast;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
+import pe.ibao.agromovil.helpers.DownloaderConfiguracionCriterio;
+import pe.ibao.agromovil.helpers.DownloaderCriterio;
+import pe.ibao.agromovil.helpers.DownloaderCultivo;
+import pe.ibao.agromovil.helpers.DownloaderEmpresa;
+import pe.ibao.agromovil.helpers.DownloaderFundo;
+import pe.ibao.agromovil.helpers.DownloaderFundoVariedad;
+import pe.ibao.agromovil.helpers.DownloaderTipoInspeccion;
+import pe.ibao.agromovil.helpers.DownloaderVariedad;
 
-public class CargaInicial {
+import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
+
+public class UploaderDB {
 
     private Context ctx;
 
-    public CargaInicial(Context ctx) {
+    public UploaderDB(Context ctx) {
         this.ctx = ctx;
+        ConexionSQLiteHelper c;
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = c.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_USUARIO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EMPRESA);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CULTIVO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VARIEDAD);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDOVARIEDAD);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPOINSPECCION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONCRITERIO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIO);
+        /*
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VISITA);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EVALUACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_MUESTRA);
+*/
+        db.execSQL(Utilities.CREATE_TABLE_USUARIO);
+        db.execSQL(Utilities.CREATE_TABLE_EMPRESA);
+        db.execSQL(Utilities.CREATE_TABLE_FUNDO);
+        db.execSQL(Utilities.CREATE_TABLE_CULTIVO);
+        db.execSQL(Utilities.CREATE_TABLE_VARIEDAD);
+        db.execSQL(Utilities.CREATE_TABLE_FUNDOVARIEDAD);
+        db.execSQL(Utilities.CREATE_TABLE_TIPOINSPECCION);
+        db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONCRITERIO);
+        db.execSQL(Utilities.CREATE_TABLE_CRITERIO);
+        db.close();
+        c.close();
 
+        DownloaderEmpresa emp = new DownloaderEmpresa(ctx);
+        emp.download();
+        DownloaderFundo fun = new DownloaderFundo(ctx);
+        fun.download();
+        DownloaderCultivo cul = new DownloaderCultivo(ctx);
+        cul.download();
+        DownloaderVariedad var = new DownloaderVariedad(ctx);
+        var.download();
+        DownloaderFundoVariedad fva = new DownloaderFundoVariedad(ctx);
+        fva.download();
+        DownloaderTipoInspeccion ti = new DownloaderTipoInspeccion(ctx);
+        ti.download();
+        DownloaderConfiguracionCriterio cc = new DownloaderConfiguracionCriterio(ctx);
+        cc.download();
+        DownloaderCriterio cri = new DownloaderCriterio(ctx);
+        cri.download();
 
+/*
         cargarEmpresas();
         cargarFundos();
         cargarCultivos();
@@ -27,7 +81,15 @@ public class CargaInicial {
         //cargarVisitas();
         //cargarEvaluaciones();
         //cargarMuestras();
+        */
     }
+
+
+
+
+
+
+
 
 
     public void cargarEmpresas(){

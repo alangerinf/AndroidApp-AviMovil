@@ -13,7 +13,7 @@ import pe.ibao.agromovil.DataUserHandler;
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.helpers.LoginHelper;
 import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
-import pe.ibao.agromovil.utilities.CargaInicial;
+import pe.ibao.agromovil.utilities.UploaderDB;
 
 public class Preloader extends AppCompatActivity {
 
@@ -23,7 +23,6 @@ public class Preloader extends AppCompatActivity {
         setContentView(R.layout.activity_preloader);
 
 
-        new CargaInicial(this);
         //delay de 1 segundo
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

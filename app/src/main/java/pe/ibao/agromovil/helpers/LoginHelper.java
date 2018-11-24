@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,7 +34,6 @@ public class LoginHelper {
 
     public static String POST_USER = "user";
     public static String POST_PASSWORD = "password";
-
 
     Context ctx;
     ProgressDialog progress;
@@ -70,22 +70,25 @@ public class LoginHelper {
                                 Log.d("autentification",user);
                                 Log.d("autentification",pass);
 
-                                JSONObject temp = data.getJSONObject("0");
-                                UsuarioVO usuarioVO = new UsuarioVO();
-                                usuarioVO.setId(temp.getInt("id"));
-                                usuarioVO.setUser(temp.getString("codigo"));
-                                usuarioVO.setPassword(pass);
-                                usuarioVO.setName(temp.getString("inspector"));
-                                usuarioVO.setLastName("");
-                                new UsuarioDAO(ctx).guardarUsuarioNuevo(usuarioVO);
-                                if( verificarLogueo() != null){
-                                    UsuarioVO u =verificarLogueo();
-                                    if(u!=null){
-                                        Toast.makeText(ctx,"HOLA "+u.getName(),Toast.LENGTH_LONG).show();
-                                        Intent intent = new Intent(ctx,Update.class);
-                                        ctx.startActivity(intent);
-                                    }else {
-                                        Toast.makeText(ctx,"Error de Base de Datos Interna",Toast.LENGTH_LONG).show();
+                                JSONArray main = data.getJSONArray("login");
+                                for(int i=0;i<main.length();i++){
+                                    JSONObject temp = new JSONObject(main.get(i).toString());
+                                    UsuarioVO usuarioVO = new UsuarioVO();
+                                    usuarioVO.setId(temp.getInt("id"));
+                                    usuarioVO.setUser(temp.getString("codigo"));
+                                    usuarioVO.setPassword(pass);
+                                    usuarioVO.setName(temp.getString("inspector"));
+                                    usuarioVO.setLastName("");
+                                    new UsuarioDAO(ctx).guardarUsuarioNuevo(usuarioVO);
+                                    if( verificarLogueo() != null){
+                                        UsuarioVO u =verificarLogueo();
+                                        if(u!=null){
+                                            Toast.makeText(ctx,"HOLA "+u.getName(),Toast.LENGTH_LONG).show();
+                                            Intent intent = new Intent(ctx,Update.class);
+                                            ctx.startActivity(intent);
+                                        }else {
+                                            Toast.makeText(ctx,"Error de Base de Datos Interna",Toast.LENGTH_LONG).show();
+                                        }
                                     }
                                 }
                             }else{

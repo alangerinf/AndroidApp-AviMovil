@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.models.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -42,6 +43,21 @@ public class CriterioDAO {
 
         this.ctx=ctx;
     }
+
+    public boolean insertarCriterio(int id, String name,String tipo, String magnitud, int idTipoInspeccion){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TABLE_CRITERIO_COL_ID,id);
+        values.put(TABLE_CRITERIO_COL_NAME,name);
+        values.put(TABLE_CRITERIO_COL_TIPO,tipo);
+        values.put(TABLE_CRITERIO_COL_MAGNITUD,magnitud);
+        values.put(TABLE_CRITERIO_COL_IDTIPOINSPECCION,idTipoInspeccion);
+        Long temp = db.insert(TABLE_CRITERIO,TABLE_CRITERIO_COL_ID,values);
+        db.close();
+        return temp > 0;
+    }
+
 
     public CriterioVO consultarById(int id) {
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );

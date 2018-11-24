@@ -111,9 +111,6 @@ public class VisitaDAO {
 
                         }
 
-
-
-
                     }
                 cursor.close();
 
@@ -166,7 +163,7 @@ public class VisitaDAO {
                 Log.d(TAG,"Intentar nuevo"+e.toString());
             }
         } else{
-            Toast.makeText(ctx,"Ya se esta editando una:"+resVisita.getId(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx,"Abriendo Visita Previa"/*+resVisita.getId()*/,Toast.LENGTH_SHORT).show();
         }
         return resVisita;
     }

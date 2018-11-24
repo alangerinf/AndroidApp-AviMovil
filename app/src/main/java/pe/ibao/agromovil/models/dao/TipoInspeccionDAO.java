@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.models.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,7 +25,16 @@ public class TipoInspeccionDAO {
 
         this.ctx=ctx;
     }
-
+    public boolean insertarTipoInspeccion(int id, String name){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TABLE_TIPOINSPECCION_COL_ID,id);
+        values.put(TABLE_TIPOINSPECCION_COL_NAME,name);
+        Long temp = db.insert(TABLE_TIPOINSPECCION,TABLE_TIPOINSPECCION_COL_ID,values);
+        db.close();
+        return temp > 0;
+    }
     public TipoInspeccionVO consultarByid(int id){
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();

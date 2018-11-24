@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.models.dao.VisitaDAO;
 
 
 /**
@@ -78,10 +80,10 @@ public class MainFragment extends Fragment {
 
 
 
-
+/*
         Toast.makeText(this.getContext(),getRotation(this.getContext()),
                 Toast.LENGTH_SHORT).show();
-
+*/
 
 
         /*
@@ -108,6 +110,16 @@ public class MainFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+
+        if( new VisitaDAO(getContext()).getEditing() != null){
+            TextView tv1 = (TextView) getView().findViewById(R.id.tViewInspeccionStatus1);
+            TextView tv2 = (TextView) getView().findViewById(R.id.tViewInspeccionStatus2);
+                tv1.setText("Continuar Inspección");
+                tv2.setText("Continuar Inspección");
+        }
+
+
+
         layoutNewInspection = (RelativeLayout) getView().findViewById(R.id.layout_new_Inspection);
         layoutNewInspection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +146,6 @@ public class MainFragment extends Fragment {
         layoutHorizontal =  (ConstraintLayout) getView().findViewById(R.id.lay_horizontal);
         if(getRotation(this.getContext()).equals("vertical")){ //es vertical o portrait.
             layoutHorizontal.setVisibility(View.INVISIBLE);
-
             layoutVertical.setVisibility(View.VISIBLE);
         }else{ // es horizontal o landscape.
             layoutVertical.setVisibility(View.INVISIBLE);

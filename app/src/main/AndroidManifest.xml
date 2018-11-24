@@ -37,6 +37,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".views.MainActivity"
@@ -92,21 +93,21 @@
 
         <activity
             android:name=".views.PhotoGallery"
-            android:label="@string/title_activity_photo_gallery">
-        </activity>
+            android:label="@string/title_activity_photo_gallery"></activity>
 
         <provider
-            android:authorities="${applicationId}.provider"
             android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true"
-            >
+            android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
-
         </provider>
 
+        <activity android:name=".views.EscanerQR">
+
+        </activity>
     </application>
 
 </manifest>

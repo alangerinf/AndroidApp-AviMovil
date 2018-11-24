@@ -82,9 +82,6 @@ public class NewVisitActivity extends AppCompatActivity {
         dialogClose = new Dialog(this);
 
 
-
-
-
         visitaDAO = new VisitaDAO(this);
         visita = visitaDAO.intentarNuevo();
         EvaluacionDAO evaluacionDAO = new EvaluacionDAO(this);
@@ -228,11 +225,14 @@ public class NewVisitActivity extends AppCompatActivity {
             mybundle.putInt("idTipoInspeccion",evtemp.getIdTipoInspeccion());
             mybundle.putInt("idVariedad",visita.getIdVariedad());
             mybundle.putInt("idFundo",visita.getIdFundo());
-            mybundle.putInt("isNewTest",1);
-            intent.putExtra("bundle",mybundle);
-            evaluacionVOList= new EvaluacionDAO(ctx).listarByIdVisita(visita.getId());
+            mybundle.putInt("isNewTest",0);
+            mybundle.putString("fechaHora",visita.getFechaHora());
+            /*evaluacionVOList= new EvaluacionDAO(ctx).listarByIdVisita(visita.getId());
             baseAdapter.notifyDataSetChanged();
             setListViewHeightBasedOnChildren(listViewEvaluaciones);
+            */
+            intent.putExtras(mybundle);
+            startActivityForResult(intent,REQUEST_EDIT_EVALUATION);
         }else{
             Toast.makeText(ctx,"Primero configura tus Datos Basicos",Toast.LENGTH_LONG).show();
         }

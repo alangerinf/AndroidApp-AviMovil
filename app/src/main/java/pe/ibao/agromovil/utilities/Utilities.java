@@ -2,8 +2,16 @@ package pe.ibao.agromovil.utilities;
 
 public class Utilities {
 
-
-    public static final String URL_AUTENTIFICATION="http://apps.ibao.pe/agromovil/requests/autenticar.php";
+    public static final String URL_ROOT= "http://apps.ibao.pe/agromovil/requests/";
+    public static final String URL_AUTENTIFICATION=URL_ROOT+"autenticar.php";
+    public static final String URL_DOWNLOAD_TABLE_EMPRESA=URL_ROOT+"getEnterprises.php";
+    public static final String URL_DOWNLOAD_TABLE_FUNDO=URL_ROOT+"getFundos.php";
+    public static final String URL_DOWNLOAD_TABLE_CULTIVO=URL_ROOT+"getCultivos.php";
+    public static final String URL_DOWNLOAD_TABLE_VARIEDAD=URL_ROOT+"getVariedades.php";
+    public static final String URL_DOWNLOAD_TABLE_FUNDOVARIEDAD=URL_ROOT+"getFundoVariedades.php";
+    public static final String URL_DOWNLOAD_TABLE_TIPOINSPECCION=URL_ROOT+"getTipoInspecciones.php";
+    public static final String URL_DOWNLOAD_TABLE_CRITERIO=URL_ROOT+"getCriterioInspecciones.php";
+    public static final String URL_DOWNLOAD_TABLE_CONFIGURACIONCRITERIO=URL_ROOT+"getConfiguracionCriterios.php";
 
 
     public static final String DATABASE_NAME="data";

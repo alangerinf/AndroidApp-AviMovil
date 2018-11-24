@@ -18,7 +18,6 @@ import pe.ibao.agromovil.helpers.LoginHelper;
 import pe.ibao.agromovil.models.dao.EmpresaDAO;
 import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
-import pe.ibao.agromovil.utilities.CargaInicial;
 import pe.ibao.agromovil.utilities.Utilities;
 
 /**
