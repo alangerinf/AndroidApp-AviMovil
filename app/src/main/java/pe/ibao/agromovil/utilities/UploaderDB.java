@@ -26,7 +26,6 @@ public class UploaderDB {
         ConexionSQLiteHelper c;
         c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_USUARIO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EMPRESA);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CULTIVO);
@@ -40,7 +39,6 @@ public class UploaderDB {
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EVALUACION);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_MUESTRA);
 */
-        db.execSQL(Utilities.CREATE_TABLE_USUARIO);
         db.execSQL(Utilities.CREATE_TABLE_EMPRESA);
         db.execSQL(Utilities.CREATE_TABLE_FUNDO);
         db.execSQL(Utilities.CREATE_TABLE_CULTIVO);

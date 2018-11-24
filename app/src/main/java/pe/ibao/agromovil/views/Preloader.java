@@ -9,11 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import pe.ibao.agromovil.DataUserHandler;
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.helpers.LoginHelper;
+
 import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
-import pe.ibao.agromovil.utilities.UploaderDB;
+
 
 public class Preloader extends AppCompatActivity {
 
@@ -41,11 +41,10 @@ public class Preloader extends AppCompatActivity {
                     Toast.makeText(getBaseContext(),"Offline Mode On!",
                             Toast.LENGTH_SHORT).show();
                     //varieble para comprovar si esas logueado
-
                 }
 
-                LoginHelper loginHelper = new LoginHelper(getBaseContext());
-                UsuarioVO temp =loginHelper.verificarLogueo();
+                UsuarioVO temp = new LoginHelper(getBaseContext()).verificarLogueo();
+
                 if(temp!=null){
                     ingresar();
                 }else{
@@ -62,24 +61,18 @@ public class Preloader extends AppCompatActivity {
         Intent intent = new Intent(this,LoginActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
     }
 
     void  ingresar(){
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
     }
+
+    /*
     void verifyUpdate(){
         Intent intent = new Intent(this,Update.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-
-    }
-
-
-
-
-
+    }*/
 }

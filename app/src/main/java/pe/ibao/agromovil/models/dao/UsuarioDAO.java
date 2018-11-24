@@ -74,7 +74,6 @@ public class UsuarioDAO {
                             " FROM "+
                             TABLE_USUARIO+" as U "
                     ,null);
-
             if(cursor.getCount()>0){
                 cursor.moveToFirst() ;
                 Log.d(TAG,"hay primero");

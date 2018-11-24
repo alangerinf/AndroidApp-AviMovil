@@ -81,7 +81,7 @@ public class LoginHelper {
                                     usuarioVO.setLastName("");
                                     new UsuarioDAO(ctx).guardarUsuarioNuevo(usuarioVO);
                                     if( verificarLogueo() != null){
-                                        UsuarioVO u =verificarLogueo();
+                                        UsuarioVO u = verificarLogueo();
                                         if(u!=null){
                                             Toast.makeText(ctx,"HOLA "+u.getName(),Toast.LENGTH_LONG).show();
                                             Intent intent = new Intent(ctx,Update.class);
