@@ -3,7 +3,6 @@ package pe.ibao.agromovil.views;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +26,7 @@ import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.VariedadVO;
 
-public class BasicsActivity extends AppCompatActivity {
+public class ActivityBasic extends AppCompatActivity {
 
     private List<EmpresaVO> listEmpresas;
     private List<String> listNombreEmpresas;
@@ -280,12 +279,12 @@ public class BasicsActivity extends AppCompatActivity {
             idFundo = listFundos.get(spnFundo.getSelectedItemPosition()-1).getId();
             idVariedad = listVariedades.get(spnVariedad.getSelectedItemPosition()-1).getId();
             contacto = eTextContacto.getText().toString();
-            returnIntent.putExtra(NewVisitActivity.REQUEST_EMPRESA,spnEmpresa.getSelectedItem().toString());
-            returnIntent.putExtra(NewVisitActivity.REQUEST_FUNDO,spnFundo.getSelectedItem().toString());
-            returnIntent.putExtra(NewVisitActivity.REQUEST_CULTIVO,spnCultivo.getSelectedItem().toString());
-            returnIntent.putExtra(NewVisitActivity.REQUEST_VARIEDAD,spnVariedad.getSelectedItem().toString());
-            returnIntent.putExtra(NewVisitActivity.REQUEST_CONTACTO,eTextContacto.getText().toString());
-            returnIntent.putExtra(NewVisitActivity.REQUEST_CONTACTO,eTextContacto.getText().toString());
+            returnIntent.putExtra(ActivityVisita.REQUEST_EMPRESA,spnEmpresa.getSelectedItem().toString());
+            returnIntent.putExtra(ActivityVisita.REQUEST_FUNDO,spnFundo.getSelectedItem().toString());
+            returnIntent.putExtra(ActivityVisita.REQUEST_CULTIVO,spnCultivo.getSelectedItem().toString());
+            returnIntent.putExtra(ActivityVisita.REQUEST_VARIEDAD,spnVariedad.getSelectedItem().toString());
+            returnIntent.putExtra(ActivityVisita.REQUEST_CONTACTO,eTextContacto.getText().toString());
+            returnIntent.putExtra(ActivityVisita.REQUEST_CONTACTO,eTextContacto.getText().toString());
 
             VisitaDAO visitaDAO = new VisitaDAO(getBaseContext());
             boolean res =  visitaDAO.cambiarIdFundoIdVariedadContacto(idVisita,idFundo,idVariedad,contacto);

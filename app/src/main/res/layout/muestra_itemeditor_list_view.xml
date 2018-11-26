@@ -123,7 +123,6 @@
         app:layout_constraintTop_toBottomOf="@+id/name_criterio"
         tools:text="16/34/2424" />
 
-
     <EditText
         android:id="@+id/eTextComentario"
         android:layout_width="0dp"

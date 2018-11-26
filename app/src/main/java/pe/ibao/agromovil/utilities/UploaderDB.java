@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.helpers.DownloaderConfiguracionCriterio;
@@ -20,6 +23,58 @@ import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 public class UploaderDB {
 
     private Context ctx;
+    TextView porcentaje;
+    TextView mensaje;
+
+    public UploaderDB(Context ctx, TextView porcentaje, TextView mensaje){
+        this.ctx = ctx;
+        this.porcentaje = porcentaje;
+        this.mensaje = mensaje;
+        ConexionSQLiteHelper c;
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = c.getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EMPRESA);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CULTIVO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VARIEDAD);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDOVARIEDAD);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPOINSPECCION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONCRITERIO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIO);
+        /*
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VISITA);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EVALUACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_MUESTRA);
+*/
+        db.execSQL(Utilities.CREATE_TABLE_EMPRESA);
+        db.execSQL(Utilities.CREATE_TABLE_FUNDO);
+        db.execSQL(Utilities.CREATE_TABLE_CULTIVO);
+        db.execSQL(Utilities.CREATE_TABLE_VARIEDAD);
+        db.execSQL(Utilities.CREATE_TABLE_FUNDOVARIEDAD);
+        db.execSQL(Utilities.CREATE_TABLE_TIPOINSPECCION);
+        db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONCRITERIO);
+        db.execSQL(Utilities.CREATE_TABLE_CRITERIO);
+        db.close();
+        c.close();
+
+        DownloaderEmpresa emp = new DownloaderEmpresa(ctx);
+        emp.download(porcentaje,mensaje,0,10);
+        DownloaderFundo fun = new DownloaderFundo(ctx);
+        fun.download(porcentaje,mensaje,10,20);
+        DownloaderCultivo cul = new DownloaderCultivo(ctx);
+        cul.download(porcentaje,mensaje,30,20);
+        DownloaderVariedad var = new DownloaderVariedad(ctx);
+        var.download(porcentaje,mensaje,50,10);
+        DownloaderFundoVariedad fva = new DownloaderFundoVariedad(ctx);
+        fva.download(porcentaje,mensaje,60,10);
+        DownloaderTipoInspeccion ti = new DownloaderTipoInspeccion(ctx);
+        ti.download(porcentaje,mensaje,70,10);
+        DownloaderConfiguracionCriterio cc = new DownloaderConfiguracionCriterio(ctx);
+        cc.download(porcentaje,mensaje,80,10);
+        DownloaderCriterio cri = new DownloaderCriterio(ctx);
+        cri.download(porcentaje,mensaje,90,10);
+    }
+
 
     public UploaderDB(Context ctx) {
         this.ctx = ctx;

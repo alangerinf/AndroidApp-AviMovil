@@ -1,13 +1,11 @@
 package pe.ibao.agromovil.views;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,7 +31,7 @@ import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
-public class NewVisitActivity extends AppCompatActivity {
+public class ActivityVisita extends AppCompatActivity {
 
 
 
@@ -324,7 +322,7 @@ public class NewVisitActivity extends AppCompatActivity {
             Toast.makeText(ctx, "Usted ya tiene evaluaciones agregadas",Toast.LENGTH_LONG).show();
         }else{
 
-            Intent intent = new Intent(this,BasicsActivity.class);
+            Intent intent = new Intent(this,ActivityBasic.class);
 
             Bundle mybundle = new Bundle();
             if(visita.getIdFundo()>0 && visita.getIdVariedad()>0){

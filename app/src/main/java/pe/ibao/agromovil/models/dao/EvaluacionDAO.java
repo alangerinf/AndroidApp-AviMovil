@@ -69,7 +69,6 @@ public class EvaluacionDAO {
         }
         c.close();
 
-
         return flag;
     }
 
@@ -110,6 +109,34 @@ public class EvaluacionDAO {
                 if (temp.getIdTipoInspeccion()>0){
                     temp.setNameInspeccion(new TipoInspeccionDAO(ctx).consultarByid(temp.getIdTipoInspeccion()).getName());
                 }
+                List<MuestraVO> listMuestras =  new MuestrasDAO(ctx).listarByIdEvaluacion(temp.getId());
+                float mtotal= (int)listMuestras.size();
+                float sinllenar=0;
+
+                for( MuestraVO m : listMuestras ) {
+                    if (m.getValue().equals("") || m.getValue().isEmpty())
+                    {
+                        if(
+                                m.getType().equals("boolean")
+                                        ||
+                                        m.getType().equals("list")
+                                ){
+                            //sinllenar = sinllenar + 1;
+                            Log.d("porcentaje","+0 "+sinllenar+ " "+m.getType()+" "+m.getValue() );
+                        }else{
+                            sinllenar = sinllenar + 1;
+                            Log.d("porcentaje","+1 "+sinllenar+ " "+m.getType()+" "+m.getValue() );
+                        }
+
+                    }
+                    Log.d("porcentaje",m.getType()+" "+m.getValue());
+
+                }
+
+
+                int por = (int)((((mtotal*1.0)-sinllenar)/mtotal)*100);
+                Log.d("porcentaje"," "+mtotal+" "+ sinllenar+" "+por );
+                temp.setPorcentaje(por);
             }
             cursor.close();
 
@@ -153,6 +180,33 @@ public class EvaluacionDAO {
 
     }
 
+    public int borrarByIdVisita(int idVisita){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        List<EvaluacionVO> evas = new EvaluacionDAO(ctx).listarByIdVisita(idVisita);
+
+        String[] parametros = {String.valueOf(idVisita)};
+        int res = db.delete(Utilities.TABLE_EVALUACION,TABLE_EVALUACION_COL_IDVISITA+"=?",parametros);
+
+        Log.d("borrando",String.valueOf(res));
+
+        for(EvaluacionVO ev : evas){
+            //eliminando muestras
+            List<MuestraVO> muestras = new MuestrasDAO(ctx).listarByIdEvaluacion(ev.getId());
+
+            for(MuestraVO m : muestras){
+                new MuestrasDAO(ctx).borrarMuestraById(m.getId());
+            }
+        }
+
+
+
+
+        return res;
+
+    }
+
 
     public List<EvaluacionVO> listarByIdVisita(int idVisita){
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
@@ -187,7 +241,37 @@ public class EvaluacionDAO {
                 if (temp.getIdTipoInspeccion()>0){
                     temp.setNameInspeccion(new TipoInspeccionDAO(ctx).consultarByid(temp.getIdTipoInspeccion()).getName());
                 }
+
+                List<MuestraVO> listMuestras =  new MuestrasDAO(ctx).listarByIdEvaluacion(temp.getId());
+                float mtotal= (int)listMuestras.size();
+                float sinllenar=0;
+
+                for( MuestraVO m : listMuestras ) {
+                    if (m.getValue().equals("") || m.getValue().isEmpty())
+                        {
+                            if(
+                                    m.getType().equals("boolean")
+                                    ||
+                                    m.getType().equals("list")
+                            ){
+                                //sinllenar = sinllenar + 1;
+                                Log.d("porcentaje","+0 "+sinllenar+ " "+m.getType()+" "+m.getValue() );
+                            }else{
+                                sinllenar = sinllenar + 1;
+                                Log.d("porcentaje","+1 "+sinllenar+ " "+m.getType()+" "+m.getValue() );
+                            }
+
+                        }
+                        Log.d("porcentaje",m.getType()+" "+m.getValue());
+
+                }
+
+
+                int por = (int)((((mtotal*1.0)-sinllenar)/mtotal)*100);
+                Log.d("porcentaje"," "+mtotal+" "+ sinllenar+" "+por );
+                temp.setPorcentaje(por);
                 evaluacionVOS.add(temp);
+
             }
             cursor.close();
         }catch (Exception e){

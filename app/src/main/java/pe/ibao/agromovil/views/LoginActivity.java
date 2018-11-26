@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity  {
 
 
 /*
-        Intent intent = new Intent(this,Update.class);
+        Intent intent = new Intent(this,ActivityUpdate.class);
         startActivity(intent);
 */
     }

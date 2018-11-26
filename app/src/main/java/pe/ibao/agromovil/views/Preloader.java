@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.helpers.LoginHelper;
 
@@ -64,14 +63,14 @@ public class Preloader extends AppCompatActivity {
     }
 
     void  ingresar(){
-        Intent intent = new Intent(this,MainActivity.class);
+        Intent intent = new Intent(this,ActivityMain.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     /*
     void verifyUpdate(){
-        Intent intent = new Intent(this,Update.class);
+        Intent intent = new Intent(this,ActivityUpdate.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }*/

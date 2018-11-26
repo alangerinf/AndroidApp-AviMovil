@@ -12,6 +12,7 @@ import java.util.List;
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
+import pe.ibao.agromovil.utilities.Utilities;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA;
@@ -21,6 +22,7 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_IDEMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
 
 public class FundoDAO {
 
@@ -31,6 +33,22 @@ public class FundoDAO {
 
         this.ctx=ctx;
     }
+
+
+
+    public boolean borrarTable(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        int res = db.delete(TABLE_FUNDO,null,null);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
+
     public boolean insertarFundo(int id, String name,int idEmpresa){
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();

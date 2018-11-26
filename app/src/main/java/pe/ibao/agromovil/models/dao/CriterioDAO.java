@@ -13,6 +13,7 @@ import java.util.List;
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
+import pe.ibao.agromovil.utilities.Utilities;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO;
@@ -33,6 +34,7 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDVA
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_IDEMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VARIEDAD;
 
 public class CriterioDAO {
@@ -58,6 +60,18 @@ public class CriterioDAO {
         return temp > 0;
     }
 
+    public boolean borrarTable(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        int res = db.delete(TABLE_CRITERIO,null,null);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
 
     public CriterioVO consultarById(int id) {
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );

@@ -23,14 +23,12 @@ import java.util.Map;
 import pe.ibao.agromovil.app.AppController;
 import pe.ibao.agromovil.models.dao.UsuarioDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
-import pe.ibao.agromovil.views.LoginActivity;
-import pe.ibao.agromovil.views.MainActivity;
-import pe.ibao.agromovil.views.Update;
+import pe.ibao.agromovil.views.ActivityUpdate;
+import pe.ibao.agromovil.views.ActivityUpdate;
 
 import static pe.ibao.agromovil.utilities.Utilities.URL_AUTENTIFICATION;
 
 public class LoginHelper {
-
 
     public static String POST_USER = "user";
     public static String POST_PASSWORD = "password";
@@ -46,7 +44,6 @@ public class LoginHelper {
         UsuarioVO  temp = new UsuarioDAO(ctx).verficarLogueo();
         return temp;
     }
-
 
     public void intentoLogueo(final String user, final String pass){
         progress = new ProgressDialog(ctx);
@@ -84,7 +81,7 @@ public class LoginHelper {
                                         UsuarioVO u = verificarLogueo();
                                         if(u!=null){
                                             Toast.makeText(ctx,"HOLA "+u.getName(),Toast.LENGTH_LONG).show();
-                                            Intent intent = new Intent(ctx,Update.class);
+                                            Intent intent = new Intent(ctx, ActivityUpdate.class);
                                             ctx.startActivity(intent);
                                         }else {
                                             Toast.makeText(ctx,"Error de Base de Datos Interna",Toast.LENGTH_LONG).show();

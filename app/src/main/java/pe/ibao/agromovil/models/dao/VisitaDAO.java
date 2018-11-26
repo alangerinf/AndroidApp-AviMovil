@@ -13,6 +13,7 @@ import java.util.List;
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.CultivoVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
+import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.CollectionEvaluationVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
@@ -90,11 +91,19 @@ public class VisitaDAO {
                         Log.d(TAG,"8");
 
                         if(temp.getIdFundo()>0){//verifica si devuelve un id fundo
+                            Log.d(TAG,"getEditing -1 "+temp.getIdFundo());
                             //obteniedo datos d e fundo
                             FundoDAO fundoDAO = new FundoDAO(ctx);
-                            temp.setNameFundo(fundoDAO.consultarById(temp.getIdFundo()).getName());
+                            FundoVO f =  fundoDAO.consultarById(temp.getIdFundo());
+                            Log.d(TAG,"getEditing -2 "+temp.getIdFundo());
+                            String nameFundo = f.getName();
+                            Log.d(TAG,"getEditing -3 "+temp.getIdFundo());
+                            temp.setNameFundo(nameFundo);
+                            Log.d(TAG,"getEditing -4 "+temp.getIdFundo());
                            //obteniedno datos d e empresa
+
                             EmpresaVO empresaVO = new EmpresaDAO(ctx).consultarEmpresaByid(temp.getIdFundo());
+
                             temp.setIdEmpresa(empresaVO.getId());
                             temp.setNameEmpresa(empresaVO.getName());
 
@@ -115,8 +124,8 @@ public class VisitaDAO {
                 cursor.close();
 
         }catch (Exception e){
-            Log.d(TAG,"getEditing "+e.toString());
-            Toast.makeText(ctx,"getEditing "+e.toString(),Toast.LENGTH_SHORT).show();
+            Log.d(TAG,"1getEditing "+e.toString());
+            Toast.makeText(ctx,"1getEditing "+e.toString(),Toast.LENGTH_SHORT).show();
         }
         return temp;
     }
@@ -167,6 +176,27 @@ public class VisitaDAO {
         }
         return resVisita;
     }
+
+
+    public boolean borrarById(int id){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+
+        int res = db.delete(TABLE_VISITA,TABLE_VISITA_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+            new EvaluacionDAO(ctx).borrarByIdVisita(id);
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
+
 
     public  VisitaVO buscarById(Long id){
         ConexionSQLiteHelper c= new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );

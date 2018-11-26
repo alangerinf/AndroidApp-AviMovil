@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.views;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -21,8 +22,8 @@ import android.widget.Toast;
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.utilities.UploaderDB;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener, ListInspectionsFragment.OnFragmentInteractionListener{
+public class ActivityMain extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentMain.OnFragmentInteractionListener, ListInspectionsFragment.OnFragmentInteractionListener{
 
 
     private Fragment myFragment= null;
@@ -34,12 +35,12 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        myFragment = new MainFragment();
+        myFragment = new FragmentMain();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.content_main,myFragment).commit();
 
         //verificar y estan actualizar de inmediato
-        new UploaderDB(this);
+
 
 /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -104,11 +105,12 @@ public class MainActivity extends AppCompatActivity
         Intent i = null;
 
         boolean isUpload=false;
+        boolean isUpgrade=false;
 
         if (id == R.id.nav_new_inspection) {
             isFrame=false;
-            i = new Intent(this, NewVisitActivity.class);
-            myFragment= new MainFragment();
+            i = new Intent(this, ActivityVisita.class);
+            myFragment= new FragmentMain();
         } else if (id == R.id.nav_recent_visits){
             Toast.makeText(getBaseContext(),"recent visit!",
                     Toast.LENGTH_SHORT).show();
@@ -118,30 +120,27 @@ public class MainActivity extends AppCompatActivity
         }else if(id == R.id.upload){
             //comprobar internet
             isUpload=true;
+        }else if(id == R.id.upgrade){
+            isUpgrade=true;
         }
 
-        if(!isUpload){
+        if(!(isUpload || isUpgrade)){
             if(isFrame){
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main,myFragment).commit();
 
             }else if(!isFrame){
                 startActivity(i);
-
             }
         }else {
-            isConnectedToInternet();
+            isConnectedToInternetToUpdate(isUpgrade?"up":"down");
         }
-
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
 
-    void isConnectedToInternet(){
+    void isConnectedToInternetToUpdate(final String caso){
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -153,8 +152,20 @@ public class MainActivity extends AppCompatActivity
 
                 if (networkInfo != null && networkInfo.isConnected()) {
                     // Si hay conexión a Internet en este momento
-                    Toast.makeText(getBaseContext(),"Subiendo...",
+                    Toast.makeText(getBaseContext(),"Conectando...",
                             Toast.LENGTH_SHORT).show();
+                    switch (caso){
+                        case "up":
+                            Toast.makeText(getBaseContext(),"SUBIENDO",
+                                    Toast.LENGTH_SHORT).show();
+                            break;
+                        case "down":
+                            startActivity(
+                                    new Intent(getBaseContext(), ActivityUpdate.class)
+                            );
+                            finish();
+                            break;
+                    }
 
                 } else {
                     Toast.makeText(getBaseContext(),"No hay internet!",
@@ -163,7 +174,7 @@ public class MainActivity extends AppCompatActivity
                 }
 
             }
-        }, 1000);
+        }, 500);
 
 
     }

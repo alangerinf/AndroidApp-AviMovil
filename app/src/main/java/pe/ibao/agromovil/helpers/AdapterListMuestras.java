@@ -30,10 +30,6 @@ import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 import pe.ibao.agromovil.views.PhotoGallery;
-import pe.ibao.agromovil.views.Update;
-
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
-import static pe.ibao.agromovil.views.NewVisitActivity.REQUEST_BASICS_DATA;
 
 public class AdapterListMuestras extends BaseAdapter{
 

@@ -21,6 +21,7 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_IDEMPRESA;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
 
 public class EmpresaDAO {
 
@@ -31,6 +32,19 @@ public class EmpresaDAO {
         this.ctx=ctx;
     }
 
+
+    public boolean borrarTable(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        int res = db.delete(TABLE_EMPRESA,null,null);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
 
     public boolean insertarEmpresa(int id, String name){
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );

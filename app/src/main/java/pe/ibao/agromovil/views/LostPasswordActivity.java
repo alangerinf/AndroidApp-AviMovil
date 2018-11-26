@@ -33,7 +33,7 @@ public class LostPasswordActivity extends AppCompatActivity  {
     }
 
     void eventPressEnter(){
-      /*  Intent intent = new Intent(this,Update.class);
+      /*  Intent intent = new Intent(this,ActivityUpdate.class);
         startActivity(intent);
       */
     }
