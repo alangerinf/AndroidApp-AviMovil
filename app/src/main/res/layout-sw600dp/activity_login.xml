@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
 
-    tools:context=".views.LoginActivity">
+    tools:context=".views.ActivityLogin">
 
 
     <ImageView

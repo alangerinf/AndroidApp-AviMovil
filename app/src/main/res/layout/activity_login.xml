@@ -11,7 +11,7 @@
     android:gravity="center_horizontal"
     android:background="@color/primary"
 
-    tools:context=".views.LoginActivity">
+    tools:context=".views.ActivityLogin">
 
 
     <ImageView
@@ -127,7 +127,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/eTextPassword"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_arrow_forward"
+
+            android:src="@drawable/ic_arrow_forward"
             tools:ignore="MissingConstraints" />
 
         <TextView

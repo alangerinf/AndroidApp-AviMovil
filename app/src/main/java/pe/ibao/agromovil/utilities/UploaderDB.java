@@ -72,7 +72,7 @@ public class UploaderDB {
         DownloaderConfiguracionCriterio cc = new DownloaderConfiguracionCriterio(ctx);
         cc.download(porcentaje,mensaje,80,10);
         DownloaderCriterio cri = new DownloaderCriterio(ctx);
-        cri.download(porcentaje,mensaje,90,10);
+        cri.download(porcentaje,mensaje,91,10);
     }
 
 

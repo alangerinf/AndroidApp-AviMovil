@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context=".views.PhotoGallery">
+    tools:context=".views.ActivityPhotoGallery">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constraintLayout3"
@@ -43,19 +43,19 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton2"
+        android:id="@+id/floatingBtnCamara"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
-        android:onClick="TomarFoto"
         android:clickable="true"
+        android:onClick="TomarFoto"
         android:src="@drawable/ic_menu_camera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView21"
+        android:id="@+id/iViewBtnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -75,7 +75,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:src="@drawable/ic_menu_camera"
-        app:layout_constraintBottom_toTopOf="@+id/imageView21"
+        app:layout_constraintBottom_toTopOf="@+id/iViewBtnDelete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.views;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +14,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -35,7 +37,7 @@ import pe.ibao.agromovil.models.vo.entitiesInternal.FotoVO;
 import static android.Manifest.permission.CAMERA;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-public class PhotoGallery extends AppCompatActivity {
+public class ActivityPhotoGallery extends AppCompatActivity {
 
     private final String CARPETA_RAIZ = "misImagenes/";
     private final String CARPETA_IMAGEN = "misFotos";
@@ -49,14 +51,16 @@ public class PhotoGallery extends AppCompatActivity {
     private static String value;
     private static String fechaHora;
     private static List<FotoVO> listFotos;
-
+    private static boolean isEditable;
     private static ListView listViewFotos;
     RecyclerView recyclerView;
     private MyRecyclerViewAdapter adapter;
 
+    private static ImageView btnDelete;
 
 
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +73,17 @@ public class PhotoGallery extends AppCompatActivity {
         idMuestra = mybundle.getInt("idMuestra");
         value =  mybundle.getString("value");
         fechaHora =  mybundle.getString("fechaHora");
+        isEditable = mybundle.getBoolean("isEditable");
         listFotos = new FotoDAO(this).listarByIdMuestra(idMuestra);
         //listViewFotos = (ListView) findViewById(R.id.foto_listView);
         Toast.makeText(this,mybundle.toString(),Toast.LENGTH_LONG).show();
+
+        btnDelete = (ImageView) findViewById(R.id.iViewBtnDelete);
+
+        if(!isEditable){
+            ((FloatingActionButton) findViewById(R.id.floatingBtnCamara)).setVisibility(View.INVISIBLE);
+            btnDelete.setVisibility(View.INVISIBLE);
+        }
 
 
         if (validarPermisos()){
@@ -90,9 +102,9 @@ public class PhotoGallery extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.foto_listView);
         LinearLayoutManager horizontalLayoutManager
-                = new LinearLayoutManager(PhotoGallery.this, LinearLayoutManager.HORIZONTAL, false);
+                = new LinearLayoutManager(ActivityPhotoGallery.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
-        adapter = new MyRecyclerViewAdapter(this,listFotos,iViewLienzo);
+        adapter = new MyRecyclerViewAdapter(this,listFotos,iViewLienzo,isEditable);
 //        adapter.setClickListener((MyRecyclerViewAdapter.ItemClickListener) this);
         recyclerView.setAdapter(adapter);
 
@@ -121,7 +133,7 @@ public class PhotoGallery extends AppCompatActivity {
     }
 
     private void cargarDialogoRecomendacion() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(PhotoGallery.this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityPhotoGallery.this);
         dialog.setTitle("Permisos Desactivados");
         dialog.setMessage("Debe aceptar todos los permisos para poder tomar fotos");
         dialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
@@ -135,33 +147,35 @@ public class PhotoGallery extends AppCompatActivity {
 
 
     public void TomarFoto(View view){
-        fileImagen = new File(Environment.getExternalStorageDirectory(), DIRECTORIO_IMAGEN);
-        Boolean isCreated  = fileImagen.exists();
-        String nombre="";
+        if(isEditable){
+            fileImagen = new File(Environment.getExternalStorageDirectory(), DIRECTORIO_IMAGEN);
+            Boolean isCreated  = fileImagen.exists();
+            String nombre="";
 
-        if(!isCreated){
-            isCreated = fileImagen.mkdirs();
+            if(!isCreated){
+                isCreated = fileImagen.mkdirs();
+            }
+
+            if(isCreated){
+                nombre = System.currentTimeMillis()/100+".jpg";
+            }
+
+            PATH=Environment.getExternalStorageDirectory()+File.separator+ DIRECTORIO_IMAGEN +File.separator+nombre;
+
+            File imagen = new File(PATH);
+
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.N){
+                String autorities = getApplicationContext().getPackageName()+".provider";
+                Log.d("locomata",autorities);
+                Uri imageUri= FileProvider.getUriForFile(ActivityPhotoGallery.this,autorities,imagen);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
+            }else {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(imagen));
+            }
+            startActivityForResult(intent,20);
         }
-
-        if(isCreated){
-            nombre = System.currentTimeMillis()/100+".jpg";
-        }
-
-        PATH=Environment.getExternalStorageDirectory()+File.separator+ DIRECTORIO_IMAGEN +File.separator+nombre;
-
-        File imagen = new File(PATH);
-
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.N){
-            String autorities = getApplicationContext().getPackageName()+".provider";
-            Log.d("locomata",autorities);
-            Uri imageUri= FileProvider.getUriForFile(PhotoGallery.this,autorities,imagen);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
-        }else {
-            intent.putExtra(MediaStore.EXTRA_OUTPUT,Uri.fromFile(imagen));
-        }
-        startActivityForResult(intent,20);
     }
 
     @Override
@@ -188,7 +202,7 @@ public class PhotoGallery extends AppCompatActivity {
                 "si",
                 "no"
         };
-        final AlertDialog.Builder alertOpciones = new AlertDialog.Builder(PhotoGallery.this);
+        final AlertDialog.Builder alertOpciones = new AlertDialog.Builder(ActivityPhotoGallery.this);
         alertOpciones.setTitle("¿Desea configurar los permisos de Forma Manual?");
         alertOpciones.setItems(
                 opciones,
@@ -241,9 +255,9 @@ public class PhotoGallery extends AppCompatActivity {
 
                     recyclerView = findViewById(R.id.foto_listView);
                     LinearLayoutManager horizontalLayoutManager
-                            = new LinearLayoutManager(PhotoGallery.this, LinearLayoutManager.HORIZONTAL, false);
+                            = new LinearLayoutManager(ActivityPhotoGallery.this, LinearLayoutManager.HORIZONTAL, false);
                     recyclerView.setLayoutManager(horizontalLayoutManager);
-                    adapter = new MyRecyclerViewAdapter(this,listFotos, iViewLienzo);
+                    adapter = new MyRecyclerViewAdapter(this,listFotos, iViewLienzo,isEditable);
 //        adapter.setClickListener((MyRecyclerViewAdapter.ItemClickListener) this);
                     recyclerView.setAdapter(adapter);
                     break;

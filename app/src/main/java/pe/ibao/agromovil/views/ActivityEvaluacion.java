@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.views;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -42,7 +44,7 @@ import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 
 import static android.Manifest.permission.CAMERA;
 
-public class newEvaluacionActivity extends AppCompatActivity {
+public class ActivityEvaluacion extends AppCompatActivity {
 
 
     static final private int REQUEST_QR_CODE = 1;
@@ -69,6 +71,8 @@ public class newEvaluacionActivity extends AppCompatActivity {
     private static int idTipoInspeccion;
     private static int idFundo;
     private static int idVariedad;
+    private static boolean isEditable;
+    private static FloatingActionButton floatingActionButton;
 
 
     @Override
@@ -98,10 +102,11 @@ public class newEvaluacionActivity extends AppCompatActivity {
  */
     }//onActivityResult
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_evaluacion);
+        setContentView(R.layout.activity_evaluacion);
        // setupActionBar();
 
 /*
@@ -122,9 +127,10 @@ public class newEvaluacionActivity extends AppCompatActivity {
         eTextQR = (EditText) findViewById(R.id.eTextQR);
         listViewMuestas = (ListView) findViewById(R.id.list_criterios);
         tViewFechaHora = (TextView) findViewById(R.id.tViewFechaHora);
-
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.floatingNuevoCriterio);
         Intent intent = getIntent();
         Bundle mybundle = intent.getExtras();
+        isEditable = mybundle.getBoolean("isEditable");
         idEvaluacion = mybundle.getInt("idEvaluacion");
         idFundo = mybundle.getInt("idFundo");
         idVariedad = mybundle.getInt("idVariedad");
@@ -138,6 +144,13 @@ public class newEvaluacionActivity extends AppCompatActivity {
 
         eTextQR.setText(new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getQr());
 
+        if(!isEditable){
+            floatingActionButton.setVisibility(View.INVISIBLE);
+            eTextQR.setFocusable(false);
+            eTextQR.setClickable(false);
+            spnTipoInspeccion.setEnabled(false);
+            setTitle("Evaluacion Antigua");
+        }
 
         eTextQR.addTextChangedListener(new TextWatcher() {
             @Override
@@ -163,7 +176,7 @@ public class newEvaluacionActivity extends AppCompatActivity {
         spnTipoInspeccion.setAdapter(adaptadorInspecciones);
 
         saveMuestras = new MuestrasDAO(this).listarByIdEvaluacion(idEvaluacion);
-        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas, spnTipoInspeccion);
+        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas, spnTipoInspeccion,isEditable);
         listViewMuestas.setAdapter(adapterListMuestras);//seteanis ek adaotadir
 
         setListViewHeightBasedOnChildren(listViewMuestas);//tamañap respecto a hijos
@@ -258,9 +271,9 @@ public class newEvaluacionActivity extends AppCompatActivity {
         //pedir permisos
         //verificar permisos
 
-    if(validarPermisos()) {
+    if(validarPermisos() && isEditable) {
         /*Intent i = new Intent(this, QRScannerActivity.class);*/
-        Intent i = new Intent(this, EscanerQR.class);
+        Intent i = new Intent(this, ActivityEscanerQR.class);
         startActivityForResult(i, REQUEST_QR_CODE);//cambie  aqui de 1
     }
 
@@ -303,7 +316,7 @@ public class newEvaluacionActivity extends AppCompatActivity {
     }
 
     private void cargarDialogoRecomendacion() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(newEvaluacionActivity.this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(ActivityEvaluacion.this);
         dialog.setTitle("Permisos Desactivados");
         dialog.setMessage("Debe aceptar todos los permisos para poder tomar fotos");
         dialog.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
@@ -321,7 +334,7 @@ public class newEvaluacionActivity extends AppCompatActivity {
                 "si",
                 "no"
         };
-        final AlertDialog.Builder alertOpciones = new AlertDialog.Builder(newEvaluacionActivity.this);
+        final AlertDialog.Builder alertOpciones = new AlertDialog.Builder(ActivityEvaluacion.this);
         alertOpciones.setTitle("¿Desea configurar los permisos de Forma Manual?");
         alertOpciones.setItems(
                 opciones,
@@ -365,47 +378,47 @@ public class newEvaluacionActivity extends AppCompatActivity {
 
     public void showList(View view){
 
-        CRITERIOS = new CriterioDAO(getBaseContext()).listarByIdTipoInspeccionIdFundoIdVariedad(idTipoInspeccion,idFundo,idVariedad);
-        AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
+        if(isEditable){
+            CRITERIOS = new CriterioDAO(getBaseContext()).listarByIdTipoInspeccionIdFundoIdVariedad(idTipoInspeccion,idFundo,idVariedad);
+            AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
 
-        final CharSequence[] items = new CharSequence[ CRITERIOS.size()];
+            final CharSequence[] items = new CharSequence[ CRITERIOS.size()];
 
-        for(int i = 0; i< CRITERIOS.size(); i++){
-            items[i]= CRITERIOS.get(i).getName();
+            for(int i = 0; i< CRITERIOS.size(); i++){
+                items[i]= CRITERIOS.get(i).getName();
+            }
+
+
+            dialogo.setTitle("Criterios")
+                    .setSingleChoiceItems(items, lastItemSelected, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            lastItemSelected=which;
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    "Seleccionaste: " + CRITERIOS.get(which).getName(),
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                            CriterioVO temp = CRITERIOS.get(which);
+                            Log.d("locomata","antes de mandar "+idEvaluacion+" "+temp.getId());
+                            MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId());
+                            saveMuestras.add(temp2);
+                            AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas,spnTipoInspeccion,isEditable);
+                            listViewMuestas.setAdapter(adapterListMuestras);
+                            setListViewHeightBasedOnChildren(listViewMuestas);
+                            spnTipoInspeccion.setEnabled(false);
+                            final ScrollView scrollView = findViewById(R.id.ScrollEva);
+                            scrollView.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                                }
+                            });
+                        }
+                    });
+            dialogo.show();
         }
-
-
-        dialogo.setTitle("Criterios")
-                .setSingleChoiceItems(items, lastItemSelected, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        lastItemSelected=which;
-                        Toast.makeText(
-                                getBaseContext(),
-                                "Seleccionaste: " + CRITERIOS.get(which).getName(),
-                                Toast.LENGTH_SHORT)
-                                .show();
-                        CriterioVO temp = CRITERIOS.get(which);
-                        Log.d("locomata","antes de mandar "+idEvaluacion+" "+temp.getId());
-                        MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId());
-                        saveMuestras.add(temp2);
-                        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas,spnTipoInspeccion );
-                        listViewMuestas.setAdapter(adapterListMuestras);
-                        setListViewHeightBasedOnChildren(listViewMuestas);
-                        spnTipoInspeccion.setEnabled(false);
-                        final ScrollView scrollView = findViewById(R.id.ScrollEva);
-                        scrollView.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                            }
-                        });
-                    }
-                });
-        dialogo.show();
-
-
 
     }
 

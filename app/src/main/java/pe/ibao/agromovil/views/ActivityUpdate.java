@@ -6,6 +6,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import pe.ibao.agromovil.R;
@@ -22,16 +23,10 @@ public class ActivityUpdate extends AppCompatActivity {
         setContentView(R.layout.activity_update);
         porcentaje = (TextView) findViewById(R.id.update_tViewPorcentaje);
         mensaje = (TextView) findViewById(R.id.update_tViewMensaje);
-        new UploaderDB(this,porcentaje,mensaje);
         r.run();
+        new UploaderDB(this,porcentaje,mensaje);
         /*
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
 
-                openMain();
-            }
-        }, 500);
 */
     }
 
@@ -39,9 +34,20 @@ public class ActivityUpdate extends AppCompatActivity {
         @Override
         public void run() {
             if(porcentaje.getText().toString().equals("100%")){
-                openMain();
+                Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    public void run() {
+                        openMain();
+                    }
+                });
             }else{
-                r.run();
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        Log.d("porcentaje ",porcentaje.getText().toString());
+                        r.run();
+                    }
+                },500);
             }
         }
     };

@@ -1,6 +1,5 @@
 package pe.ibao.agromovil.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -20,10 +19,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.utilities.UploaderDB;
+import pe.ibao.agromovil.models.dao.VisitaDAO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
 public class ActivityMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentMain.OnFragmentInteractionListener, ListInspectionsFragment.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentMain.OnFragmentInteractionListener, FragmentListVisitas.OnFragmentInteractionListener{
 
 
     private Fragment myFragment= null;
@@ -105,40 +105,41 @@ public class ActivityMain extends AppCompatActivity
         Intent i = null;
 
         boolean isUpload=false;
-        boolean isUpgrade=false;
+        boolean isDownload=false;
 
         if (id == R.id.nav_new_inspection) {
             isFrame=false;
             i = new Intent(this, ActivityVisita.class);
+            VisitaVO visitaTemp = new VisitaDAO(this).intentarNuevo();
+            i.putExtra("isEditable",true);
+            i.putExtra("idVisita",visitaTemp.getId());
             myFragment= new FragmentMain();
         } else if (id == R.id.nav_recent_visits){
             Toast.makeText(getBaseContext(),"recent visit!",
                     Toast.LENGTH_SHORT).show();
             isFrame=true;
-            myFragment = new ListInspectionsFragment();
-            i = new Intent(this, ListInspectionsFragment.class);
+            myFragment = new FragmentListVisitas();
+            i = new Intent(this, FragmentListVisitas.class);
         }else if(id == R.id.upload){
             //comprobar internet
             isUpload=true;
-        }else if(id == R.id.upgrade){
-            isUpgrade=true;
+        }else if(id == R.id.download){
+            isDownload=true;
         }
 
-        if(!(isUpload || isUpgrade)){
+        if(!(isUpload || isDownload)){
             if(isFrame){
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_main,myFragment).commit();
-
-            }else if(!isFrame){
+            }else {
                 startActivity(i);
             }
         }else {
-            isConnectedToInternetToUpdate(isUpgrade?"up":"down");
+            isConnectedToInternetToUpdate(isDownload?"down":"up");
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     void isConnectedToInternetToUpdate(final String caso){
 
@@ -152,8 +153,7 @@ public class ActivityMain extends AppCompatActivity
 
                 if (networkInfo != null && networkInfo.isConnected()) {
                     // Si hay conexión a Internet en este momento
-                    Toast.makeText(getBaseContext(),"Conectando...",
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getBaseContext(),"Conectando...",Toast.LENGTH_SHORT).show();
                     switch (caso){
                         case "up":
                             Toast.makeText(getBaseContext(),"SUBIENDO",

@@ -27,13 +27,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private ItemClickListener mClickListener;
     private Context ctx;
     private ImageView lienzo;
+    private Boolean isEditable;
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, List<FotoVO> listFotos,ImageView lienzo) {
+    public MyRecyclerViewAdapter(Context context, List<FotoVO> listFotos,ImageView lienzo,Boolean isEditable) {
         this.mInflater = LayoutInflater.from(context);
         this.listFotos = listFotos;
         this.ctx=context;
         this.lienzo = lienzo;
+        this.isEditable = isEditable;
     }
 
     // inflates the row layout from xml when needed
@@ -49,7 +51,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // binds the data to the view and textview in each row
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-
 
 
         Handler handler = new Handler();

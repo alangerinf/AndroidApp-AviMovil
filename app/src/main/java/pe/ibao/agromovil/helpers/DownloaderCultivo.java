@@ -113,12 +113,17 @@ public class DownloaderCultivo {
                                 String nombre = data.getString("nombre");
                                 Log.d("CULTIVODOWN","fila "+i+" : "+id+" "+nombre);
                                 if(new CultivoDAO(ctx).insertarCultivo(id,nombre)){
-                                    Log.d("CULTIVODOWN","logro insertar");
                                     android.os.Handler handler = new android.os.Handler();
                                     final int finalI = i;
                                     handler.post(new Runnable() {
                                         public void run() {
-                                            porcentaje.setText("" + (ini + ((finalI * tam) / length)) + "%");
+                                            try {
+                                                Log.d("CULTIVODOWN","logro insertar");
+                                                porcentaje.setText("" + (ini + ((finalI * tam) / length)) + "%");
+                                            }catch (Exception e){
+                                                Log.d("CULTIVODOWN excepcion",porcentaje.getText().toString()+ e);
+                                            }
+
                                         }
                                     });
                                 }

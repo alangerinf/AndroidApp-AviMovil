@@ -30,7 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".views.Preloader"
+            android:name=".views.ActivityPreloader"
             android:theme="@style/AppTheme2.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,11 +44,11 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".views.LoginActivity"
+            android:name=".views.ActivityLogin"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
-            android:name=".views.LostPasswordActivity"
+            android:name=".views.unused.LostPasswordActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme2.NoActionBar" />
         <activity
@@ -65,7 +65,7 @@
             android:parentActivityName=".views.ActivityVisita"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".views.newEvaluacionActivity"
+            android:name=".views.ActivityEvaluacion"
             android:label="@string/title_test_activity"
             android:parentActivityName=".views.ActivityVisita"
             android:theme="@style/AppTheme" />
@@ -77,9 +77,9 @@
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
 
-        <activity android:name=".views.QRScannerActivity" />
+        <activity android:name=".views.unused.QRScannerActivity" />
         <activity
-            android:name=".views.CamTestActivity"
+            android:name=".views.unused.CamTestActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" />
         <activity
@@ -92,7 +92,7 @@
             android:exported="true" />
 
         <activity
-            android:name=".views.PhotoGallery"
+            android:name=".views.ActivityPhotoGallery"
             android:label="@string/title_activity_photo_gallery"></activity>
 
         <provider
@@ -105,7 +105,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".views.EscanerQR">
+        <activity android:name=".views.ActivityEscanerQR">
 
         </activity>
     </application>

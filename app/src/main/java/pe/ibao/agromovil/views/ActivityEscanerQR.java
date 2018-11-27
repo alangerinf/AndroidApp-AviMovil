@@ -8,12 +8,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 import pe.ibao.agromovil.R;
 
-public class EscanerQR extends AppCompatActivity implements ZXingScannerView.ResultHandler{
+public class ActivityEscanerQR extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
         ZXingScannerView QRScanner;
 
@@ -35,14 +36,13 @@ public class EscanerQR extends AppCompatActivity implements ZXingScannerView.Res
         QRScanner.startCamera();
     }
 
-
     @Override
     public void handleResult(Result result) {
         Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(500);
         Toast.makeText(getApplicationContext(),result.getText(),Toast.LENGTH_SHORT).show();
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(newEvaluacionActivity.QR_RESULT,result.getText());
+        returnIntent.putExtra(ActivityEvaluacion.QR_RESULT,result.getText());
         setResult(Activity.RESULT_OK,returnIntent);
         finish();
     }

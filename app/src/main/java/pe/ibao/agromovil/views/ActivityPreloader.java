@@ -14,7 +14,7 @@ import pe.ibao.agromovil.helpers.LoginHelper;
 import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
 
 
-public class Preloader extends AppCompatActivity {
+public class ActivityPreloader extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class Preloader extends AppCompatActivity {
     }
 
     void  openLogin(){
-        Intent intent = new Intent(this,LoginActivity.class);
+        Intent intent = new Intent(this,ActivityLogin.class);
         startActivity(intent);
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }

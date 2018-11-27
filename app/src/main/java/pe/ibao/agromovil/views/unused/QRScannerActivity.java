@@ -1,4 +1,4 @@
-package pe.ibao.agromovil.views;
+package pe.ibao.agromovil.views.unused;
 
 import android.Manifest;
 import android.app.Activity;
@@ -26,6 +26,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import java.io.IOException;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.views.ActivityEvaluacion;
 
 public class QRScannerActivity extends AppCompatActivity {
 
@@ -135,7 +136,7 @@ public class QRScannerActivity extends AppCompatActivity {
                                 txtResult.setText(qrCodes.valueAt(0).displayValue);
                                 vibrator.vibrate(500);
                             Intent returnIntent = new Intent();
-                            returnIntent.putExtra(newEvaluacionActivity.QR_RESULT,txtResult.getText());
+                            returnIntent.putExtra(ActivityEvaluacion.QR_RESULT,txtResult.getText());
                             setResult(Activity.RESULT_OK,returnIntent);
                             finish();
                         }

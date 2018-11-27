@@ -1,11 +1,13 @@
 package pe.ibao.agromovil.views;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,8 +35,6 @@ import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
 public class ActivityVisita extends AppCompatActivity {
 
-
-
     static final public int REQUEST_BASICS_DATA = 1;  // The request code
     static final public int REQUEST_EDIT_EVALUATION=2;
     static final public String REQUEST_EMPRESA = "empresa_request";
@@ -61,6 +61,13 @@ public class ActivityVisita extends AppCompatActivity {
     private String TAG="newvisit";
     public static Context ctx;
     static Bundle xx;
+
+    static Button btnFinalizar;
+    static FloatingActionButton floatBtnNuevo;
+
+    private static boolean isEditable;
+
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,19 +76,34 @@ public class ActivityVisita extends AppCompatActivity {
        // setupActionBar();
         ctx=this;
 
+        Intent i = getIntent();
+        Bundle b = i.getExtras();
+
+        isEditable= b.getBoolean("isEditable",false);
+        int idTemp =b.getInt("idVisita");
+
+        visitaDAO = new VisitaDAO(this);
+        visita = visitaDAO.buscarById((long)idTemp);
+
         tViewContacto   = (TextView) findViewById(R.id.tViewContacto);
         tViewFundo      = (TextView) findViewById(R.id.tViewFundo);
         tViewCultivo    = (TextView) findViewById(R.id.tViewCultivo);
         tViewVariedad   = (TextView) findViewById(R.id.tViewVariedad);
         tViewHora       = (TextView) findViewById(R.id.tViewHora);
 
+        btnFinalizar    = (Button) findViewById(R.id.button_ok);
+        floatBtnNuevo   = (FloatingActionButton) findViewById(R.id.floatingNuevoCriterio);
         listViewEvaluaciones = (ListView) findViewById(R.id.list_evaluaciones);
 
         dialogClose = new Dialog(this);
 
+        if(!isEditable){
+            btnFinalizar.setText("LISTO");
+            floatBtnNuevo.setVisibility(View.INVISIBLE);
+            ((FloatingActionButton) findViewById(R.id.floatingActionButton)).setTranslationY(120);
+            setTitle("Inspeccion Antigua");
+        }
 
-        visitaDAO = new VisitaDAO(this);
-        visita = visitaDAO.intentarNuevo();
         EvaluacionDAO evaluacionDAO = new EvaluacionDAO(this);
         evaluacionVOList.addAll(evaluacionDAO.listarByIdVisita(visita.getId()));
 
@@ -101,6 +123,7 @@ public class ActivityVisita extends AppCompatActivity {
                 return evaluacionVOList.get(position).getId();
             }
 
+
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 View v = convertView;
@@ -113,21 +136,26 @@ public class ActivityVisita extends AppCompatActivity {
                 TextView tViewPorcerntaje   = (TextView) v.findViewById(R.id.porcentaje);
                 ImageView btnDelete         = (ImageView)v.findViewById(R.id.deleter);
 
+                if(!isEditable){
+                    btnDelete.setVisibility(View.INVISIBLE);
+                }
+
                 v.setClickable(true);
                 v.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         EvaluacionVO evtemp =evaluacionVOList.get(position);
 
-                        Intent intent = new Intent(getBaseContext(),newEvaluacionActivity.class);
+                        Intent intent = new Intent(getBaseContext(),ActivityEvaluacion.class);
                         Bundle mybundle = new Bundle();
-                        visita = new VisitaDAO(ctx).getEditing();
+                        //visita = new VisitaDAO(ctx).getEditing();
                             mybundle.putInt("idEvaluacion",evtemp.getId());
                             mybundle.putInt("idTipoInspeccion",evtemp.getIdTipoInspeccion());
                             mybundle.putInt("idVariedad",visita.getIdVariedad());
                             mybundle.putInt("idFundo",visita.getIdFundo());
                             mybundle.putInt("isNewTest",0);
                             mybundle.putString("fechaHora",visita.getFechaHora());
+                            mybundle.putBoolean("isEditable",isEditable);
                         intent.putExtras(mybundle);
                         startActivityForResult(intent,REQUEST_EDIT_EVALUATION);
 
@@ -208,13 +236,11 @@ public class ActivityVisita extends AppCompatActivity {
 
 
     public void openEvaluacion(View view){
-        Intent intent = new Intent(this,newEvaluacionActivity.class);
+        Intent intent = new Intent(this,ActivityEvaluacion.class);
 
         /**falta insertar primero en ta tabla  evaluaciones
         con el id de la visita
         **/
-
-        visita = new VisitaDAO(ctx).getEditing();
 
         if(visita.getIdFundo()>0 && visita.getIdVariedad()>0){
             EvaluacionVO evtemp =  new EvaluacionDAO(ctx).nuevoByIdVisita(-8045.56,262.9,visita.getId());
@@ -225,6 +251,7 @@ public class ActivityVisita extends AppCompatActivity {
             mybundle.putInt("idFundo",visita.getIdFundo());
             mybundle.putInt("isNewTest",0);
             mybundle.putString("fechaHora",visita.getFechaHora());
+            mybundle.putBoolean("isEditable",isEditable);
             /*evaluacionVOList= new EvaluacionDAO(ctx).listarByIdVisita(visita.getId());
             baseAdapter.notifyDataSetChanged();
             setListViewHeightBasedOnChildren(listViewEvaluaciones);
@@ -236,6 +263,7 @@ public class ActivityVisita extends AppCompatActivity {
         }
 
     }
+
 /*
     private void setupActionBar(){
         ActionBar actionBar = getSupportActionBar();
@@ -244,6 +272,7 @@ public class ActivityVisita extends AppCompatActivity {
         }
     }
 */
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -251,8 +280,11 @@ public class ActivityVisita extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-
-        showClosePopup();
+        if(isEditable){
+            showClosePopup();
+        }else {
+            finish();
+        }
         //    moveTaskToBack(true);
 
     }
@@ -262,7 +294,7 @@ public class ActivityVisita extends AppCompatActivity {
         // Check which request we're responding to
 
         //Toast.makeText(this,"onactivity resytk",Toast.LENGTH_LONG).show();
-        visita = new VisitaDAO(ctx).getEditing();
+       // visita = new VisitaDAO(ctx).getEditing();
         switch (requestCode){
             case REQUEST_BASICS_DATA :
                 // Make sure the request was successful
@@ -275,25 +307,22 @@ public class ActivityVisita extends AppCompatActivity {
                     tViewVariedad.setText(temp);
                     temp=data.getStringExtra(REQUEST_CONTACTO);
                     tViewContacto.setText(temp);
-
+                    visita = new VisitaDAO(ctx).buscarById((long)visita.getId());
                 }else{
                     Toast.makeText(ctx,"Editicion no Guardada",Toast.LENGTH_LONG).show();
                 }
 
             break;
             case REQUEST_EDIT_EVALUATION :
-
                 evaluacionVOList = new EvaluacionDAO(this)
                         .listarByIdVisita(
-                                new VisitaDAO(this)
-                                .getEditing().getId()
+                                visita.getId()
                         );
                 baseAdapter.notifyDataSetChanged();
                 setListViewHeightBasedOnChildren(listViewEvaluaciones);
         }
 
     }
-
 
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
@@ -318,38 +347,78 @@ public class ActivityVisita extends AppCompatActivity {
 
     public void openbasics(View view){
 
-        if(!evaluacionVOList.isEmpty()) {
-            Toast.makeText(ctx, "Usted ya tiene evaluaciones agregadas",Toast.LENGTH_LONG).show();
-        }else{
-
-            Intent intent = new Intent(this,ActivityBasic.class);
-
-            Bundle mybundle = new Bundle();
-            if(visita.getIdFundo()>0 && visita.getIdVariedad()>0){
-                mybundle.putInt("isFirst",0);
+        if(isEditable){
+            if(!evaluacionVOList.isEmpty()) {
+                Toast.makeText(ctx, "Usted ya tiene evaluaciones agregadas",Toast.LENGTH_LONG).show();
             }else{
-                mybundle.putInt("isFirst",1);
+
+                Intent intent = new Intent(this,ActivityBasic.class);
+
+                Bundle mybundle = new Bundle();
+                if(visita.getIdFundo()>0 && visita.getIdVariedad()>0){
+                    mybundle.putInt("isFirst",0);
+                }else{
+                    mybundle.putInt("isFirst",1);
+
+                }
+
+                mybundle.putInt("idEmpresa",visita.getIdEmpresa());
+                mybundle.putInt("idFundo",visita.getIdFundo());
+                mybundle.putInt("idCultivo",visita.getIdCultivo());
+                mybundle.putInt("idVariedad",visita.getIdVariedad());
+                mybundle.putInt("idVisita",visita.getId());
+                mybundle.putString("contacto",visita.getContacto());
+
+                intent.putExtras(mybundle);
+                startActivityForResult(intent, REQUEST_BASICS_DATA);
 
             }
-
-            mybundle.putInt("idEmpresa",visita.getIdEmpresa());
-            mybundle.putInt("idFundo",visita.getIdFundo());
-            mybundle.putInt("idCultivo",visita.getIdCultivo());
-            mybundle.putInt("idVariedad",visita.getIdVariedad());
-            mybundle.putInt("idVisita",visita.getId());
-            mybundle.putString("contacto",visita.getContacto());
-
-            intent.putExtras(mybundle);
-            startActivityForResult(intent, REQUEST_BASICS_DATA);
-
         }
     }
 
     public void end(View view){
-        finish();
+        //verificando si todas las listas  estan en 100% de completadas
+        if(isEditable){
+            boolean flag=true;
+            for(EvaluacionVO ev : evaluacionVOList){
+                if(ev.getPorcentaje()!=100){
+                    flag=false;
+                    break;
+                }
+            }
+            if(evaluacionVOList.isEmpty()){
+                flag=false;
+            }
+            if(flag){
+                //guardar y finalizar
+                if(new VisitaDAO(ctx).save(visita.getId())){
+                    Toast.makeText(
+                            getBaseContext()
+                            ,"Visita Guardada"
+                            ,Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(this,ActivityMain.class);
+                    startActivity(i);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    finish();
+                }else{
+                    Toast.makeText(
+                            getBaseContext()
+                            ,"Visita no se pudo guardar"
+                            ,Toast.LENGTH_LONG).show();
+                }
+
+            }else{
+                Toast.makeText(
+                        getBaseContext()
+                        ,"Comprete todas las  Evaluaciones para poder Finalizar"
+                        ,Toast.LENGTH_LONG).show();
+            }
+        }else{
+            finish();
+        }
+
+
     }
-
-
 
     private void showClosePopup(){
         dialogClose.setContentView(R.layout.dialog_guardar_progreso);

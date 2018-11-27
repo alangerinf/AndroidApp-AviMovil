@@ -109,7 +109,7 @@ public class CultivoDAO {
         ConexionSQLiteHelper c;
         c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
-        List<CultivoVO> cultivos = new ArrayList<CultivoVO>();
+        List<CultivoVO> cultivos = new ArrayList<>();
         try{
             String[] campos = {TABLE_CULTIVO_COL_ID,TABLE_CULTIVO_COL_NAME};
             Cursor cursor= db.query(TABLE_CULTIVO,campos,null,null,null,null,null);

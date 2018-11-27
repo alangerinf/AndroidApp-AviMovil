@@ -29,19 +29,21 @@ import java.util.List;
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
-import pe.ibao.agromovil.views.PhotoGallery;
+import pe.ibao.agromovil.views.ActivityPhotoGallery;
 
 public class AdapterListMuestras extends BaseAdapter{
 
+    private Boolean isEditable;
     private Context ctx;
     private List<MuestraVO> listMuestas;
     private ListView list;
     private Spinner spnEva;
-    public AdapterListMuestras(Context ctx, List<MuestraVO> listMuestas, ListView lv, Spinner spnEva){
+    public AdapterListMuestras(Context ctx, List<MuestraVO> listMuestas, ListView lv, Spinner spnEva,Boolean isEditable){
         this.ctx = ctx;
         this.listMuestas =listMuestas;
         this.list = lv;
         this.spnEva = spnEva;
+        this.isEditable = isEditable;
     }
 
     @Override
@@ -89,16 +91,37 @@ public class AdapterListMuestras extends BaseAdapter{
 
         eTextComent.setText(listMuestas.get(position).getComent());
 
+
+        if(!isEditable){
+            btnDelete.setVisibility(View.INVISIBLE);
+            _int.setFocusable(false);
+            _int.setClickable(false);
+
+            _float.setFocusable(false);
+            _float.setClickable(false);
+            _string.setFocusable(false);
+            _string.setClickable(false);
+            _boolean.setFocusable(false);
+            _boolean.setClickable(false);
+            _list.setEnabled(false);
+            _boolean.setEnabled(false);
+            eTextComent.setFocusable(false);
+            eTextComent.setClickable(false);
+
+
+        }
+
         btnCam.setClickable(true);
         btnCam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //tomarFoto();
                 //Toast.makeText(ctx,"Tomar Fotografia",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(ctx,PhotoGallery.class);
+                Intent intent = new Intent(ctx,ActivityPhotoGallery.class);
                 intent.putExtra("idMuestra",listMuestas.get(position).getId());
                 intent.putExtra("value",listMuestas.get(position).getValue());
                 intent.putExtra("name",listMuestas.get(position).getName());
+                intent.putExtra("isEditable",isEditable);
                 intent.putExtra("fechaHora",listMuestas.get(position).getTime());
 
                 ((Activity) ctx).startActivityForResult(intent, 123);

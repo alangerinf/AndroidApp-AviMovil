@@ -1,4 +1,4 @@
-package pe.ibao.agromovil.views;
+package pe.ibao.agromovil.views.unused;
 
 
 /**
@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.views.unused.Preview;
 
 public class CamTestActivity extends Activity {
     private static final String TAG = "CamTestActivity";

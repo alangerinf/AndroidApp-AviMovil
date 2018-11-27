@@ -15,7 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.models.dao.UsuarioDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
 
 /**
@@ -26,17 +28,18 @@ import pe.ibao.agromovil.models.dao.VisitaDAO;
  * Use the {@link FragmentMain#newInstance} factory method to
  * create an instance of this fragment.
  */
+
 public class FragmentMain extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    //TODO: rerasdasdasds
 
     ConstraintLayout layoutVertical= null;
     ConstraintLayout layoutHorizontal= null;
@@ -116,7 +119,10 @@ public class FragmentMain extends Fragment {
                 tv2.setText("Continuar Inspección");
         }
 
+        String NombreU = new UsuarioDAO(getContext()).verficarLogueo().getName();
 
+        ((TextView)getView().findViewById(R.id.fmain_tViewSaludo1)).setText("Hola "+NombreU+" !");
+        ((TextView)getView().findViewById(R.id.fmain_tViewSaludo2)).setText("Hola "+NombreU+" !");
 
         layoutNewInspection = (RelativeLayout) getView().findViewById(R.id.layout_new_Inspection);
         layoutNewInspection.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +145,6 @@ public class FragmentMain extends Fragment {
             }
         });
 
-
         layoutVertical =  (ConstraintLayout) getView().findViewById(R.id.lay_vertical);
         layoutHorizontal =  (ConstraintLayout) getView().findViewById(R.id.lay_horizontal);
         if(getRotation(this.getContext()).equals("vertical")){ //es vertical o portrait.
@@ -156,6 +161,10 @@ public class FragmentMain extends Fragment {
 
         Intent intent;
         intent = new Intent(getActivity(), ActivityVisita.class);
+
+        VisitaVO visitaTemp = new VisitaDAO(getContext()).intentarNuevo();
+            intent.putExtra("idVisita",visitaTemp.getId());
+            intent.putExtra("isEditable",true);
         startActivity(intent);
     }
 

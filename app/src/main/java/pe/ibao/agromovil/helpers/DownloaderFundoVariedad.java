@@ -149,7 +149,7 @@ public class DownloaderFundoVariedad {
                                         }
                                     });
                                 }
-
+                                
                                 db.close();
                                 conn.close();
                             }
@@ -173,7 +173,6 @@ public class DownloaderFundoVariedad {
                /* params.put(POST_USER, user);
                 params.put(POST_PASSWORD, pass);
                 */
-
                 return params;
             }
 
