@@ -216,6 +216,9 @@ public class MuestrasDAO {
         }
         db.close();
         conn.close();
+
+        new FotoDAO(ctx).borrarByIdMuestra(id);
+
         return flag;
     }
 
@@ -239,4 +242,55 @@ public class MuestrasDAO {
     }
 
 
+    public List<MuestraVO> listarAll(){
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = c.getReadableDatabase();
+        List<MuestraVO> muestraVOList =  new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        "M."+TABLE_MUESTRA_COL_ID+", " +
+                        "M."+TABLE_MUESTRA_COL_VALUE+", " +
+                        "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
+                        "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
+                        "M."+TABLE_MUESTRA_COL_TIME+", "+
+                        "M."+TABLE_MUESTRA_COL_COMENTARIO+
+                        " FROM "+
+                        TABLE_MUESTRA+" as M"//+
+                     //   " WHERE "+
+                    //    "M."+TABLE_MUESTRA_COL_IDEVALUACION+"="+String.valueOf(idEvaluacion)
+                ,null);
+        if(cursor.getCount()>0){
+            while(cursor.moveToNext()){
+                MuestraVO temp= new MuestraVO();
+                temp.setId(cursor.getInt(0));
+                temp.setValue(cursor.getString(1));
+                temp.setIdCriterio(cursor.getInt(2));
+                temp.setIdEvaluacion(cursor.getInt(3));
+                temp.setTime(cursor.getString(4     ));
+                temp.setComent(cursor.getString(5));
+                if(temp.getComent().equals("") || temp.getComent()==null){
+                    temp.setStatusComent(false);
+                }else{
+                    temp.setStatusComent(true);
+                }
+                CriterioDAO criterioDAO = new CriterioDAO(ctx);
+                CriterioVO cri = criterioDAO.consultarById(temp.getIdCriterio());
+                if(temp!=null){
+                    Log.d("locomata","temp is null");
+                    temp.setIdTipoInspseccion(cri.getIdTipoInspseccion());
+                    temp.setName(cri.getName());
+                    temp.setType(cri.getType());
+                    temp.setMagnitud(cri.getMagnitud());
+                }else{
+                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                }
+                muestraVOList.add(temp);
+            }
+
+        }
+        cursor.close();
+        c.close();
+        return muestraVOList;
+
+    }
 }

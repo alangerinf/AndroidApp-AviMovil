@@ -111,7 +111,8 @@
         android:layout_marginStart="8dp"
         android:src="@drawable/ic_delete_forever_black_24dp"
         app:layout_constraintBottom_toBottomOf="@+id/tViewHoraMuestra"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/name_criterio" />
 
     <TextView
         android:id="@+id/tViewHoraMuestra"

@@ -27,23 +27,22 @@
         app:srcCompat="@drawable/background" />
 
 
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
-        android:layout_height="250dp"
+        android:layout_height="220dp"
         android:layout_marginBottom="8dp"
 
-        android:paddingHorizontal="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_secondary_r15_borderlight"
+        android:paddingHorizontal="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.73">
+        app:layout_constraintVertical_bias="0.65">
 
 
         <ImageView
@@ -68,9 +67,9 @@
             android:layout_marginTop="50dp"
             android:backgroundTint="@color/secondary_text"
             android:ems="10"
+            android:hint="Usuario"
             android:inputType="textPersonName"
             android:text=""
-            android:hint="Usuario"
             android:textAlignment="center"
             android:textColor="@color/secondary_text"
             android:textSize="16sp"
@@ -89,8 +88,8 @@
             android:layout_marginStart="8dp"
             android:backgroundTint="@color/secondary_text"
             android:ems="10"
-            android:inputType="textPassword"
             android:hint="Contraseña"
+            android:inputType="textPassword"
             android:textAlignment="center"
             android:textColor="@color/secondary_text"
             android:textSize="16sp"
@@ -118,17 +117,17 @@
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/shape_secondary_r15_borderdark"
             android:scaleType="center"
+            android:src="@drawable/ic_arrow_forward"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/eTextPassword"
-            app:layout_constraintVertical_bias="0.0"
 
-            android:src="@drawable/ic_arrow_forward"
+            app:layout_constraintVertical_bias="0.0"
             tools:ignore="MissingConstraints" />
 
         <TextView
@@ -145,6 +144,7 @@
             android:textAllCaps="false"
             android:textColor="@color/link"
             android:textSize="9sp"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.504"

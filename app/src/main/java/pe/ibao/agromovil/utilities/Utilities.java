@@ -12,6 +12,7 @@ public class Utilities {
     public static final String URL_DOWNLOAD_TABLE_TIPOINSPECCION=URL_ROOT+"getTipoInspecciones.php";
     public static final String URL_DOWNLOAD_TABLE_CRITERIO=URL_ROOT+"getCriterioInspecciones.php";
     public static final String URL_DOWNLOAD_TABLE_CONFIGURACIONCRITERIO=URL_ROOT+"getConfiguracionCriterios.php";
+    public static final String URL_UPLOAD_MASTER=URL_ROOT+"getConfiguracionCriterios.php";
 
 
     public static final String DATABASE_NAME="data";

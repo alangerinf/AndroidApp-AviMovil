@@ -48,8 +48,6 @@ public class EvaluacionDAO {
             flag=true;
         }
         c.close();
-
-
         return flag;
     }
 
@@ -175,9 +173,7 @@ public class EvaluacionDAO {
         for(MuestraVO m : muestras){
             new MuestrasDAO(ctx).borrarMuestraById(m.getId());
         }
-
         return res;
-
     }
 
     public int borrarByIdVisita(int idVisita){
@@ -199,9 +195,6 @@ public class EvaluacionDAO {
                 new MuestrasDAO(ctx).borrarMuestraById(m.getId());
             }
         }
-
-
-
 
         return res;
 
@@ -272,6 +265,45 @@ public class EvaluacionDAO {
                 temp.setPorcentaje(por);
                 evaluacionVOS.add(temp);
 
+            }
+            cursor.close();
+        }catch (Exception e){
+            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
+        }
+        return evaluacionVOS;
+    }
+
+    public List<EvaluacionVO> listarAll(){
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = c.getReadableDatabase();
+        List<EvaluacionVO> evaluacionVOS = new ArrayList<>();
+        try{
+            Cursor cursor = db.rawQuery(
+                    "SELECT " +
+                            "E."+TABLE_EVALUACION_COL_ID+", " +//0
+                            "E."+TABLE_EVALUACION_COL_TIMEINI+", " +//1
+                            "E."+TABLE_EVALUACION_COL_TIMEFIN+", "+//2
+                            "E."+TABLE_EVALUACION_COL_QR+", "+//3
+                            "E."+TABLE_EVALUACION_COL_LATITUD+", "+//4
+                            "E."+TABLE_EVALUACION_COL_LONGITUD+", "+//5
+                            "E."+TABLE_EVALUACION_COL_IDTIPOINSPECCION+", "+//6
+                            "E."+TABLE_EVALUACION_COL_IDVISITA+" "+//7
+                            " FROM "+
+                            TABLE_EVALUACION+" as E "// +
+                          //  " WHERE "+
+                         //   "E."+TABLE_EVALUACION_COL_IDVISITA+" = "+String.valueOf(idVisita)
+                    ,null);
+            while (cursor.moveToNext() && cursor.getCount()>0){
+                EvaluacionVO temp = new EvaluacionVO();
+                    temp.setId(cursor.getInt(0));
+                    temp.setTimeIni(cursor.getString(1));
+                    temp.setTimeFin(cursor.getString(2));
+                    temp.setQr(cursor.getString(3));
+                    temp.setLat(cursor.getDouble(4));
+                    temp.setLon(cursor.getDouble(5));
+                    temp.setIdTipoInspeccion(cursor.getInt(6));
+                    temp.setIdVisita(cursor.getInt(7));
+                    evaluacionVOS.add(temp);
             }
             cursor.close();
         }catch (Exception e){

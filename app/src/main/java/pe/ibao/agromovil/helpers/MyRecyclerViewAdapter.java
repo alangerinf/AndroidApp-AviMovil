@@ -2,6 +2,8 @@ package pe.ibao.agromovil.helpers;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
@@ -13,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import java.io.File;
 import java.util.List;
 
 import pe.ibao.agromovil.DataUserHandler;
@@ -22,7 +24,7 @@ import pe.ibao.agromovil.models.vo.entitiesInternal.FotoVO;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
-    private List<FotoVO> listFotos;
+     static private List<FotoVO> listFotos;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private Context ctx;
@@ -52,13 +54,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
 
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
                 FotoVO fotoVO = listFotos.get(position);
                 Bitmap bitmap = BitmapFactory.decodeFile(listFotos.get(position).getPath());
-                bitmap = Bitmap.createScaledBitmap(bitmap, 150, 200, true);
+                bitmap = Bitmap.createScaledBitmap(bitmap, 60, 80, true);
                 holder.iViewFoto.setImageBitmap(bitmap);
             }
         }, 100);
@@ -66,11 +67,47 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         holder.iViewFoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ctx,"seleccionado"+position,Toast.LENGTH_SHORT).show();
-                Bitmap bitmap = BitmapFactory.decodeFile(listFotos.get(position).getPath());
-                double scale = bitmap.getWidth()/(bitmap.getHeight()*1.0);
-                bitmap = Bitmap.createScaledBitmap(bitmap,(int)(lienzo.getHeight()*scale), lienzo.getHeight(), true);
-                lienzo.setImageBitmap(bitmap);
+
+                Handler handler = new Handler();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ctx,"seleccionado"+position,Toast.LENGTH_SHORT).show();
+                        Bitmap bitmap = BitmapFactory.decodeFile(listFotos.get(position).getPath());
+                        int rotate = 0;
+                        try {
+                            File imageFile = new File(listFotos.get(position).getPath());
+                            ExifInterface exif = new ExifInterface(
+                                    imageFile.getAbsolutePath());
+                            int orientation = exif.getAttributeInt(
+                                    ExifInterface.TAG_ORIENTATION,
+                                    ExifInterface.ORIENTATION_NORMAL);
+
+                            switch (orientation) {
+                                case ExifInterface.ORIENTATION_ROTATE_270:
+                                    rotate = 270;
+                                    break;
+                                case ExifInterface.ORIENTATION_ROTATE_180:
+                                    rotate = 180;
+                                    break;
+                                case ExifInterface.ORIENTATION_ROTATE_90:
+                                    rotate = 90;
+                                    break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(rotate);
+                        matrix.postScale(0.3f,0.3f);
+                        //double scale = bitmap.getWidth()/(bitmap.getHeight()*1.0);
+                        bitmap = Bitmap.createBitmap(bitmap , 0, 0, (bitmap.getWidth()),  (bitmap.getHeight()), matrix, true);
+
+                        lienzo.setImageBitmap(bitmap);
+                    }
+                });
+
+
             }
         });
 

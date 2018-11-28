@@ -31,7 +31,6 @@ public class AdapterListVisitas extends BaseAdapter{
         this.ctx = ctx;
         this.listVisitas =listVisitas;
         this.listView = listView;
-       // setListViewHeightBasedOnChildren(listView);
     }
 
     @Override
@@ -99,10 +98,5 @@ public class AdapterListVisitas extends BaseAdapter{
 
         return v;
     }
-
-
-
-
-
 
 }

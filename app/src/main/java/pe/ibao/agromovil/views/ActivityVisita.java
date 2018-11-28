@@ -154,7 +154,7 @@ public class ActivityVisita extends AppCompatActivity {
                             mybundle.putInt("idVariedad",visita.getIdVariedad());
                             mybundle.putInt("idFundo",visita.getIdFundo());
                             mybundle.putInt("isNewTest",0);
-                            mybundle.putString("fechaHora",visita.getFechaHora());
+                            mybundle.putString("fechaHora",evtemp.getTimeIni());
                             mybundle.putBoolean("isEditable",isEditable);
                         intent.putExtras(mybundle);
                         startActivityForResult(intent,REQUEST_EDIT_EVALUATION);

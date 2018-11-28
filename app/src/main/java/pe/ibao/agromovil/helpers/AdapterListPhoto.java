@@ -3,6 +3,7 @@ package pe.ibao.agromovil.helpers;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,6 +60,12 @@ public class AdapterListPhoto extends BaseAdapter {
     //    TextView tViewFechaHora= (TextView) v.findViewById(R.id.foto_fechahora);
         ImageView iViewFoto = (ImageView) v.findViewById(R.id.foto_imagen);
         Bitmap bitmap = BitmapFactory.decodeFile(listFotos.get(position).getPath());
+        if (bitmap.getWidth() > bitmap.getHeight()) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            bitmap = Bitmap.createBitmap(bitmap , 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        }
+
         bitmap = Bitmap.createScaledBitmap(bitmap, 50, 50, true);
         iViewFoto.setImageBitmap(bitmap);
   //      tViewFechaHora.setText(getItem(position).getFechaHora());

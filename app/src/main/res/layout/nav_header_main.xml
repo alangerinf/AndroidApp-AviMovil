@@ -18,18 +18,18 @@
         android:elevation="10dp"
 
         android:background="@drawable/ic_user"/>
+
     <TextView
+        android:id="@+id/tViewUserName"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:id="@+id/txt_name_user"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:text="Usuario"
         android:layout_below="@id/img_avatar"
         android:gravity="center"
+        android:text="Usuario"
         android:textAlignment="center"
         android:textColor="@color/primary_text"
-        />
+        android:textSize="16dp"
+        android:textStyle="bold" />
 </RelativeLayout>
 
 <!--

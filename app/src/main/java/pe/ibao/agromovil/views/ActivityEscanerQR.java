@@ -18,12 +18,14 @@ public class ActivityEscanerQR extends AppCompatActivity implements ZXingScanner
 
         ZXingScannerView QRScanner;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_escaner_qr);
         scan();
     }
+
     @Override
     protected void onPause() {
         super.onPause();

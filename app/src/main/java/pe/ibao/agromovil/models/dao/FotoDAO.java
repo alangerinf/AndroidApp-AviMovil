@@ -6,9 +6,15 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.net.Uri;
+import android.provider.MediaStore;
+import java.io.File;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,7 +167,7 @@ public class FotoDAO {
         return flag;
     }
 
-    public boolean borrarValorByIdMuestra(int idMuestra){
+    public boolean borrarByIdMuestra(int idMuestra){
         boolean flag = false;
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -179,6 +185,81 @@ public class FotoDAO {
         return flag;
     }
 
+    public List<FotoVO> listarAll(){
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = c.getReadableDatabase();
+        List<FotoVO> fotoVOS = new ArrayList<FotoVO>();
+        try{
+            Cursor cursor = db.rawQuery(
+                    " SELECT "+
+                            "P."+TABLE_FOTO_COL_ID+", " +
+                            "P."+TABLE_FOTO_COL_HORAFECHA+", " +
+                            "P."+TABLE_FOTO_COL_PATH+", "+
+                            "P."+TABLE_FOTO_COL_IDMUESTRA+
+                            " FROM "+
+                            TABLE_FOTO+" AS P"//+
+                    //        " WHERE "+
+                    //        "P."+TABLE_FOTO_COL_IDMUESTRA+"="+String.valueOf(idMuestra)
+                    ,null);
+            while (cursor.moveToNext()){
+                FotoVO temp = new FotoVO();
+                temp.setId(cursor.getInt(0));
+                temp.setFechaHora(cursor.getString(1));
+                temp.setPath(cursor.getString(2));
+                temp.setIdMuestra(cursor.getInt(3));
 
+                try{
+
+                    Uri uri = Uri.fromFile(new File(temp.getPath()));
+
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(ctx.getContentResolver(), uri);
+
+                    //redimensionando bitmap
+
+                    final int tam=600;
+
+                    int ancho = bitmap.getWidth();
+                    int alto = bitmap.getHeight();
+                    float scalaAlto;
+                    float scalaAncho;
+                    if(alto>=ancho){
+                        float nuevoAlto = tam;
+                        float nuevoAncho = (1.0f*ancho*nuevoAlto)/alto;
+                        scalaAlto = nuevoAlto/alto;
+                        scalaAncho = nuevoAncho/ancho;
+                        //si la imagen esta parada
+                    }else{
+                        //si la imagen esta echada
+                        float nuevoAncho = tam;
+                        float nuevoAlto = (1.0f*alto*nuevoAncho)/ancho;
+                        scalaAlto = nuevoAlto/alto;
+                        scalaAncho = nuevoAncho/ancho;
+                    }
+                    Matrix matrix = new Matrix();
+                    matrix.postScale(scalaAncho,scalaAlto);
+
+                    bitmap = Bitmap.createBitmap(bitmap,0,0,ancho,alto,matrix,false);
+
+                    //terminado redimensionado de bitmap
+                    ByteArrayOutputStream array = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,array);
+                    byte[] imageByte = array.toByteArray();
+                    String imageString = Base64.encodeToString(imageByte,Base64.DEFAULT);
+                    temp.setStringBitmap(imageString);
+
+
+                }catch (Exception e){
+                    Log.d("fotosJson","Error"+e.toString());
+                }
+
+                fotoVOS.add(temp);
+            }
+            cursor.close();
+        }catch (Exception e){
+            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
+        }
+        c.close();
+        return fotoVOS;
+    }
 
 }

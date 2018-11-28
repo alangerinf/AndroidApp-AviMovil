@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -38,6 +40,7 @@ import pe.ibao.agromovil.models.dao.CriterioDAO;
 import pe.ibao.agromovil.models.dao.EvaluacionDAO;
 import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.dao.TipoInspeccionDAO;
+import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.TipoInspeccionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
@@ -254,14 +257,24 @@ public class ActivityEvaluacion extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
+
+        onBackPressed();
+        return false;
+    }
+    @Override
+    public void onBackPressed() {
+        if(new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getIdTipoInspeccion()==0){
+            new EvaluacionDAO(getBaseContext()).borrarById(idEvaluacion);
+        }
+
+
         Log.d("hola","holamundobacisc");
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED,returnIntent);
         finish();
-        onBackPressed();
-        return false;
-    }
 
+
+    }
 
 
 

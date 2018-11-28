@@ -8,11 +8,22 @@ public class FotoVO {
     private String path;
     private int IdMuestra;
     private Bitmap bitmap;
+    private String StringBitmap;
+
+
 
     public FotoVO(int id, String fechaHora, String path) {
         this.id = id;
         this.fechaHora = fechaHora;
         this.path = path;
+    }
+
+    public String getStringBitmap() {
+        return StringBitmap;
+    }
+
+    public void setStringBitmap(String stringBitmap) {
+        StringBitmap = stringBitmap;
     }
 
     public Bitmap getBitmap() {

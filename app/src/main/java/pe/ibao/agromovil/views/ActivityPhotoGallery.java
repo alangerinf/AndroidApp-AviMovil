@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -42,8 +45,8 @@ public class ActivityPhotoGallery extends AppCompatActivity {
     private final String CARPETA_RAIZ = "misImagenes/";
     private final String CARPETA_IMAGEN = "misFotos";
     private final String DIRECTORIO_IMAGEN = CARPETA_RAIZ +CARPETA_IMAGEN;
-    private String PATH = "";
-    ImageView iViewLienzo;
+    static private String PATH = "";
+    static ImageView iViewLienzo;
     File fileImagen;
     Bitmap bitmap;
 
@@ -238,11 +241,61 @@ public class ActivityPhotoGallery extends AppCompatActivity {
                                     Log.i("Ruta","path : "+PATH);
                                 }
                             });
-                    bitmap = BitmapFactory.decodeFile(PATH);
-                    double scale = bitmap.getWidth()/(bitmap.getHeight()*1.0);
-                    bitmap = Bitmap.createScaledBitmap(bitmap,(int)(iViewLienzo.getHeight()*scale), iViewLienzo.getHeight(), true);
-                    iViewLienzo.setImageBitmap(bitmap);
 
+
+                    Handler handler = new Handler();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Bitmap bitmap = BitmapFactory.decodeFile(PATH);
+
+                            int rotate = 0;
+                            try {
+                                File imageFile = new File(PATH);
+                                ExifInterface exif = new ExifInterface(
+                                        imageFile.getAbsolutePath());
+                                int orientation = exif.getAttributeInt(
+                                        ExifInterface.TAG_ORIENTATION,
+                                        ExifInterface.ORIENTATION_NORMAL);
+
+                                switch (orientation) {
+                                    case ExifInterface.ORIENTATION_ROTATE_270:
+                                        rotate = 270;
+                                        break;
+                                    case ExifInterface.ORIENTATION_ROTATE_180:
+                                        rotate = 180;
+                                        break;
+                                    case ExifInterface.ORIENTATION_ROTATE_90:
+                                        rotate = 90;
+                                        break;
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Matrix matrix = new Matrix();
+                            matrix.postRotate(rotate);
+                            matrix.postScale(0.3f,0.3f);
+                            //double scale = bitmap.getWidth()/(bitmap.getHeight()*1.0);
+                            bitmap = Bitmap.createBitmap(bitmap , 0, 0, (bitmap.getWidth()),  (bitmap.getHeight()), matrix, true);
+
+                            iViewLienzo.setImageBitmap(bitmap);
+                        }
+                    });
+
+
+                   /* if (bitmap.getWidth() > bitmap.getHeight()) {
+                        Matrix matrix = new Matrix();
+                        matrix.postRotate(90);
+                        bitmap = Bitmap.createBitmap(bitmap , 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                    }
+*/
+
+       //             double scale = bitmap.getWidth()/(bitmap.getHeight()*1.0);
+       //             bitmap = Bitmap.createScaledBitmap(bitmap,(int)(iViewLienzo.getHeight()*scale), iViewLienzo.getHeight(), true);
+
+
+
+                 //   iViewLienzo.setScaleType(ImageView.ScaleType.MATRIX);
                     new FotoDAO(getBaseContext()).nuevoByIdMuestra(idMuestra,PATH);
                     listFotos = new FotoDAO(this).listarByIdMuestra(idMuestra);
                     /*
@@ -263,6 +316,20 @@ public class ActivityPhotoGallery extends AppCompatActivity {
                     break;
             }
         }
+    }
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+
+        int stretch_width = Math.round((float)width / (float)reqWidth);
+        int stretch_height = Math.round((float)height / (float)reqHeight);
+
+        if (stretch_width <= stretch_height)
+            return stretch_height;
+        else
+            return stretch_width;
     }
 
 }

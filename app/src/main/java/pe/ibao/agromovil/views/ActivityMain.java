@@ -16,9 +16,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.helpers.UploadMaster;
+import pe.ibao.agromovil.models.dao.UsuarioDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
@@ -37,7 +41,8 @@ public class ActivityMain extends AppCompatActivity
 
         myFragment = new FragmentMain();
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.content_main,myFragment).commit();
+
+       getSupportFragmentManager().beginTransaction().replace(R.id.content_main,myFragment).commit();
 
         //verificar y estan actualizar de inmediato
 
@@ -78,6 +83,21 @@ public class ActivityMain extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        String NombreU = new UsuarioDAO(getBaseContext()).verficarLogueo().getName();
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view );
+
+        View headerView = navigationView.getHeaderView(0);
+        Menu menu = navigationView.getMenu();
+        MenuItem inspeccion = menu.findItem(R.id.nav_new_inspection);
+        ((TextView) headerView.findViewById(R.id.tViewUserName)).setText(NombreU);
+        if( new VisitaDAO(getBaseContext()).getEditing() != null){
+            inspeccion.setTitle("Continuar Inspección");
+        }
     }
 
     @Override
@@ -158,6 +178,7 @@ public class ActivityMain extends AppCompatActivity
                         case "up":
                             Toast.makeText(getBaseContext(),"SUBIENDO",
                                     Toast.LENGTH_SHORT).show();
+                            new UploadMaster(getBaseContext()).Upload();
                             break;
                         case "down":
                             startActivity(
