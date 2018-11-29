@@ -147,6 +147,23 @@ public class FotoDAO {
         c.close();
         return fotoVOS;
     }
+    public int contarFotos(int idMuestra){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        Cursor mCount= db.rawQuery(
+                "select " +
+                        "count(*)" +
+                    " from " +
+                        TABLE_FOTO +
+                    " where " +
+                         TABLE_FOTO_COL_IDMUESTRA+"="+String.valueOf(idMuestra)
+                , null);
+        mCount.moveToFirst();
+        int i= mCount.getInt(0);
+        mCount.close();
+        return i;
+    }
+
 
 
     public boolean borrarById(int id){
@@ -159,9 +176,11 @@ public class FotoDAO {
                 };
 
         int res = db.delete(TABLE_FOTO,TABLE_FOTO_COL_ID+"=?",parametros);
+
         if(res>0){
             flag=true;
         }
+
         db.close();
         conn.close();
         return flag;

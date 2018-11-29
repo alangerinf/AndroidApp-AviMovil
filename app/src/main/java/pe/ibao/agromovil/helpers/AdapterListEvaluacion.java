@@ -21,6 +21,7 @@ import java.util.List;
 
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.dao.EvaluacionDAO;
+import pe.ibao.agromovil.models.dao.FotoDAO;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 
@@ -63,6 +64,7 @@ public class AdapterListEvaluacion extends BaseAdapter{
             TextView tViewFechaHora     = (TextView) v.findViewById(R.id.fecha_hora);
             TextView tViewPorcerntaje   = (TextView) v.findViewById(R.id.porcentaje);
             ImageView btnDelete         = (ImageView)v.findViewById(R.id.deleter);
+
         btnDelete.setClickable(true);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +75,7 @@ public class AdapterListEvaluacion extends BaseAdapter{
                     listEvaluacion.remove(listEvaluacion.get(position));
                     EvaluacionDAO evaluacionDAO = new EvaluacionDAO(ctx);
                     evaluacionDAO.borrarById(listEvaluacion.get(position).getId());
+
                 }catch (Exception e){
                     Toast.makeText(ctx,e.toString(),Toast.LENGTH_LONG).show();
                     Log.d("qwerty",e.toString());

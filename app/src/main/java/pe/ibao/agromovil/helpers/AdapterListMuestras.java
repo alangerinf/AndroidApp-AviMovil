@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.models.dao.FotoDAO;
 import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 import pe.ibao.agromovil.views.ActivityPhotoGallery;
@@ -86,8 +87,24 @@ public class AdapterListMuestras extends BaseAdapter{
         ImageView btnCam = (ImageView) v.findViewById(R.id.btn_cam);
         TextView tViewTime = (TextView) v.findViewById(R.id.tViewHoraMuestra);
         final EditText eTextComent = (EditText) v.findViewById(R.id.eTextComentario);
-
+        TextView tViewNumFotos     = (TextView) v.findViewById(R.id.tViewNumFotos);
         tViewTime.setText(listMuestas.get(position).getTime());
+
+
+        try{
+            int i = new FotoDAO(ctx).contarFotos(listMuestas.get(position).getId());
+
+            if(i>0 && i<=9){
+                tViewNumFotos.setVisibility(View.VISIBLE);
+                tViewNumFotos.setText(String.valueOf(i));
+            }
+            if(i>9){
+                tViewNumFotos.setVisibility(View.VISIBLE);
+                tViewNumFotos.setText(String.valueOf(i)+"+");
+            }
+        }catch (Exception e){
+
+        }
 
         eTextComent.setText(listMuestas.get(position).getComent());
 
@@ -149,7 +166,9 @@ public class AdapterListMuestras extends BaseAdapter{
 
 
        // Log.d("xdxdxd",position+"    "+listCriterios.get(position).getName());
-        nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
+
+       //ombre  de item
+        nameitem.setText(listMuestas.get(position).getName());//+" "+listMuestas.get(position).getMagnitud());
         _string.setHeight(0);
         /*
         _float.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -181,7 +200,7 @@ public class AdapterListMuestras extends BaseAdapter{
             }
         });
 
-
+        Toast.makeText(ctx,listMuestas.get(position).getType(),Toast.LENGTH_SHORT).show();
 
         switch (listMuestas.get(position).getType()){
             case "boolean":
@@ -208,7 +227,6 @@ public class AdapterListMuestras extends BaseAdapter{
                 _int.setText(listMuestas.get(position).getValue());
                 // _int.setText(Integer.valueOf(listMuestas.get(position).getValue()));
                 nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
-
 
                 _int.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -297,7 +315,7 @@ public class AdapterListMuestras extends BaseAdapter{
                 });
                 break;
             case "string":
-                Log.d("tttttt", "getView: ");
+
                 _string.setHeight(150);
                 _string.setVisibility(View.VISIBLE);
                 _string.setText(listMuestas.get(position).getValue());

@@ -29,7 +29,6 @@ public class GPSService extends Service  implements LocationListener{
     }
 
 
-
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.

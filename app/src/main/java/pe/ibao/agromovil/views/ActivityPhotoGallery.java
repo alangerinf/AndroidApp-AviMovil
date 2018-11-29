@@ -1,6 +1,7 @@
 package pe.ibao.agromovil.views;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -47,8 +48,8 @@ public class ActivityPhotoGallery extends AppCompatActivity {
     private final String DIRECTORIO_IMAGEN = CARPETA_RAIZ +CARPETA_IMAGEN;
     static private String PATH = "";
     static ImageView iViewLienzo;
-    File fileImagen;
-    Bitmap bitmap;
+    static File fileImagen;
+    static Bitmap bitmap;
 
     private static int idMuestra;
     private static String value;
@@ -56,9 +57,9 @@ public class ActivityPhotoGallery extends AppCompatActivity {
     private static List<FotoVO> listFotos;
     private static boolean isEditable;
     private static ListView listViewFotos;
-    RecyclerView recyclerView;
+    static RecyclerView recyclerView;
     private MyRecyclerViewAdapter adapter;
-
+    static int idFotoFocus;
     private static ImageView btnDelete;
 
 
@@ -82,6 +83,25 @@ public class ActivityPhotoGallery extends AppCompatActivity {
         Toast.makeText(this,mybundle.toString(),Toast.LENGTH_LONG).show();
 
         btnDelete = (ImageView) findViewById(R.id.iViewBtnDelete);
+
+
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getBaseContext(),"id foto :"+MyRecyclerViewAdapter.idFotoFocus,Toast.LENGTH_SHORT).show();
+                if(new FotoDAO(getBaseContext()).borrarById(MyRecyclerViewAdapter.idFotoFocus)){
+                    listFotos = new FotoDAO(getBaseContext()).listarByIdMuestra(idMuestra);
+                    adapter = new MyRecyclerViewAdapter(getBaseContext(),listFotos,iViewLienzo,isEditable,idFotoFocus,btnDelete);
+//              adapter.setClickListener((MyRecyclerViewAdapter.ItemClickListener) this);
+                    recyclerView.setAdapter(adapter);
+                    iViewLienzo.setImageResource(R.drawable.ic_menu_camera);
+                    btnDelete.setVisibility(View.INVISIBLE);
+                }else{
+                    Toast.makeText(getBaseContext(),"Lo sentimos no se pudo Eliminar",Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
         if(!isEditable){
             ((FloatingActionButton) findViewById(R.id.floatingBtnCamara)).setVisibility(View.INVISIBLE);
@@ -107,7 +127,7 @@ public class ActivityPhotoGallery extends AppCompatActivity {
         LinearLayoutManager horizontalLayoutManager
                 = new LinearLayoutManager(ActivityPhotoGallery.this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(horizontalLayoutManager);
-        adapter = new MyRecyclerViewAdapter(this,listFotos,iViewLienzo,isEditable);
+        adapter = new MyRecyclerViewAdapter(this,listFotos,iViewLienzo,isEditable,idFotoFocus,btnDelete);
 //        adapter.setClickListener((MyRecyclerViewAdapter.ItemClickListener) this);
         recyclerView.setAdapter(adapter);
 
@@ -148,6 +168,20 @@ public class ActivityPhotoGallery extends AppCompatActivity {
         dialog.show();
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK,returnIntent);
+        finish();
+        //    moveTaskToBack(true);
+
+    }
 
     public void TomarFoto(View view){
         if(isEditable){
@@ -310,7 +344,7 @@ public class ActivityPhotoGallery extends AppCompatActivity {
                     LinearLayoutManager horizontalLayoutManager
                             = new LinearLayoutManager(ActivityPhotoGallery.this, LinearLayoutManager.HORIZONTAL, false);
                     recyclerView.setLayoutManager(horizontalLayoutManager);
-                    adapter = new MyRecyclerViewAdapter(this,listFotos, iViewLienzo,isEditable);
+                    adapter = new MyRecyclerViewAdapter(this,listFotos, iViewLienzo,isEditable,idFotoFocus,btnDelete);
 //        adapter.setClickListener((MyRecyclerViewAdapter.ItemClickListener) this);
                     recyclerView.setAdapter(adapter);
                     break;

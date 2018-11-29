@@ -17,6 +17,17 @@ public class Utilities {
 
     public static final String DATABASE_NAME="data";
 
+
+    public static final String TABLE_CONTACTO="contacto",
+            TABLE_CONTACTO_COL_ID           ="id",
+            TABLE_CONTACTO_TYPECOL_ID       ="INTEGER",
+            TABLE_CONTACTO_COL_NAME         ="name",
+            TABLE_CONTACTO_TYPECOL_NAME     ="VARCHAR(50)",
+            TABLE_CONTACTO_COL_IDFUNDO      ="idFundo",
+            TABLE_CONTACTO_TYPECOL_IDFUNDO  ="INTEGER";
+
+
+
     public static final String TABLE_USUARIO="usuario",
             TABLE_USUARIO_COL_ID                ="id",
             TABLE_USUARIO_TYPECOL_ID            ="INTEGER",
@@ -108,8 +119,8 @@ public class Utilities {
             TABLE_VISITA_TYPECOL_IDFUNDO    ="INTEGER",
             TABLE_VISITA_COL_IDVARIEDAD     ="idVariedad",
             TABLE_VISITA_TYPECOL_IDVARIEDAD ="INTEGER",
-            TABLE_VISITA_COL_CONTACTO       ="contacto",
-            TABLE_VISITA_TYPECOL_CONTACTO   ="VARCHAR(80)";
+            TABLE_VISITA_COL_IDCONTACTO       ="contacto",
+            TABLE_VISITA_TYPECOL_IDCONTACTO   ="INTEGER";
 
     public static final String TABLE_EVALUACION="evaluacion",
             TABLE_EVALUACION_COL_ID                     ="id",
@@ -195,7 +206,7 @@ public class Utilities {
                     TABLE_VISITA_COL_LONGITUD   +" "+TABLE_VISITA_TYPECOL_LONGITUD  +", "+
                     TABLE_VISITA_COL_IDFUNDO    +" "+TABLE_VISITA_TYPECOL_IDFUNDO   +", "+
                     TABLE_VISITA_COL_IDVARIEDAD +" "+TABLE_VISITA_TYPECOL_IDVARIEDAD+", "+
-                    TABLE_VISITA_COL_CONTACTO   +" "+TABLE_VISITA_TYPECOL_CONTACTO+
+                    TABLE_VISITA_COL_IDCONTACTO +" "+TABLE_VISITA_TYPECOL_IDCONTACTO+
             ")";
 
     public static final String CREATE_TABLE_TIPOINSPECCION=
@@ -261,5 +272,11 @@ public class Utilities {
                     TABLE_USUARIO_COL_LASTNAME  +" "+TABLE_USUARIO_TYPECOL_LASTNAME+
             ")";
 
+    public static final String CREATE_TABLE_CONTACTO =
+            "CREATE TABLE "+TABLE_CONTACTO+" (" +
+                    TABLE_CONTACTO_COL_ID        +" "+TABLE_CONTACTO_TYPECOL_ID+" PRIMARY KEY," +
+                    TABLE_CONTACTO_COL_NAME      +" "+TABLE_CONTACTO_TYPECOL_NAME+"," +
+                    TABLE_CONTACTO_COL_IDFUNDO      +" "+TABLE_CONTACTO_TYPECOL_IDFUNDO +
+                    ")";
 
 }

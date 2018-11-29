@@ -93,6 +93,7 @@
 
         <activity
             android:name=".views.ActivityPhotoGallery"
+            android:parentActivityName=".views.ActivityEvaluacion"
             android:label="@string/title_activity_photo_gallery"></activity>
 
         <provider

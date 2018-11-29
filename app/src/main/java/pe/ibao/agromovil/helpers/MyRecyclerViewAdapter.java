@@ -24,20 +24,24 @@ import pe.ibao.agromovil.models.vo.entitiesInternal.FotoVO;
 
 public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAdapter.ViewHolder> {
 
-     static private List<FotoVO> listFotos;
+    private List<FotoVO> listFotos;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
     private Context ctx;
     private ImageView lienzo;
     private Boolean isEditable;
+    public static int idFotoFocus;
+    private ImageView btnDelete;
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, List<FotoVO> listFotos,ImageView lienzo,Boolean isEditable) {
+    public MyRecyclerViewAdapter(Context context, List<FotoVO> listFotos,ImageView lienzo,Boolean isEditable,int idFotoFocus ,ImageView btnDelete) {
         this.mInflater = LayoutInflater.from(context);
         this.listFotos = listFotos;
         this.ctx=context;
         this.lienzo = lienzo;
         this.isEditable = isEditable;
+        this.idFotoFocus = idFotoFocus;
+        this.btnDelete = btnDelete;
     }
 
     // inflates the row layout from xml when needed
@@ -62,7 +66,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                 bitmap = Bitmap.createScaledBitmap(bitmap, 60, 80, true);
                 holder.iViewFoto.setImageBitmap(bitmap);
             }
-        }, 100);
+        }, 1);
 
         holder.iViewFoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +76,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
+                        btnDelete.setVisibility(View.VISIBLE);
                         Toast.makeText(ctx,"seleccionado"+position,Toast.LENGTH_SHORT).show();
                         Bitmap bitmap = BitmapFactory.decodeFile(listFotos.get(position).getPath());
+                        idFotoFocus = listFotos.get(position).getId();
                         int rotate = 0;
                         try {
                             File imageFile = new File(listFotos.get(position).getPath());
@@ -99,7 +105,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                         }
                         Matrix matrix = new Matrix();
                         matrix.postRotate(rotate);
-                        matrix.postScale(0.3f,0.3f);
+                        matrix.postScale(0.5f,0.5f);
                         //double scale = bitmap.getWidth()/(bitmap.getHeight()*1.0);
                         bitmap = Bitmap.createBitmap(bitmap , 0, 0, (bitmap.getWidth()),  (bitmap.getHeight()), matrix, true);
 

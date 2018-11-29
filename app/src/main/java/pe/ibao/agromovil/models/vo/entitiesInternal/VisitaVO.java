@@ -17,7 +17,8 @@ public class VisitaVO {
     private String nameCultivo;
     private int idVariedad;
     private String nameVariedad;
-    private String contacto;
+    private int idContacto;
+    private String nameContacto;
     private boolean editing;
     private CollectionEvaluationVO collectionEvaluationVO;
 
@@ -33,6 +34,22 @@ public class VisitaVO {
         this.collectionEvaluationVO = collectionEvaluationVO;
     }
 
+    public int getIdContacto() {
+        return idContacto;
+    }
+
+    public void setIdContacto(int idContacto) {
+        this.idContacto = idContacto;
+    }
+
+    public String getNameContacto() {
+        return nameContacto;
+    }
+
+    public void setNameContacto(String nameContacto) {
+        this.nameContacto = nameContacto;
+    }
+
     public int getIdEmpresa() {
         return idEmpresa;
     }
@@ -41,13 +58,7 @@ public class VisitaVO {
         this.idEmpresa = idEmpresa;
     }
 
-    public String getContacto() {
-        return contacto;
-    }
 
-    public void setContacto(String contacto) {
-        this.contacto = contacto;
-    }
 
     public String getNameEmpresa() {
         return nameEmpresa;

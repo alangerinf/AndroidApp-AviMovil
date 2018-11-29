@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.models.dao.ContactoDAO;
 import pe.ibao.agromovil.models.dao.CultivoDAO;
 import pe.ibao.agromovil.models.dao.EvaluacionDAO;
 import pe.ibao.agromovil.models.dao.FundoDAO;
@@ -98,7 +99,7 @@ public class ActivityVisita extends AppCompatActivity {
         dialogClose = new Dialog(this);
 
         if(!isEditable){
-            btnFinalizar.setText("LISTO");
+            btnFinalizar.setVisibility(View.INVISIBLE);
             floatBtnNuevo.setVisibility(View.INVISIBLE);
             ((FloatingActionButton) findViewById(R.id.floatingActionButton)).setTranslationY(120);
             setTitle("Inspeccion Antigua");
@@ -214,8 +215,9 @@ public class ActivityVisita extends AppCompatActivity {
             VariedadDAO variedadDAO = new VariedadDAO(this);
             tViewVariedad.setText(variedadDAO.consultarVariedadById(visita.getIdCultivo()).getName());
         }
-        if(visita.getContacto()!=null){
-            tViewContacto.setText(visita.getContacto());
+        if(visita.getIdContacto()>0){
+            ContactoDAO contactoDAO = new ContactoDAO(this);
+            tViewContacto.setText(contactoDAO.consultarContactoByid(visita.getIdContacto()).getName());
         }
 
         if(visita.getFechaHora()!=null){
@@ -250,7 +252,7 @@ public class ActivityVisita extends AppCompatActivity {
             mybundle.putInt("idVariedad",visita.getIdVariedad());
             mybundle.putInt("idFundo",visita.getIdFundo());
             mybundle.putInt("isNewTest",0);
-            mybundle.putString("fechaHora",visita.getFechaHora());
+            mybundle.putString("fechaHora",evtemp.getTimeIni());
             mybundle.putBoolean("isEditable",isEditable);
             /*evaluacionVOList= new EvaluacionDAO(ctx).listarByIdVisita(visita.getId());
             baseAdapter.notifyDataSetChanged();
@@ -367,7 +369,7 @@ public class ActivityVisita extends AppCompatActivity {
                 mybundle.putInt("idCultivo",visita.getIdCultivo());
                 mybundle.putInt("idVariedad",visita.getIdVariedad());
                 mybundle.putInt("idVisita",visita.getId());
-                mybundle.putString("contacto",visita.getContacto());
+                mybundle.putInt("idContacto",visita.getIdContacto());
 
                 intent.putExtras(mybundle);
                 startActivityForResult(intent, REQUEST_BASICS_DATA);

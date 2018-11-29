@@ -75,7 +75,7 @@ public class AdapterListVisitas extends BaseAdapter{
         tViewNameFundo.setText( new FundoDAO(ctx).consultarById(visitaVO.getIdFundo()).getName());
         tViewNameCultivo.setText( visitaVO.getNameCultivo());
         tViewNameVariedad.setText( visitaVO.getNameVariedad());
-        tViewNameContacto.setText( visitaVO.getContacto());
+        tViewNameContacto.setText( visitaVO.getNameContacto());
 
         iViewBtnView.setOnClickListener(new View.OnClickListener() {
             @Override

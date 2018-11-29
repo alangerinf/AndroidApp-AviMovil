@@ -8,8 +8,6 @@ import pe.ibao.agromovil.utilities.Utilities;
 
 public class ConexionSQLiteHelper extends SQLiteOpenHelper{
 
-
-
     public ConexionSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
@@ -29,6 +27,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL(Utilities.CREATE_TABLE_EVALUACION);
         db.execSQL(Utilities.CREATE_TABLE_MUESTRA);
         db.execSQL(Utilities.CREATE_TABLE_FOTO);
+        db.execSQL(Utilities.CREATE_TABLE_CONTACTO);
     }
 
     @Override
@@ -45,6 +44,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VISITA);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EVALUACION);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_MUESTRA);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONTACTO);
         onCreate(db);
     }
 }

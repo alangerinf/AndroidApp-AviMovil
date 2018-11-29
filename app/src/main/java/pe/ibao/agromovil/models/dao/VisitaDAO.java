@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
+import pe.ibao.agromovil.models.vo.entitiesDB.ContactoVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.CultivoVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
@@ -20,10 +21,10 @@ import pe.ibao.agromovil.utilities.Utilities;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_CONTACTO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_EDITING;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_FECHAHORA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_IDCONTACTO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_IDFUNDO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_IDVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_LATITUD;
@@ -52,7 +53,7 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
-                            "V."+TABLE_VISITA_COL_CONTACTO  +//7
+                            "V."+TABLE_VISITA_COL_IDCONTACTO  +//7
                         " FROM "+
                             TABLE_VISITA+" as V "+
                         " WHERE "+
@@ -78,19 +79,27 @@ public class VisitaDAO {
                 Log.d(TAG,"6");
                 temp.setIdVariedad(cursor.getInt(6));
                 Log.d(TAG,"7");
-                temp.setContacto(cursor.getString(7));
+                temp.setIdContacto(cursor.getInt(7));
                 Log.d(TAG,"8");
+
+
+                if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
+
+                    //obteniedo datos d e fundo
+                    ContactoDAO contactoDAO = new ContactoDAO(ctx);
+                    ContactoVO contactoVo =  contactoDAO.consultarContactoByid(temp.getIdContacto());
+                    String nameContacto = contactoVo.getName();
+                    temp.setNameFundo(nameContacto);
+                    //obteniedno datos d e empresa
+                }
 
                 if(temp.getIdFundo()>0){//verifica si devuelve un id fundo
                     Log.d(TAG,"getEditing -1 "+temp.getIdFundo());
                     //obteniedo datos d e fundo
                     FundoDAO fundoDAO = new FundoDAO(ctx);
                     FundoVO f =  fundoDAO.consultarById(temp.getIdFundo());
-                    Log.d(TAG,"getEditing -2 "+temp.getIdFundo());
                     String nameFundo = f.getName();
-                    Log.d(TAG,"getEditing -3 "+temp.getIdFundo());
                     temp.setNameFundo(nameFundo);
-                    Log.d(TAG,"getEditing -4 "+temp.getIdFundo());
                     //obteniedno datos d e empresa
 
                     EmpresaVO empresaVO = new EmpresaDAO(ctx).consultarEmpresaByid(temp.getIdFundo());
@@ -133,7 +142,7 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
-                            "V."+TABLE_VISITA_COL_CONTACTO  +//7
+                            "V."+TABLE_VISITA_COL_IDCONTACTO  +//7
                         " FROM "+
                             TABLE_VISITA+" as V "+
 
@@ -160,8 +169,18 @@ public class VisitaDAO {
                         Log.d(TAG,"6");
                         temp.setIdVariedad(cursor.getInt(6));
                         Log.d(TAG,"7");
-                        temp.setContacto(cursor.getString(7));
+                        temp.setIdContacto(cursor.getInt(7));
                         Log.d(TAG,"8");
+
+                        if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
+
+                            //obteniedo datos d e fundo
+                            ContactoDAO contactoDAO = new ContactoDAO(ctx);
+                            ContactoVO contactoVo =  contactoDAO.consultarContactoByid(temp.getIdContacto());
+                            String nameContacto = contactoVo.getName();
+                            temp.setNameFundo(nameContacto);
+                            //obteniedno datos d e empresa
+                        }
 
                         if(temp.getIdFundo()>0){//verifica si devuelve un id fundo
                             Log.d(TAG,"getEditing -1 "+temp.getIdFundo());
@@ -204,7 +223,7 @@ public class VisitaDAO {
     }
 
 
-    public boolean cambiarIdFundoIdVariedadContacto(int id,int idFundo, int idVariedad,String contacto){
+    public boolean cambiarIdFundoIdVariedadIdContacto(int id,int idFundo, int idVariedad,int contacto){
       boolean flag = false;
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
         SQLiteDatabase db = c.getWritableDatabase();
@@ -215,7 +234,7 @@ public class VisitaDAO {
         ContentValues values = new ContentValues();
             values.put(TABLE_VISITA_COL_IDFUNDO,String.valueOf(idFundo));
             values.put(TABLE_VISITA_COL_IDVARIEDAD,String.valueOf(idVariedad));
-            values.put(TABLE_VISITA_COL_CONTACTO,contacto);
+            values.put(TABLE_VISITA_COL_IDCONTACTO,contacto);
         int res = db.update(TABLE_VISITA,values,TABLE_VISITA_COL_ID+"=?",parametros);
         if(res>0){
             flag=true;
@@ -314,7 +333,7 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
-                            "V."+TABLE_VISITA_COL_CONTACTO  +//7
+                            "V."+TABLE_VISITA_COL_IDCONTACTO  +//7
                             " FROM "+
                             TABLE_VISITA+" as V "+
 
@@ -341,9 +360,18 @@ public class VisitaDAO {
                 Log.d(TAG,"6");
                 temp.setIdVariedad(cursor.getInt(6));
                 Log.d(TAG,"7");
-                temp.setContacto(cursor.getString(7));
+                temp.setIdContacto(cursor.getInt(7));
                 Log.d(TAG,"8");
 
+                if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
+
+                    //obteniedo datos d e fundo
+                    ContactoDAO contactoDAO = new ContactoDAO(ctx);
+                    ContactoVO contactoVo =  contactoDAO.consultarContactoByid(temp.getIdContacto());
+                    String nameContacto = contactoVo.getName();
+                    temp.setNameFundo(nameContacto);
+                    //obteniedno datos d e empresa
+                }
                 if(temp.getIdFundo()>0){//verifica si devuelve un id fundo
                     Log.d(TAG,"getEditing -1 "+temp.getIdFundo());
                     //obteniedo datos d e fundo

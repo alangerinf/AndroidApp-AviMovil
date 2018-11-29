@@ -12,19 +12,27 @@
         <item>Fundo San Juan</item>
         <item>Fundo Santa Clara</item>
         <item>Fundo Santa Isabel</item>
-
     </string-array>
+
     <string-array name="cultivos">
-        <item>Arándano</item>
+        <item>Seleccione Cultivo</item>
         <item>Palto</item>
         <item>Mandarina</item>
         <item>Papaya</item>
     </string-array>
+
     <string-array name="variedades">
-        <item>W. Murcott 120.00 Ha.</item>
+        <item>Seleccione Variedad</item>
         <item>W. Murcott 123.00 Ha.</item>
         <item>Biloxi 145.00 Ha.</item>
     </string-array>
+
+    <string-array name="contactos">
+        <item>Seleccione Contacto</item>
+        <item>W. Murcott 123.00 Ha.</item>
+        <item>Biloxi 145.00 Ha.</item>
+    </string-array>
+
     <string-array name="inspecciones">
         <item>Fitosanidad Entomológicos</item>
         <item>Problemas Fisiológicos</item>

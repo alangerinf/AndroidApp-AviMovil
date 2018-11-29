@@ -74,7 +74,6 @@ public class EmpresaDAO {
     }
 
     public EmpresaVO consultarEmpresaByIdFundo(int idFundo){
-
         SQLiteDatabase db = c.getReadableDatabase();
         EmpresaVO empresaVO = null;
         try{

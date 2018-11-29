@@ -54,7 +54,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
     //static final int REQUEST_GPS_LOCATION = 2;
     static final public String QR_RESULT="QR_RESULT";
     private String qrCode = "";
-
+    static ArrayAdapter<CharSequence> adaptadorInspecciones;
     private static Spinner spnTipoInspeccion;
     private static TextView tViewFechaHora;
     private static EditText eTextQR;
@@ -76,21 +76,29 @@ public class ActivityEvaluacion extends AppCompatActivity {
     private static int idVariedad;
     private static boolean isEditable;
     private static FloatingActionButton floatingActionButton;
+    private static AdapterListMuestras adapterListMuestras;
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        Toast.makeText(getBaseContext(),String.valueOf(requestCode),Toast.LENGTH_SHORT).show();
         switch (requestCode){
             case REQUEST_QR_CODE:
                 if(resultCode == Activity.RESULT_OK){
                     String qrCode=data.getStringExtra(QR_RESULT);
                     eTextQR.setText(qrCode);
                     new EvaluacionDAO(getBaseContext()).editarQR(idEvaluacion,qrCode);
+
                 }
                 if (resultCode == Activity.RESULT_CANCELED) {
                     //Write your code if there's no result
 
                 }
+                break;
+            case 123:
+                Toast.makeText(getBaseContext(),"entro 123",Toast.LENGTH_SHORT).show();
+                adapterListMuestras.notifyDataSetChanged();
                 break;
         }
 /*
@@ -110,7 +118,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_evaluacion);
-       // setupActionBar();
+        //setupActionBar();
 
 /*
         buttonOk=(Button) findViewById(R.id.button_ok);
@@ -175,11 +183,11 @@ public class ActivityEvaluacion extends AppCompatActivity {
         cargarTipoInspeccion();
         Log.d("eva123","tipotam"+listTipoInspeccion.size());
         Log.d("eva123","tiponomtam"+listNombreTipoInspeccion.size());
-        ArrayAdapter<CharSequence> adaptadorInspecciones = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreTipoInspeccion);
+        adaptadorInspecciones = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreTipoInspeccion);
         spnTipoInspeccion.setAdapter(adaptadorInspecciones);
 
         saveMuestras = new MuestrasDAO(this).listarByIdEvaluacion(idEvaluacion);
-        AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas, spnTipoInspeccion,isEditable);
+        adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas, spnTipoInspeccion,isEditable);
         listViewMuestas.setAdapter(adapterListMuestras);//seteanis ek adaotadir
 
         setListViewHeightBasedOnChildren(listViewMuestas);//tamañap respecto a hijos
@@ -257,25 +265,25 @@ public class ActivityEvaluacion extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-
+       // super.onSupportNavigateUp();
         onBackPressed();
         return false;
     }
     @Override
     public void onBackPressed() {
+
+
+
         if(new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getIdTipoInspeccion()==0){
             new EvaluacionDAO(getBaseContext()).borrarById(idEvaluacion);
         }
 
-
-        Log.d("hola","holamundobacisc");
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED,returnIntent);
         finish();
 
 
     }
-
 
 
 
@@ -417,7 +425,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
                             Log.d("locomata","antes de mandar "+idEvaluacion+" "+temp.getId());
                             MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId());
                             saveMuestras.add(temp2);
-                            AdapterListMuestras adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas,spnTipoInspeccion,isEditable);
+                            adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas,spnTipoInspeccion,isEditable);
                             listViewMuestas.setAdapter(adapterListMuestras);
                             setListViewHeightBasedOnChildren(listViewMuestas);
                             spnTipoInspeccion.setEnabled(false);

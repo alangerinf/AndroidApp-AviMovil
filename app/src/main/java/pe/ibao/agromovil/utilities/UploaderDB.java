@@ -73,6 +73,9 @@ public class UploaderDB {
         cc.download(porcentaje,mensaje,80,10);
         DownloaderCriterio cri = new DownloaderCriterio(ctx);
         cri.download(porcentaje,mensaje,91,10);
+
+        cargarContactos();
+
     }
 
 
@@ -140,7 +143,23 @@ public class UploaderDB {
 
 
 
+    public void cargarContactos(){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        Long temp;
+        ContentValues values = new ContentValues();
+        values.put(Utilities.TABLE_CONTACTO_COL_ID,"1");
+        values.put(Utilities.TABLE_CONTACTO_COL_NAME,"Josue1");
+        values.put(Utilities.TABLE_CONTACTO_COL_IDFUNDO,"1");
+        temp = db.insert(Utilities.TABLE_CONTACTO,Utilities.TABLE_CONTACTO_COL_ID,values);
 
+        values = new ContentValues();
+        values.put(Utilities.TABLE_CONTACTO_COL_ID,"2");
+        values.put(Utilities.TABLE_CONTACTO_COL_NAME,"Alan2");
+        values.put(Utilities.TABLE_CONTACTO_COL_IDFUNDO,"1");
+        temp =db.insert(Utilities.TABLE_CONTACTO,Utilities.TABLE_CONTACTO_COL_ID,values);
+        db.close();
+    }
 
 
 
@@ -423,6 +442,7 @@ public class UploaderDB {
         values.put(Utilities.TABLE_VISITA_COL_EDITING,false);
         values.put(Utilities.TABLE_VISITA_COL_IDVARIEDAD,"1");
         values.put(Utilities.TABLE_VISITA_COL_IDFUNDO,"1");
+        values.put(Utilities.TABLE_VISITA_COL_IDCONTACTO,"1");
         Long temp = db.insert(Utilities.TABLE_VISITA,Utilities.TABLE_VISITA_COL_ID,values);
         Log.d("cargarVisita",String.valueOf(temp));
         values = new ContentValues();
@@ -430,7 +450,7 @@ public class UploaderDB {
         values.put(Utilities.TABLE_VISITA_COL_EDITING,true);
         values.put(Utilities.TABLE_VISITA_COL_IDVARIEDAD,"1");
         values.put(Utilities.TABLE_VISITA_COL_IDFUNDO,"1");
-        values.put(Utilities.TABLE_VISITA_COL_CONTACTO,"Alan Geronimo");
+        values.put(Utilities.TABLE_VISITA_COL_IDCONTACTO,"1");
         temp = db.insert(Utilities.TABLE_VISITA,Utilities.TABLE_VISITA_COL_ID,values);
         Log.d("cargarVisita",String.valueOf(temp));
         db.close();

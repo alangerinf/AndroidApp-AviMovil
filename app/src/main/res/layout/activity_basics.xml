@@ -132,18 +132,18 @@
             android:background="@drawable/shape_secondary_r15_borderlight_v2"
             android:dropDownWidth="match_parent"
             android:hint="Escriba aqui el contacto"
+            android:inputType=""
             android:minWidth="15dp"
             android:paddingVertical="5dp"
             android:singleLine="true"
             android:spinnerMode="dialog"
             android:textAlignment="center"
-            android:visibility="visible"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textView35"
-            app:layout_constraintTop_toBottomOf="@+id/textView35"
-            android:inputType="" />
+            app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
         <TextView
             android:id="@+id/tViewEmpesa"
@@ -193,6 +193,26 @@
             android:text="Contacto"
             app:layout_constraintStart_toStartOf="@+id/textView34"
             app:layout_constraintTop_toBottomOf="@+id/spnVariedad" />
+
+        <Spinner
+            android:id="@+id/spnContacto"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/shape_secondary_r15_borderlight_v2"
+            android:entries="@array/contactos"
+            android:minWidth="15dp"
+            android:paddingVertical="5dp"
+            android:spinnerMode="dialog"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView35"
+            app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
     </android.support.constraint.ConstraintLayout>
 
