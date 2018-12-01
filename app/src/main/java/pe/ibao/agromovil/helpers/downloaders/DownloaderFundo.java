@@ -1,4 +1,4 @@
-package pe.ibao.agromovil.helpers;
+package pe.ibao.agromovil.helpers.downloaders;
 
 import android.app.ProgressDialog;
 import android.content.Context;

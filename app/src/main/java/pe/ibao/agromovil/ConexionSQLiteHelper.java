@@ -28,6 +28,10 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL(Utilities.CREATE_TABLE_MUESTRA);
         db.execSQL(Utilities.CREATE_TABLE_FOTO);
         db.execSQL(Utilities.CREATE_TABLE_CONTACTO);
+        db.execSQL(Utilities.CREATE_TABLE_TIPORECOMENDACION);
+        db.execSQL(Utilities.CREATE_TABLE_CRITERIORECOMENDACION);
+        db.execSQL(Utilities.CREATE_TABLE_RECOMENDACION);
+        db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONRECOMENDACION);
     }
 
     @Override
@@ -45,6 +49,10 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EVALUACION);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_MUESTRA);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONTACTO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPORECOMENDACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIORECOMENDACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_RECOMENDACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONRECOMENDACION);
         onCreate(db);
     }
 }

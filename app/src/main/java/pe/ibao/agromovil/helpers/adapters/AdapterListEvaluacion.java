@@ -1,4 +1,4 @@
-package pe.ibao.agromovil.helpers;
+package pe.ibao.agromovil.helpers.adapters;
 
 import android.content.Context;
 import android.content.Intent;

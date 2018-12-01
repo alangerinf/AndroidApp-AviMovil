@@ -12,7 +12,7 @@ public class EvaluacionVO {
     private String qr;
     private int idVisita;
 
-    private CollectionFotoMuestraVO collectionFotoMuestraVO;
+
 
     public String getNameInspeccion() {
         return nameInspeccion;
@@ -30,9 +30,6 @@ public class EvaluacionVO {
         this.porcentaje = porcentaje;
     }
 
-    public EvaluacionVO() {
-        collectionFotoMuestraVO= new CollectionFotoMuestraVO();
-    }
 
     public String getTimeIni() {
         return timeIni;
@@ -58,13 +55,6 @@ public class EvaluacionVO {
         this.idVisita = idVisita;
     }
 
-    public CollectionFotoMuestraVO getCollectionFotoMuestraVO() {
-        return collectionFotoMuestraVO;
-    }
-
-    public void setCollectionFotoMuestraVO(CollectionFotoMuestraVO collectionFotoMuestraVO) {
-        this.collectionFotoMuestraVO = collectionFotoMuestraVO;
-    }
 
     public double getLon() {
         return lon;

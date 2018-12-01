@@ -1,4 +1,4 @@
-package pe.ibao.agromovil.helpers;
+package pe.ibao.agromovil.helpers.downloaders;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,47 +18,48 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Handler;
 
 import pe.ibao.agromovil.app.AppController;
-import pe.ibao.agromovil.models.dao.EmpresaDAO;
+import pe.ibao.agromovil.models.dao.FundoDAO;
+import pe.ibao.agromovil.models.dao.VariedadDAO;
 
-import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_EMPRESA;
+import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_FUNDO;
+import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_VARIEDAD;
 
-public class DownloaderEmpresa {
+public class DownloaderVariedad {
 
     Context ctx;
     ProgressDialog progress;
-    public DownloaderEmpresa(Context ctx){
+    public DownloaderVariedad(Context ctx){
         this.ctx = ctx;
     }
 
     public void download(){
         progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
-        progress.setMessage("Intentando descargar Empresas");
+        progress.setMessage("Intentando descargar Variedades");
         progress.show();
         StringRequest sr = new StringRequest(Request.Method.POST,
-                URL_DOWNLOAD_TABLE_EMPRESA,
+                URL_DOWNLOAD_TABLE_VARIEDAD,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progress.dismiss();
                         try {
                             JSONArray main = new JSONArray(response);
-
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                String nombre = String.valueOf(id)+"-"+data.getString("nombre");
-                                Log.d("EMPRESADOWN","fila "+i+" : "+id+" "+nombre);
-                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre)){
-                                    Log.d("EMPRESADOWN","logro insertar");
+                                String nombre = data.getString("nombre");
+                                int idCultivo = data.getInt("idCultivo");
+                                Log.d("VARIEDADDOWN","fila "+i+" : "+id+" "+nombre+" "+idCultivo);
+                                if(new VariedadDAO(ctx).insertarVariedad(id,nombre,idCultivo)){
+                                    Log.d("VARIEDADDOWN","logro insertar");
                                 }
                             }
 
                         } catch (JSONException e) {
-                            Log.d("EMPRESADOWN ",e.toString());
+                            Log.d("VARIEDADDOWN ",e.toString());
                         }
                     }
                 },
@@ -91,43 +92,42 @@ public class DownloaderEmpresa {
         AppController.getInstance().addToRequestQueue(sr);
     }
 
-    public void download(final TextView porcentaje, TextView mensaje, final int  ini,final int tam) {
+    public void download(final TextView porcentaje, TextView mensaje,final int ini, final int tam) {
        /* progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
-        progress.setMessage("Intentando descargar Empresas");
+        progress.setMessage("Intentando descargar Variedades");
         progress.show();
         */
-        StringRequest sr = new StringRequest(Request.Method.POST,
-                URL_DOWNLOAD_TABLE_EMPRESA,
+       StringRequest sr = new StringRequest(Request.Method.POST,
+                URL_DOWNLOAD_TABLE_VARIEDAD,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                       // progress.dismiss();
+       //                 progress.dismiss();
                         try {
                             JSONArray main = new JSONArray(response);
                             final int length = main.length();
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                String nombre = String.valueOf(id)+"-"+data.getString("nombre");
-                                Log.d("EMPRESADOWN","fila "+i+" : "+id+" "+nombre);
-                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre)){
-                                    Log.d("EMPRESADOWN","logro insertar");
+                                String nombre = data.getString("nombre");
+                                int idCultivo = data.getInt("idCultivo");
+                                Log.d("VARIEDADDOWN","fila "+i+" : "+id+" "+nombre+" "+idCultivo);
+                                if(new VariedadDAO(ctx).insertarVariedad(id,nombre,idCultivo)){
+                                    Log.d("VARIEDADDOWN","logro insertar");
                                     android.os.Handler handler = new android.os.Handler();
                                     final int finalI = i;
                                     handler.post(new Runnable() {
                                         public void run() {
-
                                             porcentaje.setText("" + (ini + ((finalI * tam) / length)) + "%");
                                         }
                                     });
-
                                 }
                             }
-                        //    porcentaje.setText(String.valueOf(tam));
+                      //      porcentaje.setText(String.valueOf(tam));
 
                         } catch (JSONException e) {
-                            Log.d("EMPRESADOWN ",e.toString());
+                            Log.d("VARIEDADDOWN ",e.toString());
                         }
                     }
                 },

@@ -1,9 +1,7 @@
-package pe.ibao.agromovil.helpers;
+package pe.ibao.agromovil.helpers.downloaders;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,29 +19,28 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.app.AppController;
-import pe.ibao.agromovil.models.dao.CultivoDAO;
-import pe.ibao.agromovil.utilities.Utilities;
+import pe.ibao.agromovil.models.dao.EmpresaDAO;
+import pe.ibao.agromovil.models.dao.TipoInspeccionDAO;
 
-import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CULTIVO;
-import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_FUNDOVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_EMPRESA;
+import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_TIPOINSPECCION;
 
-public class DownloaderFundoVariedad {
+public class DownloaderTipoInspeccion {
 
     Context ctx;
     ProgressDialog progress;
-    public DownloaderFundoVariedad(Context ctx){
+    public DownloaderTipoInspeccion(Context ctx){
         this.ctx = ctx;
     }
 
     public void download(){
         progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
-        progress.setMessage("Intentando descargar FundoVariedad");
+        progress.setMessage("Intentando descargar Tipo Inpeccion");
         progress.show();
         StringRequest sr = new StringRequest(Request.Method.POST,
-                URL_DOWNLOAD_TABLE_FUNDOVARIEDAD,
+                URL_DOWNLOAD_TABLE_TIPOINSPECCION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -54,29 +51,15 @@ public class DownloaderFundoVariedad {
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                int idFundo = data.getInt("idFundo");
-                                int idVariedad = data.getInt("idVariedad");
-                                Log.d("FUNDOVARIEDADDOWN","fila "+i+" : "+id+" "+idFundo+" "+idVariedad);
-
-                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
-                                SQLiteDatabase db = conn.getWritableDatabase();
-
-                                ContentValues values = new ContentValues();
-                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_ID,id);
-                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO,idFundo);
-                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD,idVariedad);
-                                Long temp = db.insert(Utilities.TABLE_FUNDOVARIEDAD,Utilities.TABLE_FUNDOVARIEDAD_COL_ID,values);
-
-                                if(temp>0){
-                                    Log.d("FUNDOVARIEDADDOWN","logro insertar");
+                                String nombre = data.getString("nombre");
+                                Log.d("TIPOINSPECCIONDOWN","fila "+i+" : "+id+" "+nombre);
+                                if(new TipoInspeccionDAO(ctx).insertarTipoInspeccion(id,nombre)){
+                                    Log.d("TIPOINSPECCIONDOWN","logro insertar");
                                 }
-
-                                db.close();
-                                conn.close();
                             }
 
                         } catch (JSONException e) {
-                            Log.d("FUNDOVARIEDADDOWN ",e.toString());
+                            Log.d("TIPOINSPECCIONDOWN ",e.toString());
                         }
                     }
                 },
@@ -110,12 +93,13 @@ public class DownloaderFundoVariedad {
     }
 
     public void download(final TextView porcentaje, TextView mensaje,final int ini, final int tam) {
-        //progress = new ProgressDialog(ctx);
-        //progress.setCancelable(false);
-        //progress.setMessage("Intentando descargar FundoVariedad");
-        //progress.show();
+        /*progress = new ProgressDialog(ctx);
+        progress.setCancelable(false);
+        progress.setMessage("Intentando descargar Tipo Inpeccion");
+        progress.show();
+        */
         StringRequest sr = new StringRequest(Request.Method.POST,
-                URL_DOWNLOAD_TABLE_FUNDOVARIEDAD,
+                URL_DOWNLOAD_TABLE_TIPOINSPECCION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -126,43 +110,32 @@ public class DownloaderFundoVariedad {
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                int idFundo = data.getInt("idFundo");
-                                int idVariedad = data.getInt("idVariedad");
-                                Log.d("FUNDOVARIEDADDOWN","fila "+i+" : "+id+" "+idFundo+" "+idVariedad);
-
-                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
-                                SQLiteDatabase db = conn.getWritableDatabase();
-
-                                ContentValues values = new ContentValues();
-                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_ID,id);
-                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO,idFundo);
-                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD,idVariedad);
-                                Long temp = db.insert(Utilities.TABLE_FUNDOVARIEDAD,Utilities.TABLE_FUNDOVARIEDAD_COL_ID,values);
-
-                                if(temp>0){
-                                    Log.d("FUNDOVARIEDADDOWN","logro insertar");
+                                String nombre = data.getString("nombre");
+                                Log.d("TIPOINSPECCIONDOWN","fila "+i+" : "+id+" "+nombre);
+                                if(new TipoInspeccionDAO(ctx).insertarTipoInspeccion(id,nombre)){
+                                    Log.d("TIPOINSPECCIONDOWN","logro insertar");
                                     android.os.Handler handler = new android.os.Handler();
                                     final int finalI = i;
                                     handler.post(new Runnable() {
                                         public void run() {
+
                                             porcentaje.setText("" + (ini + ((finalI * tam) / length)) + "%");
                                         }
                                     });
                                 }
-                                
-                                db.close();
-                                conn.close();
+
                             }
+               //             porcentaje.setText(String.valueOf(tam));
 
                         } catch (JSONException e) {
-                            Log.d("FUNDOVARIEDADDOWN ",e.toString());
+                            Log.d("TIPOINSPECCIONDOWN ",e.toString());
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-          //              progress.dismiss();
+                      //  progress.dismiss();
                         Toast.makeText(ctx,"Error conectando con el servidor",Toast.LENGTH_LONG).show();
 
                     }
@@ -173,6 +146,7 @@ public class DownloaderFundoVariedad {
                /* params.put(POST_USER, user);
                 params.put(POST_PASSWORD, pass);
                 */
+
                 return params;
             }
 

@@ -20,19 +20,12 @@ public class VisitaVO {
     private int idContacto;
     private String nameContacto;
     private boolean editing;
-    private CollectionEvaluationVO collectionEvaluationVO;
+
 
     public VisitaVO() {
-        collectionEvaluationVO = new CollectionEvaluationVO();
+
     }
 
-    public CollectionEvaluationVO getCollectionEvaluationVO() {
-        return collectionEvaluationVO;
-    }
-
-    public void setCollectionEvaluationVO(CollectionEvaluationVO collectionEvaluationVO) {
-        this.collectionEvaluationVO = collectionEvaluationVO;
-    }
 
     public int getIdContacto() {
         return idContacto;

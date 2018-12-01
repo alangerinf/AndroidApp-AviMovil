@@ -1,4 +1,4 @@
-package pe.ibao.agromovil.helpers;
+package pe.ibao.agromovil.helpers.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -200,7 +200,7 @@ public class AdapterListMuestras extends BaseAdapter{
             }
         });
 
-        Toast.makeText(ctx,listMuestas.get(position).getType(),Toast.LENGTH_SHORT).show();
+       // Toast.makeText(ctx,listMuestas.get(position).getType(),Toast.LENGTH_SHORT).show();
 
         switch (listMuestas.get(position).getType()){
             case "boolean":

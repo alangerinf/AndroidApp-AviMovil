@@ -1,9 +1,7 @@
-package pe.ibao.agromovil.helpers;
+package pe.ibao.agromovil.helpers.downloaders;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,29 +18,28 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Handler;
 
-import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.app.AppController;
-import pe.ibao.agromovil.utilities.Utilities;
+import pe.ibao.agromovil.models.dao.EmpresaDAO;
 
-import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CONFIGURACIONCRITERIO;
-import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_FUNDOVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_EMPRESA;
 
-public class DownloaderConfiguracionCriterio {
+public class DownloaderEmpresa {
 
     Context ctx;
     ProgressDialog progress;
-    public DownloaderConfiguracionCriterio(Context ctx){
+    public DownloaderEmpresa(Context ctx){
         this.ctx = ctx;
     }
 
     public void download(){
         progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
-        progress.setMessage("Intentando descargar Configuracion Criterio");
+        progress.setMessage("Intentando descargar Empresas");
         progress.show();
         StringRequest sr = new StringRequest(Request.Method.POST,
-                URL_DOWNLOAD_TABLE_CONFIGURACIONCRITERIO,
+                URL_DOWNLOAD_TABLE_EMPRESA,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -53,29 +50,15 @@ public class DownloaderConfiguracionCriterio {
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                int idFundoVariedad = data.getInt("idFundoVariedad");
-                                int idCriterio = data.getInt("idCriterioInspeccion");
-                                Log.d("CONFCRITERIODOWN","fila "+i+" : "+id+" "+idFundoVariedad+" "+idCriterio);
-
-                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
-                                SQLiteDatabase db = conn.getWritableDatabase();
-
-                                ContentValues values = new ContentValues();
-                                values.put(Utilities.TABLE_CONFIGURACIONCRITERIO_COL_ID,id);
-                                values.put(Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD,idFundoVariedad);
-                                values.put(Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO,idCriterio);
-                                Long temp = db.insert(Utilities.TABLE_CONFIGURACIONCRITERIO,Utilities.TABLE_CONFIGURACIONCRITERIO_COL_ID,values);
-
-                                if(temp>0){
-                                    Log.d("CONFCRITERIODOWN","logro insertar");
+                                String nombre = String.valueOf(id)+"-"+data.getString("nombre");
+                                Log.d("EMPRESADOWN","fila "+i+" : "+id+" "+nombre);
+                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre)){
+                                    Log.d("EMPRESADOWN","logro insertar");
                                 }
-
-                                db.close();
-                                conn.close();
                             }
 
                         } catch (JSONException e) {
-                            Log.d("CONFCRITERIODOWN ",e.toString());
+                            Log.d("EMPRESADOWN ",e.toString());
                         }
                     }
                 },
@@ -108,13 +91,14 @@ public class DownloaderConfiguracionCriterio {
         AppController.getInstance().addToRequestQueue(sr);
     }
 
-    public void download(final TextView porcentaje, TextView mensaje,final int ini, final int tam) {
-        /*progress = new ProgressDialog(ctx);
+    public void download(final TextView porcentaje, TextView mensaje, final int  ini,final int tam) {
+       /* progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
-        progress.setMessage("Intentando descargar Configuracion Criterio");
+        progress.setMessage("Intentando descargar Empresas");
         progress.show();
-        */StringRequest sr = new StringRequest(Request.Method.POST,
-                URL_DOWNLOAD_TABLE_CONFIGURACIONCRITERIO,
+        */
+        StringRequest sr = new StringRequest(Request.Method.POST,
+                URL_DOWNLOAD_TABLE_EMPRESA,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -125,21 +109,10 @@ public class DownloaderConfiguracionCriterio {
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                int idFundoVariedad = data.getInt("idFundoVariedad");
-                                int idCriterio = data.getInt("idCriterioInspeccion");
-                                Log.d("CONFCRITERIODOWN","fila "+i+" : "+id+" "+idFundoVariedad+" "+idCriterio);
-
-                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
-                                SQLiteDatabase db = conn.getWritableDatabase();
-
-                                ContentValues values = new ContentValues();
-                                values.put(Utilities.TABLE_CONFIGURACIONCRITERIO_COL_ID,id);
-                                values.put(Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD,idFundoVariedad);
-                                values.put(Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO,idCriterio);
-                                Long temp = db.insert(Utilities.TABLE_CONFIGURACIONCRITERIO,Utilities.TABLE_CONFIGURACIONCRITERIO_COL_ID,values);
-
-                                if(temp>0){
-                                    Log.d("CONFCRITERIODOWN","logro insertar");
+                                String nombre = String.valueOf(id)+"-"+data.getString("nombre");
+                                Log.d("EMPRESADOWN","fila "+i+" : "+id+" "+nombre);
+                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre)){
+                                    Log.d("EMPRESADOWN","logro insertar");
                                     android.os.Handler handler = new android.os.Handler();
                                     final int finalI = i;
                                     handler.post(new Runnable() {
@@ -148,22 +121,20 @@ public class DownloaderConfiguracionCriterio {
                                             porcentaje.setText("" + (ini + ((finalI * tam) / length)) + "%");
                                         }
                                     });
-                                }
 
-                                db.close();
-                                conn.close();
+                                }
                             }
-                           // porcentaje.setText(String.valueOf(tam));
+                        //    porcentaje.setText(String.valueOf(tam));
 
                         } catch (JSONException e) {
-                            Log.d("CONFCRITERIODOWN ",e.toString());
+                            Log.d("EMPRESADOWN ",e.toString());
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progress.dismiss();
+                     //   progress.dismiss();
                         Toast.makeText(ctx,"Error conectando con el servidor",Toast.LENGTH_LONG).show();
 
                     }

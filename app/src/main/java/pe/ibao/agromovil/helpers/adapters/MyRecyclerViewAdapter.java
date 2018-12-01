@@ -1,11 +1,9 @@
-package pe.ibao.agromovil.helpers;
+package pe.ibao.agromovil.helpers.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +16,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.List;
 
-import pe.ibao.agromovil.DataUserHandler;
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.vo.entitiesInternal.FotoVO;
 

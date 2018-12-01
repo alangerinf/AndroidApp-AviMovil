@@ -6,17 +6,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import pe.ibao.agromovil.ConexionSQLiteHelper;
-import pe.ibao.agromovil.helpers.DownloaderConfiguracionCriterio;
-import pe.ibao.agromovil.helpers.DownloaderCriterio;
-import pe.ibao.agromovil.helpers.DownloaderCultivo;
-import pe.ibao.agromovil.helpers.DownloaderEmpresa;
-import pe.ibao.agromovil.helpers.DownloaderFundo;
-import pe.ibao.agromovil.helpers.DownloaderFundoVariedad;
-import pe.ibao.agromovil.helpers.DownloaderTipoInspeccion;
-import pe.ibao.agromovil.helpers.DownloaderVariedad;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderConfiguracionCriterio;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderCriterio;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderCultivo;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderEmpresa;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderFundo;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderFundoVariedad;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderTipoInspeccion;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderVariedad;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 
@@ -41,6 +39,12 @@ public class UploaderDB {
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPOINSPECCION);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONCRITERIO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONTACTO);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPORECOMENDACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIORECOMENDACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_RECOMENDACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONRECOMENDACION);
+
         /*
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VISITA);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EVALUACION);
@@ -54,6 +58,11 @@ public class UploaderDB {
         db.execSQL(Utilities.CREATE_TABLE_TIPOINSPECCION);
         db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONCRITERIO);
         db.execSQL(Utilities.CREATE_TABLE_CRITERIO);
+        db.execSQL(Utilities.CREATE_TABLE_CONTACTO);
+        db.execSQL(Utilities.CREATE_TABLE_TIPORECOMENDACION);
+        db.execSQL(Utilities.CREATE_TABLE_CRITERIORECOMENDACION);
+        db.execSQL(Utilities.CREATE_TABLE_RECOMENDACION);
+        db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONRECOMENDACION);
         db.close();
         c.close();
 
@@ -75,7 +84,9 @@ public class UploaderDB {
         cri.download(porcentaje,mensaje,91,10);
 
         cargarContactos();
-
+        cargarTipoRecomendaciones();
+        cargarCriterioRecomendaciones();
+        cargarConfiguracionRecomendacion();
     }
 
 
@@ -501,6 +512,77 @@ public class UploaderDB {
         values.put(Utilities.TABLE_MUESTRA_COL_IDCRITERIO,1);
         values.put(Utilities.TABLE_MUESTRA_COL_IDEVALUACION,1);
         Long temp = db.insert(Utilities.TABLE_MUESTRA,Utilities.TABLE_MUESTRA_COL_ID,values);
+        db.close();
+    }
+
+    public void cargarTipoRecomendaciones(){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Utilities.TABLE_TIPORECOMENDACION_COL_ID,1);
+        values.put(Utilities.TABLE_TIPORECOMENDACION_COL_NAME,"FERTILIZACION");
+        Long temp = db.insert(Utilities.TABLE_TIPORECOMENDACION,Utilities.TABLE_TIPORECOMENDACION_COL_ID,values);
+
+        values = new ContentValues();
+        values.put(Utilities.TABLE_TIPORECOMENDACION_COL_ID,2);
+        values.put(Utilities.TABLE_TIPORECOMENDACION_COL_NAME,"PURGA");
+        temp = db.insert(Utilities.TABLE_TIPORECOMENDACION,Utilities.TABLE_TIPORECOMENDACION_COL_ID,values);
+
+        db.close();
+    }
+
+    public void cargarCriterioRecomendaciones(){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_ID,1);
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION,1);
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_NAME,"Sulfato de Cobre");
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS,"1vez/dia-2/veces/dia-3/veces/dia");
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTUNIDADES,"mlts-cm²");
+        Long temp = db.insert(Utilities.TABLE_CRITERIORECOMENDACION,Utilities.TABLE_CRITERIORECOMENDACION_COL_ID,values);
+
+        values = new ContentValues();
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_ID,2);
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION,1);
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_NAME,"Sulfato de Azufre");
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS,"1vez/dia-2/veces/dia-3/veces/dia");
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTUNIDADES,"mlts-cm²");
+        temp = db.insert(Utilities.TABLE_CRITERIORECOMENDACION,Utilities.TABLE_CRITERIORECOMENDACION_COL_ID,values);
+
+
+        values = new ContentValues();
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_ID,3);
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION,2);
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_NAME,"Sulfato de Sultato");
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS,"1vez/dia-2/veces/dia-3/veces/dia");
+        values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTUNIDADES,"mlts-cm²");
+        temp = db.insert(Utilities.TABLE_CRITERIORECOMENDACION,Utilities.TABLE_CRITERIORECOMENDACION_COL_ID,values);
+
+        db.close();
+    }
+
+    public void cargarConfiguracionRecomendacion(){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,1);
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION,1);
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD,1);
+        Long temp = db.insert(Utilities.TABLE_CONFIGURACIONRECOMENDACION,Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,values);
+
+        values = new ContentValues();
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,2);
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION,2);
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD,1);
+        temp = db.insert(Utilities.TABLE_CONFIGURACIONRECOMENDACION,Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,values);
+
+        values = new ContentValues();
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,3);
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION,3);
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD,1);
+        temp = db.insert(Utilities.TABLE_CONFIGURACIONRECOMENDACION,Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,values);
+
         db.close();
     }
 

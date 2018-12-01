@@ -34,7 +34,7 @@ import java.io.File;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.helpers.MyRecyclerViewAdapter;
+import pe.ibao.agromovil.helpers.adapters.MyRecyclerViewAdapter;
 import pe.ibao.agromovil.models.dao.FotoDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.FotoVO;
 
@@ -80,7 +80,7 @@ public class ActivityPhotoGallery extends AppCompatActivity {
         isEditable = mybundle.getBoolean("isEditable");
         listFotos = new FotoDAO(this).listarByIdMuestra(idMuestra);
         //listViewFotos = (ListView) findViewById(R.id.foto_listView);
-        Toast.makeText(this,mybundle.toString(),Toast.LENGTH_LONG).show();
+       // Toast.makeText(this,mybundle.toString(),Toast.LENGTH_LONG).show();
 
         btnDelete = (ImageView) findViewById(R.id.iViewBtnDelete);
 
@@ -88,13 +88,13 @@ public class ActivityPhotoGallery extends AppCompatActivity {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getBaseContext(),"id foto :"+MyRecyclerViewAdapter.idFotoFocus,Toast.LENGTH_SHORT).show();
+            //    Toast.makeText(getBaseContext(),"id foto :"+MyRecyclerViewAdapter.idFotoFocus,Toast.LENGTH_SHORT).show();
                 if(new FotoDAO(getBaseContext()).borrarById(MyRecyclerViewAdapter.idFotoFocus)){
                     listFotos = new FotoDAO(getBaseContext()).listarByIdMuestra(idMuestra);
                     adapter = new MyRecyclerViewAdapter(getBaseContext(),listFotos,iViewLienzo,isEditable,idFotoFocus,btnDelete);
 //              adapter.setClickListener((MyRecyclerViewAdapter.ItemClickListener) this);
                     recyclerView.setAdapter(adapter);
-                    iViewLienzo.setImageResource(R.drawable.ic_menu_camera);
+                    iViewLienzo.setImageResource(R.drawable.ic_photo_ddd_100dp);
                     btnDelete.setVisibility(View.INVISIBLE);
                 }else{
                     Toast.makeText(getBaseContext(),"Lo sentimos no se pudo Eliminar",Toast.LENGTH_SHORT).show();

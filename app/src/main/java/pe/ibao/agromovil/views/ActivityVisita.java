@@ -3,11 +3,13 @@ package pe.ibao.agromovil.views;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,8 +31,10 @@ import pe.ibao.agromovil.models.dao.ContactoDAO;
 import pe.ibao.agromovil.models.dao.CultivoDAO;
 import pe.ibao.agromovil.models.dao.EvaluacionDAO;
 import pe.ibao.agromovil.models.dao.FundoDAO;
+import pe.ibao.agromovil.models.dao.TipoRecomendacionDAO;
 import pe.ibao.agromovil.models.dao.VariedadDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
+import pe.ibao.agromovil.models.vo.entitiesDB.TipoRecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
@@ -63,10 +67,18 @@ public class ActivityVisita extends AppCompatActivity {
     public static Context ctx;
     static Bundle xx;
 
+    public static int lastTipoRecomendacionSelected=0;
+
+    private static List<TipoRecomendacionVO> listTipoRecomendaciones;
+
+
+
     static Button btnFinalizar;
     static FloatingActionButton floatBtnNuevo;
 
     private static boolean isEditable;
+
+    public static int REQUEST_RECOMENDACION=56;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -123,7 +135,6 @@ public class ActivityVisita extends AppCompatActivity {
             public long getItemId(int position) {
                 return evaluacionVOList.get(position).getId();
             }
-
 
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
@@ -376,6 +387,50 @@ public class ActivityVisita extends AppCompatActivity {
 
             }
         }
+    }
+
+
+
+
+    public void showListTipoRecomendacion(View view){
+
+        if(isEditable){
+            listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdVariedad(visita.getIdVariedad());
+            AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
+
+            final CharSequence[] items = new CharSequence[ listTipoRecomendaciones.size()];
+
+            for(int i = 0; i< listTipoRecomendaciones.size(); i++){
+                items[i]= listTipoRecomendaciones.get(i).getName();
+            }
+
+
+            dialogo.setTitle("Tipos de Recomendación")
+                    .setSingleChoiceItems(items, lastTipoRecomendacionSelected, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            lastTipoRecomendacionSelected = which;
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    "Seleccionaste: " + listTipoRecomendaciones.get(which).getName(),
+                                    Toast.LENGTH_SHORT)
+                                    .show();
+                            TipoRecomendacionVO temp = listTipoRecomendaciones.get(which);
+                            Intent i = new Intent(getBaseContext(), ActivityRecomendacion.class);
+                            i.putExtra("idVisita",visita.getId());
+                            i.putExtra("idVariedad",visita.getIdVariedad());
+                            i.putExtra("idTipoRecomendacion",temp.getId());
+                            i.putExtra("isEditable",isEditable);
+                            startActivityForResult(i, REQUEST_RECOMENDACION);//cambie  aqui de 1
+                            overridePendingTransition(R.anim.bot_in, R.anim.fade_out);
+
+
+                        }
+                    });
+            dialogo.show();
+        }
+
     }
 
     public void end(View view){

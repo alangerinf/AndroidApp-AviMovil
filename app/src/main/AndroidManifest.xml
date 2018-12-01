@@ -37,7 +37,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".views.ActivityMain"
@@ -83,7 +82,7 @@
             android:label="@string/app_name"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".recomendaciones"
+            android:name=".views.ActivityRecomendacion"
             android:label="@string/title_activity_recomendaciones" />
 
         <service
@@ -93,8 +92,8 @@
 
         <activity
             android:name=".views.ActivityPhotoGallery"
-            android:parentActivityName=".views.ActivityEvaluacion"
-            android:label="@string/title_activity_photo_gallery"></activity>
+            android:label="@string/title_activity_photo_gallery"
+            android:parentActivityName=".views.ActivityEvaluacion" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -106,9 +105,12 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".views.ActivityEscanerQR">
+        <activity android:name=".views.ActivityEscanerQR" />
 
-        </activity>
+        <service
+            android:name=".services.UpdateService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
