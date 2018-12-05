@@ -6,15 +6,20 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.helpers.adapters.AdapterListRecomendacion;
 import pe.ibao.agromovil.models.dao.CriterioRecomendacionDAO;
+import pe.ibao.agromovil.models.dao.RecomendacionDAO;
 import pe.ibao.agromovil.models.dao.TipoRecomendacionDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
+import pe.ibao.agromovil.models.vo.entitiesDB.RecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.TipoRecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
@@ -25,20 +30,36 @@ public class ActivityRecomendacion extends Activity {
 
     private static boolean isEditable;
     private static VisitaVO visita;
+    private static CriterioRecomendacionVO criterioRecomendacion;
+    private static TipoRecomendacionVO tipoRecomendacion;
+    private static List<RecomendacionVO> listRecomendaciones;
+
+    private static TextView tViewTipoRecomendacion;
+     static ListView lViewRecomendaciones;
+
+    private AdapterListRecomendacion adapterListRecomendacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recomendaciones);
-
+        tViewTipoRecomendacion = (TextView) findViewById(R.id.tViewTipoRecomendacion);
+        lViewRecomendaciones = (ListView) findViewById(R.id.listRecomedacion);
         Intent i = getIntent();
+
         Bundle b = i.getExtras();
+            isEditable= b.getBoolean("isEditable",false);
+            tipoRecomendacion = new TipoRecomendacionDAO(this).consultarByid(b.getInt("idTipoRecomendacion"));
+            visita = new VisitaDAO(this).buscarById((long)b.getInt("idVisita"));
 
-        isEditable= b.getBoolean("isEditable",false);
-        int idTemp =b.getInt("idVisita");
 
-        VisitaDAO visitaDAO = new VisitaDAO(this);
-        visita = visitaDAO.buscarById((long)idTemp);
+        listRecomendaciones = new RecomendacionDAO(getBaseContext())
+                .listarByIdTipoRecomendacionIdVisita(tipoRecomendacion.getId()
+                        ,visita.getId());
+        //Toast.makeText(getBaseContext(),""+listRecomendaciones.size(),Toast.LENGTH_LONG).show();
+        //actualizar adaptador
+        adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones);
+        lViewRecomendaciones.setAdapter(adapterListRecomendacion);
 
 
     }
@@ -60,7 +81,7 @@ public class ActivityRecomendacion extends Activity {
             }
 
 
-            dialogo.setTitle("Recomendaciones")
+            dialogo.setTitle("Tipos de Recomendacion")
                     .setSingleChoiceItems(items, ActivityVisita.lastTipoRecomendacionSelected, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -71,14 +92,16 @@ public class ActivityRecomendacion extends Activity {
                                     "Seleccionaste: " + listTipoRecomendaciones.get(which).getName(),
                                     Toast.LENGTH_SHORT)
                                     .show();
-                            TipoRecomendacionVO temp = listTipoRecomendaciones.get(which);
-                            Intent i = new Intent(getBaseContext(), ActivityRecomendacion.class);
-                            i.putExtra("idVisita",visita.getId());
-                            i.putExtra("idVariedad",visita.getIdVariedad());
-                            i.putExtra("idTipoRecomendacion",temp.getId());
-                            i.putExtra("isEditable",isEditable);
-                            startActivityForResult(i, ActivityVisita.REQUEST_RECOMENDACION);//cambie  aqui de 1
-                            overridePendingTransition(R.anim.bot_in, R.anim.fade_out);
+                            tipoRecomendacion = listTipoRecomendaciones.get(which);
+                            tViewTipoRecomendacion.setText(tipoRecomendacion.getName());
+                            //actualizar datos de toda la pagina
+                            listRecomendaciones = new RecomendacionDAO(getBaseContext())
+                                    .listarByIdTipoRecomendacionIdVisita(tipoRecomendacion.getId()
+                                            ,visita.getId());
+                           // Toast.makeText(getBaseContext(),""+listRecomendaciones.size(),Toast.LENGTH_LONG).show();
+                            //actualizar adaptador
+                            adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones);
+                            lViewRecomendaciones.setAdapter(adapterListRecomendacion);
                         }
                     });
             dialogo.show();
@@ -86,36 +109,38 @@ public class ActivityRecomendacion extends Activity {
 
     }
 
-    public void showListRecomendacion(View view){
+    public void showListCriterioRecomendacion(View view){
         if(isEditable){
-            listCriterioRecomendaciones = new CriterioRecomendacionDAO(getBaseContext());
+            listCriterioRecomendaciones = new CriterioRecomendacionDAO(getBaseContext()).listarByIdTipoRecomendacionIdVariedad(tipoRecomendacion.getId(),visita.getIdVariedad());
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
-            final CharSequence[] items = new CharSequence[ listTipoRecomendaciones.size()];
-            for(int i = 0; i< listTipoRecomendaciones.size(); i++){
-                items[i]= listTipoRecomendaciones.get(i).getName();
+            final CharSequence[] items = new CharSequence[ listCriterioRecomendaciones.size()];
+            for(int i = 0; i< listCriterioRecomendaciones.size(); i++){
+                items[i]= listCriterioRecomendaciones.get(i).getName();
             }
-
             dialogo.setTitle("Recomendaciones")
-                    .setSingleChoiceItems(items, ActivityVisita.lastTipoRecomendacionSelected, new DialogInterface.OnClickListener() {
+                    .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             ActivityVisita.lastTipoRecomendacionSelected = which;
                             Toast.makeText(
                                     getBaseContext(),
-                                    "Seleccionaste: " + listTipoRecomendaciones.get(which).getName(),
+                                    "Seleccionaste: "+ listCriterioRecomendaciones.get(which).getName(),
                                     Toast.LENGTH_SHORT)
                                     .show();
-                            TipoRecomendacionVO temp = listTipoRecomendaciones.get(which);
-                            Intent i = new Intent(getBaseContext(), ActivityRecomendacion.class);
-                            i.putExtra("idVisita",visita.getId());
-                            i.putExtra("idVariedad",visita.getIdVariedad());
-                            i.putExtra("idTipoRecomendacion",temp.getId());
-                            i.putExtra("isEditable",isEditable);
-                            startActivityForResult(i, ActivityVisita.REQUEST_RECOMENDACION);//cambie  aqui de 1
-                            overridePendingTransition(R.anim.bot_in, R.anim.fade_out);
+                            criterioRecomendacion = listCriterioRecomendaciones.get(which);
 
+                            new RecomendacionDAO(getBaseContext())
+                                    .nuevoByIdCriterioRecomendacionIdVisita(criterioRecomendacion.getId()
+                                                                            ,visita.getId());
 
+                            listRecomendaciones = new RecomendacionDAO(getBaseContext())
+                                    .listarByIdTipoRecomendacionIdVisita(tipoRecomendacion.getId()
+                                                                        ,visita.getId());
+                            //Toast.makeText(getBaseContext(),""+listRecomendaciones.size(),Toast.LENGTH_LONG).show();
+                            //actualizar adaptador
+                            adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones);
+                            lViewRecomendaciones.setAdapter(adapterListRecomendacion);
                         }
                     });
             dialogo.show();
@@ -125,12 +150,9 @@ public class ActivityRecomendacion extends Activity {
 
     @Override
     public void onBackPressed() {
-        Intent i = new Intent(getBaseContext(),ActivityVisita.class);
-        i.putExtra("isEditable",isEditable);
-        i.putExtra("idVisita",visita.getId());
-        startActivity(i);
-        overridePendingTransition(R.anim.fade_in, R.anim.top_out);
+        Intent returnIntent = new Intent();
+        setResult(Activity.RESULT_OK,returnIntent);
         finish();
-
+        overridePendingTransition(R.anim.fade_in, R.anim.top_out);
     }
 }

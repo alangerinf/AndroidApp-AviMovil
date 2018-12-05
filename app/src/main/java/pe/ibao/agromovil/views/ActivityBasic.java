@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -52,6 +54,7 @@ public class ActivityBasic extends AppCompatActivity {
     private static Spinner spnCultivo;
     private static Spinner spnContacto;
     private static EditText eTextContacto;
+    private static CheckBox checkPersonalizado;
 
     private static int idEmpresa;
     private static int idFundo;
@@ -59,6 +62,8 @@ public class ActivityBasic extends AppCompatActivity {
     private static int idVariedad;
     private static int idVisita;
     private static int idContacto;
+    private static String contactoPersonalizado;
+    private static boolean isContactoPersonalizado;
 
     private static Bundle recibidos;
 
@@ -74,7 +79,9 @@ public class ActivityBasic extends AppCompatActivity {
         spnCultivo = (Spinner) findViewById(R.id.spnCultivo);
         spnVariedad = (Spinner) findViewById(R.id.spnVariedad);
         spnContacto = (Spinner) findViewById(R.id.spnContacto);
-
+        eTextContacto = (EditText) findViewById(R.id.eTextContacto);
+        checkPersonalizado = (CheckBox) findViewById(R.id.checkBox);
+        spnContacto.setEnabled(false);
         //cargar los nombre a ram
         cargarEmpresas();
         cargarCultivos();
@@ -101,7 +108,10 @@ public class ActivityBasic extends AppCompatActivity {
                 idFundo =recibidos.getInt("idFundo");
                 idCultivo=recibidos.getInt("idCultivo");
                 idVariedad=recibidos.getInt("idVariedad");
-
+                contactoPersonalizado = new VisitaDAO(this).buscarById((long)idVisita).getContactoPersonalizado();
+                isContactoPersonalizado = new VisitaDAO(this).buscarById((long)idVisita).isStatusContactoPersonalizado();
+                checkPersonalizado.setChecked(isContactoPersonalizado);
+                eTextContacto.setText(contactoPersonalizado);
                 Log.d(TAG,""+idEmpresa+" "+idFundo+" "+idCultivo+" "+idVariedad+" "+idVisita+" "+idContacto);
 
                 for(int i=0;i<listEmpresas.size();i++){
@@ -245,8 +255,30 @@ public class ActivityBasic extends AppCompatActivity {
             }
         }
 
+        checkPersonalizado.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    eTextContacto.setVisibility(View.VISIBLE);
+                    spnContacto.setVisibility(View.INVISIBLE);
+                }else{
+                    eTextContacto.setVisibility(View.INVISIBLE);
+                    spnContacto.setVisibility(View.VISIBLE);
+                }
 
 
+            }
+        });
+
+        if(isContactoPersonalizado){
+            checkPersonalizado.setChecked(true);
+            eTextContacto.setVisibility(View.VISIBLE);
+            spnContacto.setVisibility(View.INVISIBLE);
+        }else {
+            checkPersonalizado.setChecked(false);
+            eTextContacto.setVisibility(View.INVISIBLE);
+            spnContacto.setVisibility(View.VISIBLE);
+        }
     }
 
     private void cargarVariedades() {
@@ -344,38 +376,71 @@ public class ActivityBasic extends AppCompatActivity {
             && spnCultivo.getSelectedItemPosition()!=0
             && spnFundo.getSelectedItemPosition()!=0
                 && spnVariedad.getSelectedItemPosition()!=0
-                && spnContacto.getSelectedItemPosition()!=0
-            ){
-            idFundo = listFundos.get(spnFundo.getSelectedItemPosition()-1).getId();
-            idVariedad = listVariedades.get(spnVariedad.getSelectedItemPosition()-1).getId();
-            idContacto = listContactos.get(spnContacto.getSelectedItemPosition()-1).getId();
-            returnIntent.putExtra(ActivityVisita.REQUEST_EMPRESA,spnEmpresa.getSelectedItem().toString());
-            returnIntent.putExtra(ActivityVisita.REQUEST_FUNDO,spnFundo.getSelectedItem().toString());
-            returnIntent.putExtra(ActivityVisita.REQUEST_CULTIVO,spnCultivo.getSelectedItem().toString());
-            returnIntent.putExtra(ActivityVisita.REQUEST_VARIEDAD,spnVariedad.getSelectedItem().toString());
-            returnIntent.putExtra(ActivityVisita.REQUEST_CONTACTO,spnContacto.getSelectedItem().toString());
 
-            VisitaDAO visitaDAO = new VisitaDAO(getBaseContext());
-            boolean res =  visitaDAO.cambiarIdFundoIdVariedadIdContacto(idVisita,idFundo,idVariedad,idContacto);
-            if(!res){
-                Toast.makeText(getBaseContext(),"Error al intententar Modificar",Toast.LENGTH_SHORT).show();
+            ){
+
+            if(
+                    (
+                            spnContacto.getSelectedItemPosition()!=0
+                            &&
+                            !checkPersonalizado.isChecked()
+                    )
+                    ||
+                    (
+                            checkPersonalizado.isChecked()
+                            &&
+                            !(
+                                    eTextContacto.getText().toString()==null
+                                    ||
+                                    eTextContacto.getText().toString().equals("")
+                            )
+                    )
+            ){
+
+                idFundo = listFundos.get(spnFundo.getSelectedItemPosition()-1).getId();
+                idVariedad = listVariedades.get(spnVariedad.getSelectedItemPosition()-1).getId();
+                String nameContacto ="";
+                if(checkPersonalizado.isChecked()){
+                    idContacto=0;
+                    isContactoPersonalizado=true;
+                    contactoPersonalizado=eTextContacto.getText().toString();
+                    nameContacto=contactoPersonalizado;
+                }else{
+                    idContacto = listContactos.get(spnContacto.getSelectedItemPosition()-1).getId();
+                    isContactoPersonalizado=false;
+                    contactoPersonalizado="";
+                    nameContacto=spnContacto.getSelectedItem().toString();
+                }
+                returnIntent.putExtra(ActivityVisita.REQUEST_EMPRESA,spnEmpresa.getSelectedItem().toString());
+                returnIntent.putExtra(ActivityVisita.REQUEST_FUNDO,spnFundo.getSelectedItem().toString());
+                returnIntent.putExtra(ActivityVisita.REQUEST_CULTIVO,spnCultivo.getSelectedItem().toString());
+                returnIntent.putExtra(ActivityVisita.REQUEST_VARIEDAD,spnVariedad.getSelectedItem().toString());
+                returnIntent.putExtra(ActivityVisita.REQUEST_CONTACTO,nameContacto);
+
+                VisitaDAO visitaDAO = new VisitaDAO(getBaseContext());
+                boolean res =  visitaDAO.cambiarIdFundoIdVariedadIdContactoIsPersonalizadoContacto(idVisita,idFundo,idVariedad,idContacto,isContactoPersonalizado,contactoPersonalizado);
+                if(!res){
+                    Toast.makeText(getBaseContext(),"Error al intententar Modificar",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getBaseContext(),"Informacion Actualizada",Toast.LENGTH_SHORT).show();
+                }
+
+                setResult(Activity.RESULT_OK,returnIntent);
+                finish();
+
+
+
             }else{
-                Toast.makeText(getBaseContext(),"Informacion Actualizada",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(),"Elija un Contacto",Toast.LENGTH_SHORT).show();
             }
 
-            setResult(Activity.RESULT_OK,returnIntent);
-            finish();
+
         }else{
             Toast.makeText(getBaseContext(),"Seleccione todos los campos",Toast.LENGTH_SHORT).show();
         }
 
 
     }
-
-
-
-
-
 
 
 

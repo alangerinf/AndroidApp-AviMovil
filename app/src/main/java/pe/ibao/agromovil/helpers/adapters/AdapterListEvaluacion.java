@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.helpers.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.MediaStore;
@@ -55,6 +56,7 @@ public class AdapterListEvaluacion extends BaseAdapter{
         ctx.startActivity(i);
     }*/
 
+
     @Override
     public View getView(final int position, final View convertView, final ViewGroup parent) {
         View v = convertView;
@@ -64,6 +66,9 @@ public class AdapterListEvaluacion extends BaseAdapter{
             TextView tViewFechaHora     = (TextView) v.findViewById(R.id.fecha_hora);
             TextView tViewPorcerntaje   = (TextView) v.findViewById(R.id.porcentaje);
             ImageView btnDelete         = (ImageView)v.findViewById(R.id.deleter);
+
+
+
 
         btnDelete.setClickable(true);
         btnDelete.setOnClickListener(new View.OnClickListener() {

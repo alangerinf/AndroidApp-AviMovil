@@ -55,7 +55,7 @@ public class AdapterListVisitas extends BaseAdapter{
     public View getView(final int position, View convertView, ViewGroup parent) {
         View v = convertView;
         ctx = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(ctx);
+        final LayoutInflater inflater = LayoutInflater.from(ctx);
         v = inflater.inflate(R.layout.visita_itemeditor_list_view,null);
 
         final TextView tViewFechaHora = (TextView) v.findViewById(R.id.visita_tViewFechaHora);
@@ -75,11 +75,21 @@ public class AdapterListVisitas extends BaseAdapter{
         tViewNameVariedad.setText( visitaVO.getNameVariedad());
         tViewNameContacto.setText( visitaVO.getNameContacto());
 
-        iViewBtnView.setOnClickListener(new View.OnClickListener() {
+        v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(ctx, ActivityVisita.class);
                 i.putExtra("isEditable",false);
+                i.putExtra("idVisita",visitaVO.getId());
+                ctx.startActivity(i);
+            }
+        });
+
+        iViewBtnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(ctx, ActivityVisita.class);
+                i.putExtra("isEditable",true);
                 i.putExtra("idVisita",visitaVO.getId());
                 ctx.startActivity(i);
             }

@@ -164,7 +164,6 @@ public class AdapterListMuestras extends BaseAdapter{
             }
         });
 
-
        // Log.d("xdxdxd",position+"    "+listCriterios.get(position).getName());
 
        //ombre  de item
@@ -206,7 +205,7 @@ public class AdapterListMuestras extends BaseAdapter{
             case "boolean":
 
                 _boolean.setVisibility(View.VISIBLE);
-                nameitem.setText(listMuestas.get(position).getName());
+         //       nameitem.setText(listMuestas.get(position).getName());
 
                 _boolean.setChecked(Boolean.valueOf(listMuestas.get(position).getValue()));
 
@@ -226,7 +225,7 @@ public class AdapterListMuestras extends BaseAdapter{
                 _int.setVisibility(View.VISIBLE);
                 _int.setText(listMuestas.get(position).getValue());
                 // _int.setText(Integer.valueOf(listMuestas.get(position).getValue()));
-                nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
+             //   nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
 
                 _int.addTextChangedListener(new TextWatcher() {
                     @Override
@@ -254,7 +253,7 @@ public class AdapterListMuestras extends BaseAdapter{
                 _float.setVisibility(View.VISIBLE);
 
                 _float.setText(listMuestas.get(position).getValue());
-                nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
+           //     nameitem.setText(listMuestas.get(position).getName()+" "+listMuestas.get(position).getMagnitud());
                 _float.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -277,7 +276,7 @@ public class AdapterListMuestras extends BaseAdapter{
                 });
                 break;
             case "list":
-                nameitem.setText(listMuestas.get(position).getName());
+         //       nameitem.setText(listMuestas.get(position).getName());
                 String tempList = listMuestas.get(position).getMagnitud();
 
                 String[] parts = tempList.split("-");
@@ -374,8 +373,6 @@ public class AdapterListMuestras extends BaseAdapter{
         listView.requestLayout();
         //listView.setDividerHeight(params.height);
     }
-
-
 
 
 }

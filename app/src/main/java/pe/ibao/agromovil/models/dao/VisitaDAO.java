@@ -21,12 +21,14 @@ import pe.ibao.agromovil.utilities.Utilities;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_CONTACTOPERSONALIZADO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_EDITING;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_FECHAHORA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_IDCONTACTO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_IDFUNDO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_IDVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_LATITUD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_LONGITUD;
 
@@ -53,7 +55,9 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
-                            "V."+TABLE_VISITA_COL_IDCONTACTO  +//7
+                            "V."+TABLE_VISITA_COL_IDCONTACTO+", "+//7
+                            "V."+TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO+", "+//8
+                            "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+//9
                         " FROM "+
                             TABLE_VISITA+" as V "+
                         " WHERE "+
@@ -81,6 +85,9 @@ public class VisitaDAO {
                 Log.d(TAG,"7");
                 temp.setIdContacto(cursor.getInt(7));
                 Log.d(TAG,"8");
+                temp.setStatusContactoPersonalizado(cursor.getInt(8)>0);
+                Log.d(TAG,"9");
+                temp.setContactoPersonalizado(cursor.getString(9));
 
 
                 if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
@@ -142,7 +149,9 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
-                            "V."+TABLE_VISITA_COL_IDCONTACTO  +//7
+                            "V."+TABLE_VISITA_COL_IDCONTACTO+", "+//7
+                            "V."+TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO+", "+//8
+                            "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+//9
                         " FROM "+
                             TABLE_VISITA+" as V "+
 
@@ -171,6 +180,9 @@ public class VisitaDAO {
                         Log.d(TAG,"7");
                         temp.setIdContacto(cursor.getInt(7));
                         Log.d(TAG,"8");
+                        temp.setStatusContactoPersonalizado(cursor.getInt(8)>0);
+                        Log.d(TAG,"9");
+                        temp.setContactoPersonalizado(cursor.getString(9));
 
                         if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
 
@@ -223,7 +235,7 @@ public class VisitaDAO {
     }
 
 
-    public boolean cambiarIdFundoIdVariedadIdContacto(int id,int idFundo, int idVariedad,int contacto){
+    public boolean cambiarIdFundoIdVariedadIdContactoIsPersonalizadoContacto(int id,int idFundo, int idVariedad,int idContacto, boolean isPersonalizado, String Contacto){
       boolean flag = false;
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
         SQLiteDatabase db = c.getWritableDatabase();
@@ -234,7 +246,9 @@ public class VisitaDAO {
         ContentValues values = new ContentValues();
             values.put(TABLE_VISITA_COL_IDFUNDO,String.valueOf(idFundo));
             values.put(TABLE_VISITA_COL_IDVARIEDAD,String.valueOf(idVariedad));
-            values.put(TABLE_VISITA_COL_IDCONTACTO,contacto);
+            values.put(TABLE_VISITA_COL_IDCONTACTO,idContacto);
+            values.put(TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO,isPersonalizado);
+            values.put(TABLE_VISITA_COL_CONTACTOPERSONALIZADO,Contacto);
         int res = db.update(TABLE_VISITA,values,TABLE_VISITA_COL_ID+"=?",parametros);
         if(res>0){
             flag=true;
@@ -242,6 +256,8 @@ public class VisitaDAO {
         c.close();
         return  flag;
     }
+
+
 
 
     public VisitaVO intentarNuevo(){
@@ -333,7 +349,9 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
-                            "V."+TABLE_VISITA_COL_IDCONTACTO  +//7
+                            "V."+TABLE_VISITA_COL_IDCONTACTO+", "+//7
+                            "V."+TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO+", "+//8
+                            "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+//9
                             " FROM "+
                             TABLE_VISITA+" as V "+
 
@@ -362,6 +380,9 @@ public class VisitaDAO {
                 Log.d(TAG,"7");
                 temp.setIdContacto(cursor.getInt(7));
                 Log.d(TAG,"8");
+                temp.setStatusContactoPersonalizado(cursor.getInt(8)>0);
+                Log.d(TAG,"9");
+                temp.setContactoPersonalizado(cursor.getString(9));
 
                 if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
 

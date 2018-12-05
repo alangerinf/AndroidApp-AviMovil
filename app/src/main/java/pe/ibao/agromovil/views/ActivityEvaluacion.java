@@ -79,7 +79,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        Toast.makeText(getBaseContext(),String.valueOf(requestCode),Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getBaseContext(),String.valueOf(requestCode),Toast.LENGTH_SHORT).show();
         switch (requestCode){
             case REQUEST_QR_CODE:
                 if(resultCode == Activity.RESULT_OK){
@@ -94,7 +94,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
                 }
                 break;
             case 123:
-                Toast.makeText(getBaseContext(),"entro 123",Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getBaseContext(),"entro 123",Toast.LENGTH_SHORT).show();
                 adapterListMuestras.notifyDataSetChanged();
                 break;
         }

@@ -110,7 +110,7 @@ public class Utilities {
             TABLE_VISITA_COL_FECHAHORA      ="fechaHoraInicio",
             TABLE_VISITA_TYPECOL_FECHAHORA  ="date",
             TABLE_VISITA_COL_EDITING        ="editing",
-            TABLE_VISITA_TYPECOL_EDITING    ="boolean",
+            TABLE_VISITA_TYPECOL_EDITING    ="BOOLEAN",
             TABLE_VISITA_COL_LATITUD        ="latitud",
             TABLE_VISITA_TYPECOL_LATITUD    ="double",
             TABLE_VISITA_COL_LONGITUD       ="longitud",
@@ -119,7 +119,11 @@ public class Utilities {
             TABLE_VISITA_TYPECOL_IDFUNDO    ="INTEGER",
             TABLE_VISITA_COL_IDVARIEDAD     ="idVariedad",
             TABLE_VISITA_TYPECOL_IDVARIEDAD ="INTEGER",
-            TABLE_VISITA_COL_IDCONTACTO       ="contacto",
+            TABLE_VISITA_COL_CONTACTOPERSONALIZADO  ="contactoPersonalizado",
+            TABLE_VISITA_TYPECOL_CONTACTOPERSONALIZADO  ="VARCHAR(50)",
+            TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO = "isContactoPersonalizado",
+            TABLE_VISITA_TYPECOL_ISCONTACTOPERSONALIZADO = "BOOLEAN",
+            TABLE_VISITA_COL_IDCONTACTO       ="idContacto",
             TABLE_VISITA_TYPECOL_IDCONTACTO   ="INTEGER";
 
     public static final String TABLE_EVALUACION="evaluacion",
@@ -195,9 +199,9 @@ public class Utilities {
             TABLE_RECOMENDACION_COL_ID = "id",
             TABLE_RECOMENDACION_TYPECOL_ID = "INTEGER",
             TABLE_RECOMENDACION_COL_FRECUENCIA = "FRECUENCIA",
-            TABLE_RECOMENDACION_TYPECOL_FRECUENCIA = "VARCHAR(30)",
+            TABLE_RECOMENDACION_TYPECOL_FRECUENCIA = "INTEGER",
             TABLE_RECOMENDACION_COL_UNIDAD  = "unidad",
-            TABLE_RECOMENDACION_TYPECOL_UNIDAD = "VARCHAR(20)",
+            TABLE_RECOMENDACION_TYPECOL_UNIDAD = "INTEGER",
             TABLE_RECOMENDACION_COL_CANTIDAD = "cantidad",
             TABLE_RECOMENDACION_TYPECOL_CANTIDAD= "VARCHAR(20)",
             TABLE_RECOMENDACION_COL_COMENTARIO = "comentario",
@@ -248,6 +252,8 @@ public class Utilities {
                     TABLE_VISITA_COL_LONGITUD   +" "+TABLE_VISITA_TYPECOL_LONGITUD  +", "+
                     TABLE_VISITA_COL_IDFUNDO    +" "+TABLE_VISITA_TYPECOL_IDFUNDO   +", "+
                     TABLE_VISITA_COL_IDVARIEDAD +" "+TABLE_VISITA_TYPECOL_IDVARIEDAD+", "+
+                    TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO+" "+TABLE_VISITA_TYPECOL_ISCONTACTOPERSONALIZADO+" DEFAULT 0, "+
+                    TABLE_VISITA_COL_CONTACTOPERSONALIZADO  +" "+TABLE_VISITA_TYPECOL_CONTACTOPERSONALIZADO+", "+
                     TABLE_VISITA_COL_IDCONTACTO +" "+TABLE_VISITA_TYPECOL_IDCONTACTO+
             ")";
 
@@ -256,6 +262,7 @@ public class Utilities {
                     TABLE_TIPOINSPECCION_COL_ID     +" "+TABLE_TIPOINSPECCION_TYPECOL_ID+" PRIMARY KEY," +
                     TABLE_TIPOINSPECCION_COL_NAME   +" "+TABLE_TIPOINSPECCION_TYPECOL_NAME+
             ")";
+
     public static final String CREATE_TABLE_CRITERIO =
             "CREATE TABLE "+TABLE_CRITERIO+" (" +
                     TABLE_CRITERIO_COL_ID               +" "+TABLE_CRITERIO_TYPECOL_ID+" PRIMARY KEY,"+
@@ -291,6 +298,7 @@ public class Utilities {
                     TABLE_CULTIVO_COL_ID        +" "+TABLE_CULTIVO_TYPECOL_ID+" PRIMARY KEY," +
                     TABLE_CULTIVO_COL_NAME      +" "+TABLE_CULTIVO_TYPECOL_NAME+
             ")";
+
     public static final String CREATE_TABLE_FUNDO =
             "CREATE TABLE "+TABLE_FUNDO+" (" +
                     TABLE_FUNDO_COL_ID        +" "+TABLE_FUNDO_TYPECOL_ID+" PRIMARY KEY," +
@@ -303,7 +311,6 @@ public class Utilities {
                     TABLE_EMPRESA_COL_ID        +" "+TABLE_EMPRESA_TYPECOL_ID+" PRIMARY KEY," +
                     TABLE_EMPRESA_COL_NAME      +" "+TABLE_EMPRESA_TYPECOL_NAME+
             ")";
-
 
     public static final String CREATE_TABLE_USUARIO =
             "CREATE TABLE "+TABLE_USUARIO+" (" +
@@ -341,13 +348,13 @@ public class Utilities {
                     ")";
     public static final String CREATE_TABLE_RECOMENDACION =
             "CREATE TABLE "+TABLE_RECOMENDACION+" (" +
-                    TABLE_RECOMENDACION_COL_ID                      +" "+TABLE_RECOMENDACION_TYPECOL_ID+" PRIMARY KEY"      +" , "+
-                    TABLE_RECOMENDACION_COL_FRECUENCIA              +" "+TABLE_RECOMENDACION_TYPECOL_FRECUENCIA             +" , "+
-                    TABLE_RECOMENDACION_COL_UNIDAD                  +" "+TABLE_RECOMENDACION_TYPECOL_UNIDAD                 +" , "+
-                    TABLE_RECOMENDACION_COL_CANTIDAD                +" "+TABLE_RECOMENDACION_TYPECOL_CANTIDAD               +" , "+
-                    TABLE_RECOMENDACION_COL_COMENTARIO              +" "+TABLE_RECOMENDACION_TYPECOL_COMENTARIO             +" , "+
-                    TABLE_RECOMENDACION_COL_IDVISITA                +" "+TABLE_RECOMENDACION_TYPECOL_IDVISITA               +" , "+
-                    TABLE_RECOMENDACION_COL_IDCRITERIORECOMENDACION +" "+TABLE_RECOMENDACION_TYPECOL_IDCRITERIORECOMENDACION+
+                    TABLE_RECOMENDACION_COL_ID                      +" "+TABLE_RECOMENDACION_TYPECOL_ID+" PRIMARY KEY AUTOINCREMENT , "+
+                    TABLE_RECOMENDACION_COL_FRECUENCIA              +" "+TABLE_RECOMENDACION_TYPECOL_FRECUENCIA+" DEFAULT 0 , "+
+                    TABLE_RECOMENDACION_COL_UNIDAD                  +" "+TABLE_RECOMENDACION_TYPECOL_UNIDAD +" DEFAULT 0 , "+
+                    TABLE_RECOMENDACION_COL_CANTIDAD                +" "+TABLE_RECOMENDACION_TYPECOL_CANTIDAD  +" DEFAULT '' , "+
+                    TABLE_RECOMENDACION_COL_COMENTARIO              +" "+TABLE_RECOMENDACION_TYPECOL_COMENTARIO +" DEFAULT '' , "+
+                    TABLE_RECOMENDACION_COL_IDVISITA                +" "+TABLE_RECOMENDACION_TYPECOL_IDVISITA+" NOT NULL , "+
+                    TABLE_RECOMENDACION_COL_IDCRITERIORECOMENDACION +" "+TABLE_RECOMENDACION_TYPECOL_IDCRITERIORECOMENDACION+" NOT NULL "+
                     ")";
 
 

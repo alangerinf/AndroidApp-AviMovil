@@ -8,19 +8,6 @@
     tools:context=".views.ActivityRecomendacion">
 
 
-    <Button
-        android:id="@+id/buton_ok"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:onClick="end"
-        android:background="@drawable/shape_button_bot_gren"
-        android:text="LISTO"
-        android:textColor="@color/divider"
-        android:textSize="24sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tViewTipoRecomendacion"
@@ -50,6 +37,40 @@
         app:layout_constraintTop_toBottomOf="@+id/tViewTipoRecomendacion"
         tools:ignore="MissingConstraints" />
 
+
+
+    <ListView
+        android:id="@+id/listRecomedacion"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:background="#fff"
+        android:divider="@color/icons"
+        android:dividerHeight="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/buton_ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider2"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/buton_ok"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:onClick="end"
+        android:background="@drawable/shape_button_bot_gren"
+        android:text="LISTO"
+        android:textColor="@color/divider"
+        android:textSize="24sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fButton_ReturnVisita"
         android:layout_width="wrap_content"
@@ -57,7 +78,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:clickable="true"
-        android:onClick="showListTipoRecomendacion"
+        android:onClick="showListCriterioRecomendacion"
         android:src="@drawable/ic_add_black_24dp"
         app:layout_constraintBottom_toTopOf="@+id/buton_ok"
         app:layout_constraintEnd_toEndOf="parent"
@@ -71,24 +92,9 @@
         android:backgroundTint="@color/primary"
         android:clickable="true"
         android:src="@drawable/ic_comment_white"
+        android:onClick="showListTipoRecomendacion"
         app:layout_constraintBottom_toTopOf="@+id/fButton_ReturnVisita"
         app:layout_constraintEnd_toEndOf="@+id/fButton_ReturnVisita"
         app:rippleColor="@color/accent" />
-
-    <ListView
-        android:id="@+id/listRecomedaciones"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:background="#fff"
-        app:layout_constraintBottom_toTopOf="@+id/buton_ok"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider2"
-        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>

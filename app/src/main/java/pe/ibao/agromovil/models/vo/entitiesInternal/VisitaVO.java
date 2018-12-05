@@ -20,12 +20,29 @@ public class VisitaVO {
     private int idContacto;
     private String nameContacto;
     private boolean editing;
-
+    private boolean statusContactoPersonalizado;
+    private String contactoPersonalizado;
 
     public VisitaVO() {
 
     }
 
+
+    public boolean isStatusContactoPersonalizado() {
+        return statusContactoPersonalizado;
+    }
+
+    public void setStatusContactoPersonalizado(boolean statusContactoPersonalizado) {
+        this.statusContactoPersonalizado = statusContactoPersonalizado;
+    }
+
+    public String getContactoPersonalizado() {
+        return contactoPersonalizado;
+    }
+
+    public void setContactoPersonalizado(String contactoPersonalizado) {
+        this.contactoPersonalizado = contactoPersonalizado;
+    }
 
     public int getIdContacto() {
         return idContacto;

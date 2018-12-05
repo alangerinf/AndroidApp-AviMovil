@@ -1,10 +1,11 @@
 package pe.ibao.agromovil.models.vo.entitiesDB;
 
-public class RecomendacionVO {
+public class RecomendacionVO extends CriterioRecomendacionVO{
+
 
     private int id;
-    private String frecuencia;
-    private String unidad;
+    private int frecuencia;
+    private int unidad;
     private String cantidad;
     private String comentario;
     private int idCriterioRecomendacion;
@@ -14,27 +15,29 @@ public class RecomendacionVO {
 
     }
 
+    @Override
     public int getId() {
         return id;
     }
 
+    @Override
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getFrecuencia() {
+    public int getFrecuencia() {
         return frecuencia;
     }
 
-    public void setFrecuencia(String frecuencia) {
+    public void setFrecuencia(int frecuencia) {
         this.frecuencia = frecuencia;
     }
 
-    public String getUnidad() {
+    public int getUnidad() {
         return unidad;
     }
 
-    public void setUnidad(String unidad) {
+    public void setUnidad(int unidad) {
         this.unidad = unidad;
     }
 

@@ -51,6 +51,7 @@
     <string name="title_activity_recomendaciones">Recomendaciones</string>
     <string name="title_activity_photo_gallery">PhotoGallery</string>
     <string name="drawer_item_4_menu_item_1">Actualizar</string>
+    <string name="title_activity_xd">xd</string>
 
 
 </resources>

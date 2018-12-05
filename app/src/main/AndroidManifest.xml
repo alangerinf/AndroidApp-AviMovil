@@ -32,11 +32,14 @@
         <activity
             android:name=".views.ActivityPreloader"
             android:theme="@style/AppTheme2.NoActionBar">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+
         </activity>
         <activity
             android:name=".views.ActivityMain"
@@ -83,7 +86,10 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".views.ActivityRecomendacion"
-            android:label="@string/title_activity_recomendaciones" />
+            android:windowSoftInputMode="adjustPan"
+            android:label="@string/title_activity_recomendaciones">
+
+        </activity>
 
         <service
             android:name=".services.GPSService"
@@ -111,6 +117,8 @@
             android:name=".services.UpdateService"
             android:enabled="true"
             android:exported="true" />
+
+
     </application>
 
 </manifest>

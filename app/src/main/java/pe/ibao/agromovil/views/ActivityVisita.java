@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -136,6 +137,7 @@ public class ActivityVisita extends AppCompatActivity {
                 return evaluacionVOList.get(position).getId();
             }
 
+
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 View v = convertView;
@@ -208,6 +210,32 @@ public class ActivityVisita extends AppCompatActivity {
                 }else{
                     tViewTipoInspeccion.setText(evaluacionVOList.get(position).getNameInspeccion());
                 }
+
+                int porcentaje = por;
+                if(porcentaje>=100){
+                    tViewPorcerntaje.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.p100));
+
+                }else {
+                    if(porcentaje>=80){
+                        tViewPorcerntaje.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.p80));
+                    }else{
+                        if(porcentaje>=60){
+                            tViewPorcerntaje.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.p60));
+                        }else{
+                            if(porcentaje>=40){
+                                tViewPorcerntaje.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.p40));
+                            }else{
+                                if(porcentaje>=20){
+                                    tViewPorcerntaje.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.p20));
+                                }else{
+                                    if(porcentaje>=0){
+                                        tViewPorcerntaje.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.p0));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 return v;
             }
 
@@ -226,10 +254,15 @@ public class ActivityVisita extends AppCompatActivity {
             VariedadDAO variedadDAO = new VariedadDAO(this);
             tViewVariedad.setText(variedadDAO.consultarVariedadById(visita.getIdCultivo()).getName());
         }
-        if(visita.getIdContacto()>0){
-            ContactoDAO contactoDAO = new ContactoDAO(this);
-            tViewContacto.setText(contactoDAO.consultarContactoByid(visita.getIdContacto()).getName());
+        if(!visita.isStatusContactoPersonalizado()){
+            if(visita.getIdContacto()>0){
+                ContactoDAO contactoDAO = new ContactoDAO(this);
+                tViewContacto.setText(contactoDAO.consultarContactoByid(visita.getIdContacto()).getName());
+            }
+        }else{
+                tViewContacto.setText(visita.getContactoPersonalizado());
         }
+
 
         if(visita.getFechaHora()!=null){
             tViewHora.setText(visita.getFechaHora());
@@ -294,7 +327,13 @@ public class ActivityVisita extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if(isEditable){
-            showClosePopup();
+            boolean temp = new VisitaDAO(getBaseContext()).buscarById((long)visita.getId()).isEditing();
+            if(temp){
+                showClosePopup();
+            }else{
+                finish();
+            }
+
         }else {
             finish();
         }
@@ -419,7 +458,6 @@ public class ActivityVisita extends AppCompatActivity {
                             TipoRecomendacionVO temp = listTipoRecomendaciones.get(which);
                             Intent i = new Intent(getBaseContext(), ActivityRecomendacion.class);
                             i.putExtra("idVisita",visita.getId());
-                            i.putExtra("idVariedad",visita.getIdVariedad());
                             i.putExtra("idTipoRecomendacion",temp.getId());
                             i.putExtra("isEditable",isEditable);
                             startActivityForResult(i, REQUEST_RECOMENDACION);//cambie  aqui de 1

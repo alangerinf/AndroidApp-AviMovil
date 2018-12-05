@@ -15,6 +15,9 @@ import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION;
@@ -26,7 +29,7 @@ public class CriterioRecomendacionDAO {
 
     private Context ctx;
 
-    CriterioRecomendacionDAO(Context ctx){
+    public CriterioRecomendacionDAO(Context ctx){
         this.ctx = ctx;
     }
     public CriterioRecomendacionVO consultarById(int  id) {
@@ -81,7 +84,7 @@ public class CriterioRecomendacionDAO {
         return ev;
     }
 
-    public List<CriterioRecomendacionVO> listarByIdTipoRecomendacionIdVariedad(int idTipoRecomendacion,int idVarieda){
+    public List<CriterioRecomendacionVO> listarByIdTipoRecomendacionIdVariedad(int idTipoRecomendacion,int idVariedad){
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         List<CriterioRecomendacionVO> criterioRecomendacionVOS = new ArrayList<>();
@@ -94,9 +97,14 @@ public class CriterioRecomendacionDAO {
                             "CR."+TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS+", "+//3
                             "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+//4
                             " FROM "+
-                            TABLE_CRITERIORECOMENDACION+" as CR " +
+                            TABLE_CRITERIORECOMENDACION+" as CR ," +
+                            TABLE_CONFIGURACIONRECOMENDACION+" as COR"+
                             " WHERE "+
-                            "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+"="+String.valueOf(idTipoRecomendacion)
+                            "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+"="+String.valueOf(idTipoRecomendacion)+
+                            " AND "+
+                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION+"="+"CR."+TABLE_CRITERIORECOMENDACION_COL_ID+
+                            " AND "+
+                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)
                     ,null);
             while (cursor.moveToNext() && cursor.getCount()>0){
                 CriterioRecomendacionVO temp;
@@ -114,5 +122,6 @@ public class CriterioRecomendacionDAO {
         }
         return criterioRecomendacionVOS;
     }
+
 
 }
