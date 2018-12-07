@@ -12,21 +12,12 @@ import java.util.List;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
-import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
-import pe.ibao.agromovil.models.vo.entitiesDB.RecomendacionVO;
-import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.RecomendacionVO;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_COMENTARIO;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_ID;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDCRITERIO;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDEVALUACION;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_TIME;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_VALUE;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_RECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_RECOMENDACION_COL_CANTIDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_RECOMENDACION_COL_COMENTARIO;
@@ -35,7 +26,6 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_RECOMENDACION_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_RECOMENDACION_COL_IDCRITERIORECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_RECOMENDACION_COL_IDVISITA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_RECOMENDACION_COL_UNIDAD;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_RECOMENDACION_TYPECOL_CANTIDAD;
 
 public class RecomendacionDAO {
 
@@ -274,5 +264,54 @@ public class RecomendacionDAO {
         db.close();
         conn.close();
         return flag;
+    }
+
+    public List<RecomendacionVO> listarAll() {
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = c.getReadableDatabase();
+        List<RecomendacionVO> recomendacionVOList =  new ArrayList<>();
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        "R."+TABLE_RECOMENDACION_COL_ID+", " +
+                        "R."+TABLE_RECOMENDACION_COL_CANTIDAD+", " +
+                        "R."+TABLE_RECOMENDACION_COL_UNIDAD+", "+
+                        "R."+TABLE_RECOMENDACION_COL_FRECUENCIA+", "+
+                        "R."+TABLE_RECOMENDACION_COL_COMENTARIO+", "+
+                        "R."+TABLE_RECOMENDACION_COL_IDCRITERIORECOMENDACION+", "+
+                        "R."+TABLE_RECOMENDACION_COL_IDVISITA+
+                        " FROM "+
+                        TABLE_RECOMENDACION+" as R"
+                ,null);
+        if(cursor.getCount()>0){
+            while(cursor.moveToNext()){
+                RecomendacionVO temp= new RecomendacionVO();
+                temp.setId(cursor.getInt(0));
+                temp.setCantidad(cursor.getString(1));
+                temp.setUnidad(cursor.getInt(2));
+                temp.setFrecuencia(cursor.getInt(3));
+                temp.setComentario(cursor.getString(4     ));
+                temp.setIdCriterioRecomendacion(cursor.getInt(5));
+                temp.setIdVisita(cursor.getInt(6));
+                CriterioRecomendacionDAO criterioDAO = new CriterioRecomendacionDAO(ctx);
+                CriterioRecomendacionVO cri = criterioDAO.consultarById(temp.getIdCriterioRecomendacion());
+
+                if(temp!=null){
+                    Log.d("locomata","temp is not null");
+                    temp.setName(cri.getName());
+                    temp.setListUnidades(cri.getListUnidades());
+                    temp.setListFrecuancias(cri.getListFrecuancias());
+                    temp.setIdTipoRecomendacion(cri.getIdTipoRecomendacion());
+                }else{
+                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                }
+                recomendacionVOList.add(temp);
+            }
+
+        }
+        cursor.close();
+        c.close();
+        return recomendacionVOList;
+
+
     }
 }

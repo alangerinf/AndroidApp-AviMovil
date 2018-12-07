@@ -27,6 +27,7 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_COMENTARIO
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDCRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDEVALUACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_IDTIPOINSPECCION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_TIME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA_COL_VALUE;
 
@@ -49,7 +50,8 @@ public class MuestrasDAO {
                         "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
                         "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
                         "M."+TABLE_MUESTRA_COL_TIME+", "+
-                        "M."+TABLE_MUESTRA_COL_COMENTARIO+
+                        "M."+TABLE_MUESTRA_COL_COMENTARIO+", "+
+                        "M."+TABLE_MUESTRA_COL_IDTIPOINSPECCION+
                     " FROM "+
                         TABLE_MUESTRA+" as M"+
                     " WHERE "+
@@ -64,6 +66,7 @@ public class MuestrasDAO {
                 temp.setIdEvaluacion(cursor.getInt(3));
                 temp.setTime(cursor.getString(4     ));
                 temp.setComent(cursor.getString(5));
+                temp.setIdTipoInspeccion(cursor.getInt(6));
                 if(temp.getComent().equals("") || temp.getComent()==null){
                     temp.setStatusComent(false);
                 }else{
@@ -91,7 +94,7 @@ public class MuestrasDAO {
     }
 
 
-    public MuestraVO nuevoByIdEvaluacionIdCriterio(int idEvaluacion, int idCriterio) {
+    public MuestraVO nuevoByIdEvaluacionIdCriterio(int idEvaluacion, int idCriterio,int idTipoInspecicon) {
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
         Log.d("locomata","datos recibidos e funcion : "+idEvaluacion+" "+idCriterio);
 
@@ -100,6 +103,7 @@ public class MuestrasDAO {
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_MUESTRA_COL_VALUE,"");
             values.put(Utilities.TABLE_MUESTRA_COL_IDCRITERIO,String.valueOf(idCriterio));
+            values.put(Utilities.TABLE_MUESTRA_COL_IDTIPOINSPECCION,String.valueOf(idTipoInspecicon));
             values.put(Utilities.TABLE_MUESTRA_COL_IDEVALUACION,String.valueOf(idEvaluacion));
         Long id = db.insert(Utilities.TABLE_MUESTRA,Utilities.TABLE_MUESTRA_COL_ID,values);
 
@@ -113,7 +117,8 @@ public class MuestrasDAO {
                     "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
                     "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
                     "M."+TABLE_MUESTRA_COL_TIME+", "+
-                    "M."+TABLE_MUESTRA_COL_COMENTARIO+
+                    "M."+TABLE_MUESTRA_COL_COMENTARIO+", "+
+                    "M."+TABLE_MUESTRA_COL_IDTIPOINSPECCION+
                 " FROM "+
                 TABLE_MUESTRA+" as M"+
                 " WHERE "+
@@ -129,6 +134,7 @@ public class MuestrasDAO {
             res.setIdEvaluacion(cursor.getInt(3));
             res.setTime(cursor.getString(4));
             res.setComent(cursor.getString(5));
+            res.setIdTipoInspeccion(cursor.getInt(6));
             if(res.getComent().equals("") || res.getComent()==null){
                 res.setStatusComent(false);
             }else{
@@ -161,7 +167,72 @@ public class MuestrasDAO {
         conn.close();
         return res;
     }
+    public MuestraVO consultById(int idMuestra) {
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        Log.d("locomata","datos recibidos e funcion : "+idMuestra);
 
+        SQLiteDatabase db = conn.getWritableDatabase();
+        MuestraVO res = null;
+
+
+        //obteniendo datos extra de tablas alternas
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        "M."+TABLE_MUESTRA_COL_ID+", " +
+                        "M."+TABLE_MUESTRA_COL_VALUE+", " +
+                        "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
+                        "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
+                        "M."+TABLE_MUESTRA_COL_TIME+", "+
+                        "M."+TABLE_MUESTRA_COL_COMENTARIO+", "+
+                        "M."+TABLE_MUESTRA_COL_IDTIPOINSPECCION+
+                        " FROM "+
+                        TABLE_MUESTRA+" as M"+
+                        " WHERE "+
+                        "M."+TABLE_MUESTRA_COL_ID+"="+String.valueOf(idMuestra)
+                , null);
+        Log.d("locomata","cantidad isnercio"+cursor.getCount());
+        if(cursor.getCount()>0){
+            cursor.moveToFirst();
+            res = new MuestraVO();
+            res.setId(cursor.getInt(0));
+            res.setValue(cursor.getString(1));
+            res.setIdCriterio(cursor.getInt(2));
+            res.setIdEvaluacion(cursor.getInt(3));
+            res.setTime(cursor.getString(4));
+            res.setComent(cursor.getString(5));
+            res.setIdTipoInspeccion(cursor.getInt(6));
+            if(res.getComent().equals("") || res.getComent()==null){
+                res.setStatusComent(false);
+            }else{
+                res.setStatusComent(true);
+            }
+            CriterioDAO criterioDAO = new CriterioDAO(ctx);
+            CriterioVO temp = criterioDAO.consultarById(res.getIdCriterio());
+            if(temp!=null){
+                Log.d("locomata","temp is null");
+                res.setIdTipoInspseccion(temp.getIdTipoInspseccion());
+                res.setName(temp.getName());
+                res.setType(temp.getType());
+                res.setMagnitud(temp.getMagnitud());
+            }else{
+                Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+            }
+
+            Log.d("locomata","datos encontrados"+
+                    res.getId()+" "+
+                    res.getIdCriterio()+" "+
+                    res.getIdEvaluacion()+" "+
+                    res.getMagnitud()+" "+
+                    res.getIdCriterio()+" "+
+                    res.getValue()+" "+
+                    res.getName()+" "+
+                    res.getType());
+        }
+        cursor.close();
+        db.close();
+        conn.close();
+        return res;
+    }
     public boolean editarValorById(int id,String valor){
         boolean flag = false;
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
@@ -253,7 +324,8 @@ public class MuestrasDAO {
                         "M."+TABLE_MUESTRA_COL_IDCRITERIO+", "+
                         "M."+TABLE_MUESTRA_COL_IDEVALUACION+", "+
                         "M."+TABLE_MUESTRA_COL_TIME+", "+
-                        "M."+TABLE_MUESTRA_COL_COMENTARIO+
+                        "M."+TABLE_MUESTRA_COL_COMENTARIO+", "+
+                        "M."+TABLE_MUESTRA_COL_IDTIPOINSPECCION+
                         " FROM "+
                         TABLE_MUESTRA+" as M"//+
                      //   " WHERE "+
@@ -268,6 +340,7 @@ public class MuestrasDAO {
                 temp.setIdEvaluacion(cursor.getInt(3));
                 temp.setTime(cursor.getString(4     ));
                 temp.setComent(cursor.getString(5));
+                temp.setIdTipoInspeccion(cursor.getInt(6));
                 if(temp.getComent().equals("") || temp.getComent()==null){
                     temp.setStatusComent(false);
                 }else{

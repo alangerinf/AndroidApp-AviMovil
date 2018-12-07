@@ -420,7 +420,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
                                     .show();
                             CriterioVO temp = CRITERIOS.get(which);
                             Log.d("locomata","antes de mandar "+idEvaluacion+" "+temp.getId());
-                            MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId());
+                            MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId(),new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getIdTipoInspeccion());
                             saveMuestras.add(temp2);
                             adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas,spnTipoInspeccion,isEditable);
                             listViewMuestas.setAdapter(adapterListMuestras);

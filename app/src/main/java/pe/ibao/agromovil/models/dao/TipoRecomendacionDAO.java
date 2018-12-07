@@ -15,10 +15,15 @@ import pe.ibao.agromovil.models.vo.entitiesDB.TipoRecomendacionVO;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_RECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_TIPORECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_TIPORECOMENDACION_COL_ID;
@@ -34,7 +39,7 @@ public class TipoRecomendacionDAO {
         this.ctx = ctx;
     }
 
-    public boolean insertarTipoInspeccion(int id, String name){
+    public boolean insertarTipoRecomendacion(int id, String name){
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -75,7 +80,7 @@ public class TipoRecomendacionDAO {
         return temp;
     }
 
-    public List<TipoRecomendacionVO> listarByIdVariedad(int idVariedad){
+    public List<TipoRecomendacionVO> listarByIdFundoIdVariedad(int idFundo, int idVariedad){
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         List<TipoRecomendacionVO> tipoRecomendacionVOS = new ArrayList<>();
@@ -85,12 +90,19 @@ public class TipoRecomendacionDAO {
                             "TR."+TABLE_TIPORECOMENDACION_COL_ID+", "+
                             "TR."+TABLE_TIPORECOMENDACION_COL_NAME+
                             " FROM "+
-                            TABLE_CONFIGURACIONRECOMENDACION+" as COR, "+
+                            TABLE_CONFIGURACIONRECOMENDACION+" as COR,"+
                             TABLE_CRITERIORECOMENDACION+" as CR,"+
-                            TABLE_TIPORECOMENDACION+" as TR"+
+                            TABLE_TIPORECOMENDACION+" as TR,"+
+                            TABLE_FUNDOVARIEDAD+" as FV"+
                             " WHERE "+
-                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)+" AND "+
-                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION+"="+"CR."+TABLE_CRITERIORECOMENDACION_COL_ID+" AND "+
+                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)+
+                            " AND "+
+                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDFUNDO+"="+String.valueOf(idFundo)+
+                            " AND "+
+                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD+"="+"FV."+TABLE_FUNDOVARIEDAD_COL_ID+
+                            " AND "+
+                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION+"="+"CR."+TABLE_CRITERIORECOMENDACION_COL_ID+
+                            " AND "+
                             "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+"="+"TR."+TABLE_TIPORECOMENDACION_COL_ID+
                             " GROUP BY "+
                             "TR."+TABLE_TIPORECOMENDACION_COL_NAME

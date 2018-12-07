@@ -3,22 +3,32 @@ package pe.ibao.agromovil.models.vo.entitiesInternal;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 
 public class MuestraVO extends CriterioVO {
-    private int ids;
 
+    private int ids;
     private int idEvaluacion;
     private int idCriterio;
     private String value;//parsearlo a int float o boolean segun se crea conveniente
     private String time;
+    private int idTipoInspeccion;
     private String coment;
     private boolean statusComent;
+
     public MuestraVO(){
         super();
     }
 
-
     public String getValue() {
         return value;
 
+    }
+
+
+    public int getIdTipoInspeccion() {
+        return idTipoInspeccion;
+    }
+
+    public void setIdTipoInspeccion(int idTipoInspeccion) {
+        this.idTipoInspeccion = idTipoInspeccion;
     }
 
     public String getComent() {

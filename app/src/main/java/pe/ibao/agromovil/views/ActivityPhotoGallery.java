@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -36,6 +37,7 @@ import java.util.List;
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.helpers.adapters.MyRecyclerViewAdapter;
 import pe.ibao.agromovil.models.dao.FotoDAO;
+import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.FotoVO;
 
 import static android.Manifest.permission.CAMERA;
@@ -50,6 +52,7 @@ public class ActivityPhotoGallery extends AppCompatActivity {
     static ImageView iViewLienzo;
     static File fileImagen;
     static Bitmap bitmap;
+    static TextView nameCriterio;
 
     private static int idMuestra;
     private static String value;
@@ -79,11 +82,12 @@ public class ActivityPhotoGallery extends AppCompatActivity {
         fechaHora =  mybundle.getString("fechaHora");
         isEditable = mybundle.getBoolean("isEditable");
         listFotos = new FotoDAO(this).listarByIdMuestra(idMuestra);
+        nameCriterio = (TextView) findViewById(R.id.tViewNameCriterio);
         //listViewFotos = (ListView) findViewById(R.id.foto_listView);
        // Toast.makeText(this,mybundle.toString(),Toast.LENGTH_LONG).show();
 
         btnDelete = (ImageView) findViewById(R.id.iViewBtnDelete);
-
+        nameCriterio.setText(new MuestrasDAO(getBaseContext()).consultById(idMuestra).getName());
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +103,6 @@ public class ActivityPhotoGallery extends AppCompatActivity {
                 }else{
                     Toast.makeText(getBaseContext(),"Lo sentimos no se pudo Eliminar",Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
 

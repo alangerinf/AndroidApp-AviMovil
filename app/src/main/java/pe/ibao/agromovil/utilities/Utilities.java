@@ -1,5 +1,7 @@
 package pe.ibao.agromovil.utilities;
 
+import java.net.URL;
+
 public class Utilities {
 
     public static final String URL_ROOT= "http://apps.ibao.pe/agromovil/requests/";
@@ -12,7 +14,13 @@ public class Utilities {
     public static final String URL_DOWNLOAD_TABLE_TIPOINSPECCION=URL_ROOT+"getTipoInspecciones.php";
     public static final String URL_DOWNLOAD_TABLE_CRITERIO=URL_ROOT+"getCriterioInspecciones.php";
     public static final String URL_DOWNLOAD_TABLE_CONFIGURACIONCRITERIO=URL_ROOT+"getConfiguracionCriterios.php";
-    public static final String URL_UPLOAD_MASTER=URL_ROOT+"getConfiguracionCriterios.php";
+    public static final String URL_DOWNLOAD_TABLE_CONTACTO= URL_ROOT+"getContactos.php";
+    public static final String URL_DOWNLOAD_TABLE_CRITERIORECOMENDACION=URL_ROOT+"getCriterioRecomendaciones.php";
+    public static final String URL_DOWNLOAD_TABLE_TIPORECOMENDACION=URL_ROOT+"getTipoRecomendaciones.php";
+    public static final String URL_DOWNLOAD_TABLE_CONFIGURACIONRECOMENDACION=URL_ROOT+"getConfiguracionRecomendaciones.php";
+
+    public static final String URL_UPLOAD_MASTER=URL_ROOT+"insertDataFromMovil.php";
+    public static final String URL_UPLOAD_FOTOS=URL_ROOT+"insertFotos.php";
 
 
     public static final String DATABASE_NAME="data";
@@ -156,7 +164,9 @@ public class Utilities {
             TABLE_MUESTRA_COL_IDEVALUACION="idEvaluacion",
             TABLE_MUESTRA_TYPECOL_IDEVALUACION="INTEGER",
             TABLE_MUESTRA_COL_IDCRITERIO="idCriterio",
-            TABLE_MUESTRA_TYPECOL_IDCRITERIO="INTEGER";
+            TABLE_MUESTRA_TYPECOL_IDCRITERIO="INTEGER",
+            TABLE_MUESTRA_COL_IDTIPOINSPECCION="idTipoInspeccion",
+            TABLE_MUESTRA_TYPECOL_IDTIPOINSPECCION="INTEGER";
 
 
     public static final String TABLE_FOTO="foto",
@@ -190,8 +200,8 @@ public class Utilities {
     public static final String TABLE_CONFIGURACIONRECOMENDACION="configuracionRecomendacion",
             TABLE_CONFIGURACIONRECOMENDACION_COL_ID = "id",
             TABLE_CONFIGURACIONRECOMENDACION_TYPECOL_ID ="INTEGER",
-            TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD = "idVariedad",
-            TABLE_CONFIGURACIONRECOMENDACION_TYPECOL_IDVARIEDAD ="INTEGER",
+            TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD = "idFundoVariedad",
+            TABLE_CONFIGURACIONRECOMENDACION_TYPECOL_IDFUNDOVARIEDAD ="INTEGER",
             TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION = "idCriterioRecomendacion",
             TABLE_CONFIGURACIONRECOMENDACION_TYPECOL_IDCRITERIORECOMENDACION ="INTEGER";
 
@@ -223,12 +233,13 @@ public class Utilities {
 
     public static final String CREATE_TABLE_MUESTRA =
             "CREATE TABLE "+TABLE_MUESTRA+" ("+
-                    TABLE_MUESTRA_COL_ID            +" "+TABLE_MUESTRA_TYPECOL_ID           +" PRIMARY KEY AUTOINCREMENT, "+
-                    TABLE_MUESTRA_COL_TIME          +" "+TABLE_MUESTRA_TYPECOL_TIME         +" DEFAULT (datetime('now','localtime')), "+
-                    TABLE_MUESTRA_COL_COMENTARIO    +" "+TABLE_MUESTRA_TYPECOL_COMENTARIO   +" DEFAULT '', "+
-                    TABLE_MUESTRA_COL_VALUE         +" "+TABLE_MUESTRA_TYPECOL_VALUE        +" DEFAULT '', "+
-                    TABLE_MUESTRA_COL_IDCRITERIO    +" "+TABLE_MUESTRA_TYPECOL_IDCRITERIO   +" NOT NULL, "+
-                    TABLE_MUESTRA_COL_IDEVALUACION  +" "+TABLE_MUESTRA_TYPECOL_IDEVALUACION +" NOT NULL"+
+                    TABLE_MUESTRA_COL_ID              +" "+TABLE_MUESTRA_TYPECOL_ID           +" PRIMARY KEY AUTOINCREMENT, "+
+                    TABLE_MUESTRA_COL_TIME            +" "+TABLE_MUESTRA_TYPECOL_TIME         +" DEFAULT (datetime('now','localtime')), "+
+                    TABLE_MUESTRA_COL_COMENTARIO      +" "+TABLE_MUESTRA_TYPECOL_COMENTARIO   +" DEFAULT '', "+
+                    TABLE_MUESTRA_COL_VALUE           +" "+TABLE_MUESTRA_TYPECOL_VALUE        +" DEFAULT '', "+
+                    TABLE_MUESTRA_COL_IDCRITERIO      +" "+TABLE_MUESTRA_TYPECOL_IDCRITERIO   +" NOT NULL, "+
+                    TABLE_MUESTRA_COL_IDEVALUACION    +" "+TABLE_MUESTRA_TYPECOL_IDEVALUACION +" NOT NULL,"+
+                    TABLE_MUESTRA_COL_IDTIPOINSPECCION+" "+TABLE_MUESTRA_TYPECOL_IDTIPOINSPECCION+" NOT NULL"+
             ")";
 
     public static final String CREATE_TABLE_EVALUACION=
@@ -243,8 +254,9 @@ public class Utilities {
                     TABLE_EVALUACION_COL_IDVISITA           +" "+TABLE_EVALUACION_TYPECOL_IDVISITA+" NOT NULL"+
             ")";
 
+
     public static final String CREATE_TABLE_VISITA=
-            "CREATE TABLE "+TABLE_VISITA+" (" +
+            "CREATE TABLE "+TABLE_VISITA+" (" +  //AAGREGGAR HORA  FIN - LATITUD LONGITUD FIN
                     TABLE_VISITA_COL_ID         +" "+TABLE_VISITA_TYPECOL_ID        +" PRIMARY KEY AUTOINCREMENT, " +
                     TABLE_VISITA_COL_FECHAHORA  +" "+TABLE_VISITA_TYPECOL_FECHAHORA +" DEFAULT (datetime('now','localtime')), "+
                     TABLE_VISITA_COL_EDITING    +" "+TABLE_VISITA_TYPECOL_EDITING   +", "+
@@ -256,6 +268,12 @@ public class Utilities {
                     TABLE_VISITA_COL_CONTACTOPERSONALIZADO  +" "+TABLE_VISITA_TYPECOL_CONTACTOPERSONALIZADO+", "+
                     TABLE_VISITA_COL_IDCONTACTO +" "+TABLE_VISITA_TYPECOL_IDCONTACTO+
             ")";
+
+    /*** agregar
+     * areaFundo - float        <-----------table fundo
+     * areaVariedad - float     <-----------table variedad
+     * areaSistemaRiego - float <-----------table fundo
+     */
 
     public static final String CREATE_TABLE_TIPOINSPECCION=
             "CREATE TABLE "+TABLE_TIPOINSPECCION+" (" +
@@ -343,7 +361,7 @@ public class Utilities {
     public static final String CREATE_TABLE_CONFIGURACIONRECOMENDACION =
             "CREATE TABLE "+TABLE_CONFIGURACIONRECOMENDACION+" (" +
                     TABLE_CONFIGURACIONRECOMENDACION_COL_ID                     +" "+TABLE_CONFIGURACIONRECOMENDACION_TYPECOL_ID+" PRIMARY KEY," +
-                    TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD             +" "+TABLE_CONFIGURACIONRECOMENDACION_TYPECOL_IDVARIEDAD+" , "+
+                    TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD        +" "+TABLE_CONFIGURACIONRECOMENDACION_TYPECOL_IDFUNDOVARIEDAD+" , "+
                     TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION+" "+TABLE_CONFIGURACIONRECOMENDACION_TYPECOL_IDCRITERIORECOMENDACION+
                     ")";
     public static final String CREATE_TABLE_RECOMENDACION =

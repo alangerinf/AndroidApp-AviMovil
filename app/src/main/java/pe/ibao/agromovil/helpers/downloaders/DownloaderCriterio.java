@@ -27,14 +27,16 @@ import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_VARIEDAD;
 
 public class DownloaderCriterio {
-
+    public static int status = 0;
     Context ctx;
     ProgressDialog progress;
     public DownloaderCriterio(Context ctx){
         this.ctx = ctx;
+        status = 0;
     }
 
     public void download(){
+        status = 0;
         progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
         progress.setMessage("Intentando descargar Criterios");
@@ -116,7 +118,7 @@ public class DownloaderCriterio {
         AppController.getInstance().addToRequestQueue(sr);
     }
 
-    public void download(final TextView porcentaje, TextView mensaje,final int ini, final int tam) {
+    public void download(final TextView porcentaje, final TextView mensaje, final int ini, final int tam) {
    /*     progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
         progress.setMessage("Intentando descargar Criterios");
@@ -128,6 +130,7 @@ public class DownloaderCriterio {
                     public void onResponse(String response) {
       //                  progress.dismiss();
                         try {
+                            mensaje.setText("Descargando Criterios de Inspeccion");
                             JSONArray main = new JSONArray(response);
                             final int length = main.length();
                             for(int i=0;i<main.length();i++){

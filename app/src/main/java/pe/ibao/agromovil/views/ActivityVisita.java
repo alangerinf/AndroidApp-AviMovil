@@ -187,11 +187,46 @@ public class ActivityVisita extends AppCompatActivity {
                         //Toast.makeText(this,"Borrando"+position,Toast.LENGTH_LONG).show();
                         try{
                            // Toast.makeText(getBaseContext(),"borrando->"+position,Toast.LENGTH_LONG).show();
-                            EvaluacionDAO evaluacionDAO = new EvaluacionDAO(getBaseContext());
-                            evaluacionDAO.borrarById(evaluacionVOList.get(position).getId());
-                            evaluacionVOList.remove(position);
-                            baseAdapter.notifyDataSetChanged();
-                            setListViewHeightBasedOnChildren(listViewEvaluaciones);
+
+                            dialogClose.setContentView(R.layout.dialog_danger);
+                            Button btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_close);
+                            Button btnDialogAcept = (Button) dialogClose.findViewById(R.id.buton_acept);
+                            iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);
+
+                            iViewDialogClose.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialogClose.dismiss();
+                                }
+                            });
+                            btnDialogClose.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    dialogClose.dismiss();
+
+                                }
+                            });
+
+                            btnDialogAcept.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    EvaluacionDAO evaluacionDAO = new EvaluacionDAO(getBaseContext());
+                                    evaluacionDAO.borrarById(evaluacionVOList.get(position).getId());
+                                    evaluacionVOList.remove(position);
+                                    baseAdapter.notifyDataSetChanged();
+                                    setListViewHeightBasedOnChildren(listViewEvaluaciones);
+                                    dialogClose.dismiss();
+
+                                }
+                            });
+
+                            dialogClose.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                            dialogClose.show();
+
+
+
+
                             //autoAdapter();
                         }catch (Exception e){
                             Toast.makeText(getBaseContext(),e.toString(),Toast.LENGTH_LONG).show();
@@ -411,9 +446,7 @@ public class ActivityVisita extends AppCompatActivity {
                     mybundle.putInt("isFirst",0);
                 }else{
                     mybundle.putInt("isFirst",1);
-
                 }
-
                 mybundle.putInt("idEmpresa",visita.getIdEmpresa());
                 mybundle.putInt("idFundo",visita.getIdFundo());
                 mybundle.putInt("idCultivo",visita.getIdCultivo());
@@ -434,7 +467,7 @@ public class ActivityVisita extends AppCompatActivity {
     public void showListTipoRecomendacion(View view){
 
         if(isEditable){
-            listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdVariedad(visita.getIdVariedad());
+            listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdFundoIdVariedad(visita.getIdFundo(),visita.getIdVariedad());
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
 
             final CharSequence[] items = new CharSequence[ listTipoRecomendaciones.size()];
@@ -537,6 +570,11 @@ public class ActivityVisita extends AppCompatActivity {
 
         dialogClose.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialogClose.show();
+    }
+
+
+    private void showDeleteAlert(){
+
     }
 
 }

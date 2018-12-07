@@ -19,7 +19,7 @@ import pe.ibao.agromovil.models.dao.RecomendacionDAO;
 import pe.ibao.agromovil.models.dao.TipoRecomendacionDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
-import pe.ibao.agromovil.models.vo.entitiesDB.RecomendacionVO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.RecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.TipoRecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
@@ -52,6 +52,7 @@ public class ActivityRecomendacion extends Activity {
             tipoRecomendacion = new TipoRecomendacionDAO(this).consultarByid(b.getInt("idTipoRecomendacion"));
             visita = new VisitaDAO(this).buscarById((long)b.getInt("idVisita"));
 
+            tViewTipoRecomendacion.setText(tipoRecomendacion.getName());
 
         listRecomendaciones = new RecomendacionDAO(getBaseContext())
                 .listarByIdTipoRecomendacionIdVisita(tipoRecomendacion.getId()
@@ -71,7 +72,7 @@ public class ActivityRecomendacion extends Activity {
 
     public void showListTipoRecomendacion(View view){
         if(isEditable){
-            listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdVariedad(visita.getIdVariedad());
+            listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdFundoIdVariedad(visita.getIdFundo(),visita.getIdVariedad());
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
 
             final CharSequence[] items = new CharSequence[ listTipoRecomendaciones.size()];
@@ -111,7 +112,7 @@ public class ActivityRecomendacion extends Activity {
 
     public void showListCriterioRecomendacion(View view){
         if(isEditable){
-            listCriterioRecomendaciones = new CriterioRecomendacionDAO(getBaseContext()).listarByIdTipoRecomendacionIdVariedad(tipoRecomendacion.getId(),visita.getIdVariedad());
+            listCriterioRecomendaciones = new CriterioRecomendacionDAO(getBaseContext()).listarByIdTipoRecomendacionIdFundoIdVariedad(tipoRecomendacion.getId(),visita.getIdFundo(),visita.getIdVariedad());
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
             final CharSequence[] items = new CharSequence[ listCriterioRecomendaciones.size()];
             for(int i = 0; i< listCriterioRecomendaciones.size(); i++){

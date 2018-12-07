@@ -1,6 +1,7 @@
 package pe.ibao.agromovil.models.vo.entitiesInternal;
 
 public class EvaluacionVO {
+
     private int id;
     private int idTipoInspeccion;
     private String nameInspeccion;

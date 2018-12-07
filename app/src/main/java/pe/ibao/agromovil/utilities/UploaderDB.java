@@ -8,12 +8,16 @@ import android.widget.TextView;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderConfiguracionCriterio;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderConfiguracionRecomendacion;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderContacto;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderCriterio;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderCriterioRecomendacion;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderCultivo;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderEmpresa;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderFundo;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderFundoVariedad;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderTipoInspeccion;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderTipoRecomendacion;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderVariedad;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
@@ -40,9 +44,9 @@ public class UploaderDB {
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONCRITERIO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONTACTO);
+
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPORECOMENDACION);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIORECOMENDACION);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_RECOMENDACION);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONRECOMENDACION);
 
         /*
@@ -59,13 +63,15 @@ public class UploaderDB {
         db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONCRITERIO);
         db.execSQL(Utilities.CREATE_TABLE_CRITERIO);
         db.execSQL(Utilities.CREATE_TABLE_CONTACTO);
+
         db.execSQL(Utilities.CREATE_TABLE_TIPORECOMENDACION);
         db.execSQL(Utilities.CREATE_TABLE_CRITERIORECOMENDACION);
-        db.execSQL(Utilities.CREATE_TABLE_RECOMENDACION);
         db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONRECOMENDACION);
         db.close();
         c.close();
 
+        DownloaderContacto cont = new DownloaderContacto(ctx);
+        cont.download(porcentaje,mensaje,0,10);
         DownloaderEmpresa emp = new DownloaderEmpresa(ctx);
         emp.download(porcentaje,mensaje,0,10);
         DownloaderFundo fun = new DownloaderFundo(ctx);
@@ -81,14 +87,19 @@ public class UploaderDB {
         DownloaderConfiguracionCriterio cc = new DownloaderConfiguracionCriterio(ctx);
         cc.download(porcentaje,mensaje,80,10);
         DownloaderCriterio cri = new DownloaderCriterio(ctx);
-        cri.download(porcentaje,mensaje,91,10);
+        cri.download(porcentaje,mensaje,81,10);
+        DownloaderTipoRecomendacion tre = new DownloaderTipoRecomendacion(ctx);
+        tre.download(porcentaje,mensaje,81,10);
+        DownloaderConfiguracionRecomendacion core= new DownloaderConfiguracionRecomendacion(ctx);
+        core.download(porcentaje,mensaje,81,10);
+        DownloaderCriterioRecomendacion cre = new DownloaderCriterioRecomendacion(ctx);
+        cre.download(porcentaje,mensaje,91,10);
 
-        cargarContactos();
-        cargarTipoRecomendaciones();
-        cargarCriterioRecomendaciones();
-        cargarConfiguracionRecomendacion();
+        //cargarContactos();
+        // cargarTipoRecomendaciones();
+        //cargarCriterioRecomendaciones();
+       // cargarConfiguracionRecomendacion();
     }
-
 
     public UploaderDB(Context ctx) {
         this.ctx = ctx;
@@ -135,7 +146,6 @@ public class UploaderDB {
         cc.download();
         DownloaderCriterio cri = new DownloaderCriterio(ctx);
         cri.download();
-
 /*
         cargarEmpresas();
         cargarFundos();
@@ -514,7 +524,7 @@ public class UploaderDB {
         Long temp = db.insert(Utilities.TABLE_MUESTRA,Utilities.TABLE_MUESTRA_COL_ID,values);
         db.close();
     }
-
+/*
     public void cargarTipoRecomendaciones(){
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -530,7 +540,7 @@ public class UploaderDB {
 
         db.close();
     }
-
+*/
     public void cargarCriterioRecomendaciones(){
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -568,19 +578,19 @@ public class UploaderDB {
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,1);
         values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION,1);
-        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD,1);
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD,1);
         Long temp = db.insert(Utilities.TABLE_CONFIGURACIONRECOMENDACION,Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,values);
 
         values = new ContentValues();
         values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,2);
         values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION,2);
-        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD,1);
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD,1);
         temp = db.insert(Utilities.TABLE_CONFIGURACIONRECOMENDACION,Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,values);
 
         values = new ContentValues();
         values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,3);
         values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION,3);
-        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD,1);
+        values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD,1);
         temp = db.insert(Utilities.TABLE_CONFIGURACIONRECOMENDACION,Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,values);
 
         db.close();

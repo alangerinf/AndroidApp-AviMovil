@@ -89,6 +89,10 @@ public class VisitaDAO {
                 Log.d(TAG,"9");
                 temp.setContactoPersonalizado(cursor.getString(9));
 
+                if(!temp.isStatusContactoPersonalizado()){
+                    temp.setContactoPersonalizado(new ContactoDAO(ctx).consultarContactoByid(temp.getIdContacto()).getName());
+                    Toast.makeText(ctx,temp.getContactoPersonalizado(),Toast.LENGTH_LONG).show();
+                }
 
                 if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
 
@@ -131,6 +135,7 @@ public class VisitaDAO {
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
+
         return visitaVOS;
     }
 

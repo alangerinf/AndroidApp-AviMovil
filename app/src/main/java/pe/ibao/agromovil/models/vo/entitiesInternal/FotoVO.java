@@ -10,8 +10,6 @@ public class FotoVO {
     private Bitmap bitmap;
     private String StringBitmap;
 
-
-
     public FotoVO(int id, String fechaHora, String path) {
         this.id = id;
         this.fechaHora = fechaHora;

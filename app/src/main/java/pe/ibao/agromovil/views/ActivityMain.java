@@ -187,7 +187,6 @@ public class ActivityMain extends AppCompatActivity
                             finish();
                             break;
                     }
-
                 } else {
                     Toast.makeText(getBaseContext(),"No hay internet!",
                             Toast.LENGTH_SHORT).show();

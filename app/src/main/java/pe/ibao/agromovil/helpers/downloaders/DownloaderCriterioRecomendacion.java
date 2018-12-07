@@ -18,47 +18,51 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Handler;
 
 import pe.ibao.agromovil.app.AppController;
-import pe.ibao.agromovil.models.dao.EmpresaDAO;
+import pe.ibao.agromovil.models.dao.CriterioDAO;
+import pe.ibao.agromovil.models.dao.CriterioRecomendacionDAO;
 
-import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_EMPRESA;
+import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CRITERIO;
+import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CRITERIORECOMENDACION;
 
-public class DownloaderEmpresa {
+public class DownloaderCriterioRecomendacion {
 
     Context ctx;
     ProgressDialog progress;
-    public DownloaderEmpresa(Context ctx){
+    public DownloaderCriterioRecomendacion(Context ctx){
         this.ctx = ctx;
     }
 
     public void download(){
         progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
-        progress.setMessage("Intentando descargar Empresas");
+        progress.setMessage("Intentando descargar Criterios recomendacion");
         progress.show();
         StringRequest sr = new StringRequest(Request.Method.POST,
-                URL_DOWNLOAD_TABLE_EMPRESA,
+                URL_DOWNLOAD_TABLE_CRITERIORECOMENDACION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progress.dismiss();
                         try {
                             JSONArray main = new JSONArray(response);
-
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                String nombre = String.valueOf(id)+"-"+data.getString("nombre");
-                                Log.d("EMPRESADOWN","fila "+i+" : "+id+" "+nombre);
-                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre)){
-                                    Log.d("EMPRESADOWN","logro insertar");
+                                String nombre = data.getString("nombre");
+                                String unidades = data.getString("unidadmedidas");
+                                String frecuencias = data.getString("frecuencias");
+                                int idTipoRecomendacion = data.getInt("idTipoRecomendacion");
+
+                                Log.d("CRIRECO-DOWN","fila "+i+" : "+id+" "+nombre+" "+unidades+" "+frecuencias+" "+idTipoRecomendacion);
+                                if(new CriterioRecomendacionDAO(ctx).insertar(id,nombre,unidades,frecuencias,idTipoRecomendacion) != null){
+                                    Log.d("CRIRECO-DOWN","logro insertar");
                                 }
                             }
 
                         } catch (JSONException e) {
-                            Log.d("EMPRESADOWN ",e.toString());
+                            Log.d("CRIRECO-DOWN ",e.toString());
                         }
                     }
                 },
@@ -91,51 +95,54 @@ public class DownloaderEmpresa {
         AppController.getInstance().addToRequestQueue(sr);
     }
 
-    public void download(final TextView porcentaje, final TextView mensaje, final int  ini, final int tam) {
-       /* progress = new ProgressDialog(ctx);
+    public void download(final TextView porcentaje, final TextView mensaje, final int ini, final int tam) {
+   /*     progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
-        progress.setMessage("Intentando descargar Empresas");
+        progress.setMessage("Intentando descargar Criterios");
         progress.show();
-        */
-        StringRequest sr = new StringRequest(Request.Method.POST,
-                URL_DOWNLOAD_TABLE_EMPRESA,
+     */   StringRequest sr = new StringRequest(Request.Method.POST,
+                URL_DOWNLOAD_TABLE_CRITERIORECOMENDACION,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        mensaje.setText("Descargando Empresas");
-                       // progress.dismiss();
+                        mensaje.setText("Descargando Criterios de Recomendacion");
+      //                  progress.dismiss();
                         try {
                             JSONArray main = new JSONArray(response);
                             final int length = main.length();
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                String nombre = String.valueOf(id)+"-"+data.getString("nombre");
-                                Log.d("EMPRESADOWN","fila "+i+" : "+id+" "+nombre);
-                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre)){
-                                    Log.d("EMPRESADOWN","logro insertar");
+                                String nombre = data.getString("nombre");
+                                String unidades = data.getString("unidadmedidas");
+                                String frecuencias = data.getString("frecuencias");
+                                int idTipoRecomendacion = data.getInt("idTipoRecomendacion");
+
+                                Log.d("CRIRECO-DOWN","fila "+i+" : "+id+" "+nombre+" "+unidades+" "+frecuencias+" "+idTipoRecomendacion);
+                                if(new CriterioRecomendacionDAO(ctx).insertar(id,nombre,unidades,frecuencias,idTipoRecomendacion) != null){
+                                    Log.d("CRIRECO-DOWN","logro insertar");
+                                    Log.d("CRITERIOSDDOWN","logro insertar");
                                     android.os.Handler handler = new android.os.Handler();
                                     final int finalI = i;
                                     handler.post(new Runnable() {
                                         public void run() {
-
                                             porcentaje.setText("" + (ini + ((finalI * tam) / length)) + "%");
                                         }
                                     });
-
                                 }
                             }
-                        //    porcentaje.setText(String.valueOf(tam));
+
+                 //           porcentaje.setText(String.valueOf(tam));
 
                         } catch (JSONException e) {
-                            Log.d("EMPRESADOWN ",e.toString());
+                            Log.d("CRITERIOSDDOWN ",e.toString());
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                     //   progress.dismiss();
+                        progress.dismiss();
                         Toast.makeText(ctx,"Error conectando con el servidor",Toast.LENGTH_LONG).show();
 
                     }

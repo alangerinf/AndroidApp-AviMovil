@@ -12,18 +12,21 @@ import java.util.List;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
-import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTUNIDADES;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD;
 
 public class CriterioRecomendacionDAO {
 
@@ -84,7 +87,7 @@ public class CriterioRecomendacionDAO {
         return ev;
     }
 
-    public List<CriterioRecomendacionVO> listarByIdTipoRecomendacionIdVariedad(int idTipoRecomendacion,int idVariedad){
+    public List<CriterioRecomendacionVO> listarByIdTipoRecomendacionIdFundoIdVariedad(int idTipoRecomendacion,int idFundo,int idVariedad){
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = c.getReadableDatabase();
         List<CriterioRecomendacionVO> criterioRecomendacionVOS = new ArrayList<>();
@@ -98,13 +101,18 @@ public class CriterioRecomendacionDAO {
                             "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+//4
                             " FROM "+
                             TABLE_CRITERIORECOMENDACION+" as CR ," +
+                            TABLE_FUNDOVARIEDAD+" as FV ,"+
                             TABLE_CONFIGURACIONRECOMENDACION+" as COR"+
                             " WHERE "+
                             "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+"="+String.valueOf(idTipoRecomendacion)+
                             " AND "+
                             "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION+"="+"CR."+TABLE_CRITERIORECOMENDACION_COL_ID+
                             " AND "+
-                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)
+                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD+"="+"FV."+TABLE_FUNDOVARIEDAD_COL_ID+
+                            " AND "+
+                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDFUNDO+"="+String.valueOf(idFundo)+
+                            " AND "+
+                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)
                     ,null);
             while (cursor.moveToNext() && cursor.getCount()>0){
                 CriterioRecomendacionVO temp;

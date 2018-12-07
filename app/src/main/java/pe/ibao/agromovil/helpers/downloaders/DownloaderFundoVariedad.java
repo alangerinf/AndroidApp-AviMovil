@@ -109,7 +109,7 @@ public class DownloaderFundoVariedad {
         AppController.getInstance().addToRequestQueue(sr);
     }
 
-    public void download(final TextView porcentaje, TextView mensaje,final int ini, final int tam) {
+    public void download(final TextView porcentaje, final TextView mensaje, final int ini, final int tam) {
         //progress = new ProgressDialog(ctx);
         //progress.setCancelable(false);
         //progress.setMessage("Intentando descargar FundoVariedad");
@@ -120,6 +120,7 @@ public class DownloaderFundoVariedad {
                     @Override
                     public void onResponse(String response) {
 //                        progress.dismiss();
+                        mensaje.setText("Descargando Configuraciones de Fundo y Variedad");
                         try {
                             JSONArray main = new JSONArray(response);
                             final int length = main.length();

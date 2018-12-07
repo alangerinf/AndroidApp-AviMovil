@@ -1,9 +1,11 @@
-package pe.ibao.agromovil.models.vo.entitiesDB;
+package pe.ibao.agromovil.models.vo.entitiesInternal;
 
-public class RecomendacionVO extends CriterioRecomendacionVO{
+import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
+
+public class RecomendacionVO extends CriterioRecomendacionVO {
 
 
-    private int id;
+    private int ids;
     private int frecuencia;
     private int unidad;
     private String cantidad;
@@ -17,12 +19,12 @@ public class RecomendacionVO extends CriterioRecomendacionVO{
 
     @Override
     public int getId() {
-        return id;
+        return ids;
     }
 
     @Override
     public void setId(int id) {
-        this.id = id;
+        this.ids = id;
     }
 
     public int getFrecuencia() {

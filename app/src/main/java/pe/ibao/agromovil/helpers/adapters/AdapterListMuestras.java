@@ -1,8 +1,11 @@
 package pe.ibao.agromovil.helpers.adapters;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.models.dao.EvaluacionDAO;
 import pe.ibao.agromovil.models.dao.FotoDAO;
 import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
@@ -149,18 +154,50 @@ public class AdapterListMuestras extends BaseAdapter{
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                boolean x=new MuestrasDAO(ctx).borrarMuestraById(listMuestas.get(position).getId());
-                if(!x){
-                    Toast.makeText(ctx,"Error al eliminar",Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(ctx,"Eliminado",Toast.LENGTH_SHORT).show();
-                }
-                listMuestas.remove(position);
-                AdapterListMuestras.super.notifyDataSetChanged();
-                setListViewHeightBasedOnChildren(list);
-                if(listMuestas.size()==0){
-                    spnEva.setEnabled(true);
-                }
+
+                final Dialog dialogClose = new Dialog(ctx);
+                dialogClose.setContentView(R.layout.dialog_danger);
+                Button btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_close);
+                Button btnDialogAcept = (Button) dialogClose.findViewById(R.id.buton_acept);
+                ImageView iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);
+
+                iViewDialogClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogClose.dismiss();
+                    }
+                });
+                btnDialogClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialogClose.dismiss();
+
+                    }
+                });
+
+                btnDialogAcept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        boolean x=new MuestrasDAO(ctx).borrarMuestraById(listMuestas.get(position).getId());
+                        if(!x){
+                            Toast.makeText(ctx,"Error al eliminar",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(ctx,"Eliminado",Toast.LENGTH_SHORT).show();
+                        }
+                        listMuestas.remove(position);
+                        AdapterListMuestras.super.notifyDataSetChanged();
+                        setListViewHeightBasedOnChildren(list);
+                        if(listMuestas.size()==0){
+                            spnEva.setEnabled(true);
+                        }
+                        dialogClose.dismiss();
+                    }
+                });
+
+                dialogClose.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogClose.show();
             }
         });
 

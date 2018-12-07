@@ -92,7 +92,7 @@ public class DownloaderCultivo {
         AppController.getInstance().addToRequestQueue(sr);
     }
 
-    public void download(final TextView porcentaje, TextView mensaje,final int ini, final int tam) {
+    public void download(final TextView porcentaje, final TextView mensaje, final int ini, final int tam) {
    /*     progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
         progress.setMessage("Intentando descargar Cultivo");
@@ -103,6 +103,7 @@ public class DownloaderCultivo {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        mensaje.setText("Descargando Configuraciones de Cultivo");
                    //     progress.dismiss();
                         try {
                             JSONArray main = new JSONArray(response);

@@ -21,7 +21,7 @@ import java.util.List;
 
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.dao.RecomendacionDAO;
-import pe.ibao.agromovil.models.vo.entitiesDB.RecomendacionVO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.RecomendacionVO;
 
 public class AdapterListRecomendacion extends BaseAdapter{
 

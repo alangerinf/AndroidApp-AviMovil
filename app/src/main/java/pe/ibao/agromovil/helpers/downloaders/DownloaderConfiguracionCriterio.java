@@ -29,14 +29,16 @@ import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CONFIGURA
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_FUNDOVARIEDAD;
 
 public class DownloaderConfiguracionCriterio {
-
+    public static int status=0;
     Context ctx;
     ProgressDialog progress;
     public DownloaderConfiguracionCriterio(Context ctx){
         this.ctx = ctx;
+        status = 0;
     }
 
     public void download(){
+        status = 0;
         progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
         progress.setMessage("Intentando descargar Configuracion Criterio");
@@ -73,9 +75,10 @@ public class DownloaderConfiguracionCriterio {
                                 db.close();
                                 conn.close();
                             }
-
+                            status = 1;
                         } catch (JSONException e) {
                             Log.d("CONFCRITERIODOWN ",e.toString());
+                            status = -1;
                         }
                     }
                 },
@@ -84,7 +87,7 @@ public class DownloaderConfiguracionCriterio {
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
                         Toast.makeText(ctx,"Error conectando con el servidor",Toast.LENGTH_LONG).show();
-
+                        status = -1;
                     }
                 }){
             @Override
@@ -108,16 +111,20 @@ public class DownloaderConfiguracionCriterio {
         AppController.getInstance().addToRequestQueue(sr);
     }
 
-    public void download(final TextView porcentaje, TextView mensaje,final int ini, final int tam) {
+    public void download(final TextView porcentaje, final TextView mensaje, final int ini, final int tam) {
         /*progress = new ProgressDialog(ctx);
         progress.setCancelable(false);
         progress.setMessage("Intentando descargar Configuracion Criterio");
         progress.show();
-        */StringRequest sr = new StringRequest(Request.Method.POST,
+
+        */
+        status= 0;
+        StringRequest sr = new StringRequest(Request.Method.POST,
                 URL_DOWNLOAD_TABLE_CONFIGURACIONCRITERIO,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        mensaje.setText("Descargando Configuraciones de Criterios");
                        // progress.dismiss();
                         try {
                             JSONArray main = new JSONArray(response);
@@ -144,7 +151,6 @@ public class DownloaderConfiguracionCriterio {
                                     final int finalI = i;
                                     handler.post(new Runnable() {
                                         public void run() {
-
                                             porcentaje.setText("" + (ini + ((finalI * tam) / length)) + "%");
                                         }
                                     });
@@ -153,10 +159,12 @@ public class DownloaderConfiguracionCriterio {
                                 db.close();
                                 conn.close();
                             }
+                            status = 1;
                            // porcentaje.setText(String.valueOf(tam));
 
                         } catch (JSONException e) {
                             Log.d("CONFCRITERIODOWN ",e.toString());
+                            status = -1;
                         }
                     }
                 },
@@ -165,7 +173,7 @@ public class DownloaderConfiguracionCriterio {
                     public void onErrorResponse(VolleyError error) {
                         progress.dismiss();
                         Toast.makeText(ctx,"Error conectando con el servidor",Toast.LENGTH_LONG).show();
-
+                        status = -2;
                     }
                 }){
             @Override

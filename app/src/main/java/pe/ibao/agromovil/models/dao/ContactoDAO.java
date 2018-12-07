@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.models.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -84,6 +85,19 @@ public class ContactoDAO {
         }
         c.close();
         return contactoVOS;
+    }
+
+
+    public boolean insertarContacto(int id, String name,int idFundo){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(TABLE_CONTACTO_COL_ID,id);
+        values.put(TABLE_CONTACTO_COL_NAME,name);
+        values.put(TABLE_CONTACTO_COL_IDFUNDO,idFundo);
+        Long temp = db.insert(TABLE_CONTACTO,TABLE_CONTACTO_COL_ID,values);
+        db.close();
+        return temp > 0;
     }
 
 }
