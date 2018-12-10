@@ -5,13 +5,13 @@ import android.content.Context;
 import android.os.AsyncTask;
 import java.io.File;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.google.android.gms.nearby.connection.Payload;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -47,40 +47,71 @@ public class UploadMaster {
 
     Context ctx;
     ProgressDialog progress;
-    public UploadMaster(Context ctx){
+
+    public static int status;
+
+    public UploadMaster(Context ctx)
+    {
+        status=0;
         this.ctx = ctx;
     }
 
-    public void Upload(){
-        progress = new ProgressDialog(ctx);
-        progress.setCancelable(false);
-        progress.setMessage("Intentando descargar Configuracion Criterio");
-        progress.show();
+    public void Upload(final List<VisitaVO> visitasUp, final List<EvaluacionVO> evaluacionesUp, final List<MuestraVO> muestrasUp,final List<FotoVO> FotosUp, final List<RecomendacionVO> recomendacionesUp){
+//        progress = ProgressDialog.show(ctx, "", "Loading...");
+        //progress.setCancelable(false);
+        //progress.setMessage("Intentando descargar Configuracion Criterio");
+        //progress.show();
+        status=0;
         StringRequest sr = new StringRequest(Request.Method.POST,
                 URL_UPLOAD_MASTER,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                       //  progress.dismiss();
+                        Log.d("asd ","flag1");
                         try {
+                            
+                            JSONObject main = new JSONObject(response);
+                            Log.d("asd ","flag1");
+                            if(main.getInt("success")==1){
+                                Log.d("asd ","flag2");
+                                JSONArray datosFotos = main.getJSONArray("data");
+                                status=1;
+                                for(int i=0;i<datosFotos.length();i++){
+                                    Toast.makeText(ctx,""+datosFotos.getJSONObject(i).getInt("idInspeccionEvidencia"),Toast.LENGTH_SHORT).show();
+                                    new UploadFotos(ctx).Upload(datosFotos.getJSONObject(i).getInt("idInspeccionEvidencia")
+                                            ,new FotoDAO(ctx).consultarById_Upload(datosFotos.getJSONObject(i).getInt("idFoto")).getStringBitmap()
+                                            ,i
+                                            ,datosFotos.length());
+                                    new FotoDAO(ctx).borrarById_UPLOAD(datosFotos.getJSONObject(i).getInt("idFoto"));
 
-                            JSONArray main = new JSONArray(response);
-                            for(int i=0;i<main.length();i++){
-                                JSONObject data = new JSONObject(main.get(i).toString());
+                                }
+                                status=2;
+                                new VisitaDAO(ctx).clearTableUpload();
+                                new EvaluacionDAO(ctx).clearTableUpload();
+                                new MuestrasDAO(ctx).clearTableUpload();
+                                new RecomendacionDAO(ctx).clearTableUpload();
+
+                                Toast.makeText(ctx,datosFotos.toString(),Toast.LENGTH_LONG).show();
+                                Log.d("errorfotos",datosFotos.toString());
 
                             }
 
+
                         } catch (JSONException e) {
-                            //Log.d("CONFCRITERIODOWN ",e.toString());
+                            Log.d("ERrrorJSon ",e.toString());
+                            Log.d("ERrrorJSon ",response);
+                            status=-1;
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progress.dismiss();
-                       // Toast.makeText(ctx,"Error conectando con el servidor",Toast.LENGTH_LONG).show();
-
+//                        progress.dismiss();
+                        Toast.makeText(ctx,error.toString(),Toast.LENGTH_LONG).show();
+                        Log.d("error 2",error.toString());
+                        status=-2;
                     }
                 }){
             @Override
@@ -94,7 +125,7 @@ public class UploadMaster {
 
                 //visitas
                 gson = new Gson();
-                List<VisitaVO> visitas = new VisitaDAO(ctx).listarNoEditable();
+                List<VisitaVO> visitas = visitasUp;
                 String visitasJson = gson.toJson(
                         visitas,
                         new TypeToken<ArrayList<VisitaVO>>() {}.getType());
@@ -102,7 +133,7 @@ public class UploadMaster {
 
                 //Evaluaciones
                 gson = new Gson();
-                List<EvaluacionVO> evaluaciones = new EvaluacionDAO(ctx).listarAll();
+                List<EvaluacionVO> evaluaciones = evaluacionesUp;
                 String evaluacionesJson = gson.toJson(
                         evaluaciones,
                         new TypeToken<ArrayList<EvaluacionVO>>() {}.getType());
@@ -110,14 +141,14 @@ public class UploadMaster {
 
                 //muestas
                 gson = new Gson();
-                List<MuestraVO> muestas = new MuestrasDAO(ctx).listarAll();
+                List<MuestraVO> muestas = muestrasUp;
                 String muestasJson = gson.toJson(
                         muestas,
                         new TypeToken<ArrayList<MuestraVO>>() {}.getType());
                 params.put("muestras",muestasJson);
                 //fotos
                 gson = new Gson();
-                List<FotoVO> fotos = new FotoDAO(ctx).listarAll();
+                List<FotoVO> fotos = FotosUp;
                 String fotosJson = gson.toJson(
                         fotos,
                         new TypeToken<ArrayList<FotoVO>>() {}.getType());
@@ -125,7 +156,7 @@ public class UploadMaster {
 
                 //recomendaciones
                 gson = new Gson();
-                List<RecomendacionVO> recomendaciones = new RecomendacionDAO(ctx).listarAll();
+                List<RecomendacionVO> recomendaciones = recomendacionesUp;
                 String recomendacionesJson = gson.toJson(
                         recomendaciones,
                         new TypeToken<ArrayList<RecomendacionVO>>() {}.getType());
@@ -150,7 +181,6 @@ public class UploadMaster {
 
         AppController.getInstance().addToRequestQueue(sr);
     }
-
 
     private class UploadFileAsync extends AsyncTask<String, Void, String> {
         @Override

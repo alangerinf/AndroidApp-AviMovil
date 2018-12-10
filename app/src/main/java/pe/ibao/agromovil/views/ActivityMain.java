@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.views;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -22,6 +23,10 @@ import android.widget.Toast;
 
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.helpers.UploadMaster;
+import pe.ibao.agromovil.models.dao.EvaluacionDAO;
+import pe.ibao.agromovil.models.dao.FotoDAO;
+import pe.ibao.agromovil.models.dao.MuestrasDAO;
+import pe.ibao.agromovil.models.dao.RecomendacionDAO;
 import pe.ibao.agromovil.models.dao.UsuarioDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
@@ -176,9 +181,18 @@ public class ActivityMain extends AppCompatActivity
                     //Toast.makeText(getBaseContext(),"Conectando...",Toast.LENGTH_SHORT).show();
                     switch (caso){
                         case "up":
-                            Toast.makeText(getBaseContext(),"SUBIENDO",
-                                    Toast.LENGTH_SHORT).show();
-                            new UploadMaster(getBaseContext()).Upload();
+
+                            if(new VisitaDAO(getBaseContext()).listarNoEditable().size()>0){
+                                startActivity(
+                                        new Intent(getBaseContext(), ActivityUpload.class)
+                                );
+                                finish();
+                            }else{
+                                Toast.makeText(getBaseContext(),"No hay Inspecciones por Subir",
+                                        Toast.LENGTH_LONG).show();
+                            }
+
+
                             break;
                         case "down":
                             startActivity(

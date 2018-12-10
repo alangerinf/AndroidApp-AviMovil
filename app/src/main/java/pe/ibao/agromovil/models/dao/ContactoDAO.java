@@ -56,6 +56,19 @@ public class ContactoDAO {
         return temp;
     }
 
+    public boolean clearTableUpload(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        int res = db.delete(TABLE_CONTACTO,null,null);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
+
     public List<ContactoVO> listarByIdFundo(int idFundo){
         ConexionSQLiteHelper c;
         c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
@@ -99,5 +112,6 @@ public class ContactoDAO {
         db.close();
         return temp > 0;
     }
+
 
 }

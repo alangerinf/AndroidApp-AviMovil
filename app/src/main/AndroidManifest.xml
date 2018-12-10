@@ -49,13 +49,20 @@
             android:name=".views.ActivityLogin"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme2.NoActionBar" />
+
         <activity
             android:name=".views.unused.LostPasswordActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme2.NoActionBar" />
+
         <activity
             android:name=".views.ActivityUpdate"
             android:theme="@style/AppTheme2.NoActionBar" />
+
+        <activity
+            android:name=".views.ActivityUpload"
+            android:theme="@style/AppTheme2.NoActionBar" />
+
         <activity
             android:name=".views.ActivityVisita"
             android:label="@string/title_activity_new_inspection"

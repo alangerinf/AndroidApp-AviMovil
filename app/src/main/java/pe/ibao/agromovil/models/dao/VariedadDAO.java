@@ -34,7 +34,7 @@ public class VariedadDAO {
     }
 
 
-    public boolean borrarTable(){
+    public boolean clearTableUpload(){
         boolean flag = false;
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();

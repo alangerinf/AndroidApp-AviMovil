@@ -69,6 +69,18 @@ public class CriterioRecomendacionDAO {
         return temp;
     }
 
+    public boolean clearTableUpload(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        int res = db.delete(TABLE_CRITERIORECOMENDACION,null,null);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
 
     public CriterioRecomendacionVO insertar(int id, String name, String listUnidades,String listFrecuencias,int idTipoRecomendacion){
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/primary"
-    tools:context=".views.ActivityUpdate">
+    tools:context=".views.ActivityUpload">
 
     <ImageView
         android:id="@+id/imageView6"
@@ -49,7 +49,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="@string/update_status"
+        android:text="Subiendo Archivos"
         android:textColor="@color/primaryLight"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"

@@ -36,9 +36,9 @@ public class FundoDAO {
 
 
 
-    public boolean borrarTable(){
+    public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_FUNDO,null,null);
         if(res>0){
@@ -48,7 +48,6 @@ public class FundoDAO {
         conn.close();
         return flag;
     }
-
     public boolean insertarFundo(int id, String name,int idEmpresa){
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();

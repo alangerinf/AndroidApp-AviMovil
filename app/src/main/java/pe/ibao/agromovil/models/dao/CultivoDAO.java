@@ -17,6 +17,7 @@ import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO_COL_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VARIEDAD_COL_ID;
@@ -29,6 +30,19 @@ public class CultivoDAO {
     public CultivoDAO(Context ctx) {
 
         this.ctx=ctx;
+    }
+
+    public boolean clearTableUpload(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        int res = db.delete(TABLE_CULTIVO,null,null);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
     }
 
     public boolean insertarCultivo(int id, String name){

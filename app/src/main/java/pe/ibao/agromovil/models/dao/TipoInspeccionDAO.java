@@ -27,13 +27,15 @@ public class TipoInspeccionDAO {
         this.ctx=ctx;
     }
 
-    public boolean borrarTable(){
+    public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
+
         int res = db.delete(TABLE_TIPOINSPECCION,null,null);
         if(res>0){
             flag=true;
+            //new EvaluacionDAO(ctx).borrarByIdVisita(id);
         }
         db.close();
         conn.close();

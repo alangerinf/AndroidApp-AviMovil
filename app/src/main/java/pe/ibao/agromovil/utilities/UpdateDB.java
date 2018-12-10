@@ -19,56 +19,32 @@ import pe.ibao.agromovil.helpers.downloaders.DownloaderFundoVariedad;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderTipoInspeccion;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderTipoRecomendacion;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderVariedad;
+import pe.ibao.agromovil.models.dao.ContactoDAO;
+import pe.ibao.agromovil.models.dao.CriterioDAO;
+import pe.ibao.agromovil.models.dao.CriterioRecomendacionDAO;
+import pe.ibao.agromovil.models.dao.CultivoDAO;
+import pe.ibao.agromovil.models.dao.EmpresaDAO;
+import pe.ibao.agromovil.models.dao.FundoDAO;
+import pe.ibao.agromovil.models.dao.TipoInspeccionDAO;
+import pe.ibao.agromovil.models.dao.TipoRecomendacionDAO;
+import pe.ibao.agromovil.models.dao.VariedadDAO;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_EVALUACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD;
 
-public class UploaderDB {
+public class UpdateDB {
 
     private Context ctx;
     TextView porcentaje;
     TextView mensaje;
 
-    public UploaderDB(Context ctx, TextView porcentaje, TextView mensaje){
+    public UpdateDB(Context ctx, TextView porcentaje, TextView mensaje){
         this.ctx = ctx;
         this.porcentaje = porcentaje;
         this.mensaje = mensaje;
-        ConexionSQLiteHelper c;
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
-        SQLiteDatabase db = c.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EMPRESA);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDO);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CULTIVO);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VARIEDAD);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDOVARIEDAD);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPOINSPECCION);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONCRITERIO);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIO);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONTACTO);
-
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPORECOMENDACION);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIORECOMENDACION);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONRECOMENDACION);
-
-        /*
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VISITA);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EVALUACION);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_MUESTRA);
-*/
-        db.execSQL(Utilities.CREATE_TABLE_EMPRESA);
-        db.execSQL(Utilities.CREATE_TABLE_FUNDO);
-        db.execSQL(Utilities.CREATE_TABLE_CULTIVO);
-        db.execSQL(Utilities.CREATE_TABLE_VARIEDAD);
-        db.execSQL(Utilities.CREATE_TABLE_FUNDOVARIEDAD);
-        db.execSQL(Utilities.CREATE_TABLE_TIPOINSPECCION);
-        db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONCRITERIO);
-        db.execSQL(Utilities.CREATE_TABLE_CRITERIO);
-        db.execSQL(Utilities.CREATE_TABLE_CONTACTO);
-
-        db.execSQL(Utilities.CREATE_TABLE_TIPORECOMENDACION);
-        db.execSQL(Utilities.CREATE_TABLE_CRITERIORECOMENDACION);
-        db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONRECOMENDACION);
-        db.close();
-        c.close();
 
         DownloaderContacto cont = new DownloaderContacto(ctx);
         cont.download(porcentaje,mensaje,0,10);
@@ -95,41 +71,17 @@ public class UploaderDB {
         DownloaderCriterioRecomendacion cre = new DownloaderCriterioRecomendacion(ctx);
         cre.download(porcentaje,mensaje,91,10);
 
-        //cargarContactos();
-        // cargarTipoRecomendaciones();
-        //cargarCriterioRecomendaciones();
-       // cargarConfiguracionRecomendacion();
+
     }
 
-    public UploaderDB(Context ctx) {
-        this.ctx = ctx;
-        ConexionSQLiteHelper c;
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
-        SQLiteDatabase db = c.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EMPRESA);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDO);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CULTIVO);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VARIEDAD);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDOVARIEDAD);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_TIPOINSPECCION);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONCRITERIO);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIO);
-        /*
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VISITA);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EVALUACION);
-        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_MUESTRA);
-*/
-        db.execSQL(Utilities.CREATE_TABLE_EMPRESA);
-        db.execSQL(Utilities.CREATE_TABLE_FUNDO);
-        db.execSQL(Utilities.CREATE_TABLE_CULTIVO);
-        db.execSQL(Utilities.CREATE_TABLE_VARIEDAD);
-        db.execSQL(Utilities.CREATE_TABLE_FUNDOVARIEDAD);
-        db.execSQL(Utilities.CREATE_TABLE_TIPOINSPECCION);
-        db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONCRITERIO);
-        db.execSQL(Utilities.CREATE_TABLE_CRITERIO);
-        db.close();
-        c.close();
 
+
+
+
+    public UpdateDB(Context ctx) {
+        this.ctx = ctx;
+        DownloaderContacto cont = new DownloaderContacto(ctx);
+        cont.download();
         DownloaderEmpresa emp = new DownloaderEmpresa(ctx);
         emp.download();
         DownloaderFundo fun = new DownloaderFundo(ctx);
@@ -146,6 +98,12 @@ public class UploaderDB {
         cc.download();
         DownloaderCriterio cri = new DownloaderCriterio(ctx);
         cri.download();
+        DownloaderTipoRecomendacion tre = new DownloaderTipoRecomendacion(ctx);
+        tre.download();
+        DownloaderConfiguracionRecomendacion core= new DownloaderConfiguracionRecomendacion(ctx);
+        core.download();
+        DownloaderCriterioRecomendacion cre = new DownloaderCriterioRecomendacion(ctx);
+        cre.download();
 /*
         cargarEmpresas();
         cargarFundos();

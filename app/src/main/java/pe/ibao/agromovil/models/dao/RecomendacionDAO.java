@@ -52,8 +52,9 @@ public class RecomendacionDAO {
                         " FROM "+
                         TABLE_RECOMENDACION+" as R,"+
                         TABLE_CRITERIORECOMENDACION+" as CR"+
-
                         " WHERE "+
+                        "R."+TABLE_RECOMENDACION_COL_IDVISITA+"="+String.valueOf(idVisita)+
+                        " AND "+
                         "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+"="+String.valueOf(idTipoRecomendacion)+
                         " AND "+
                         "CR."+TABLE_CRITERIORECOMENDACION_COL_ID+"="+"R."+TABLE_RECOMENDACION_COL_IDCRITERIORECOMENDACION
@@ -88,6 +89,20 @@ public class RecomendacionDAO {
         c.close();
         return recomendacionVOList;
 
+    }
+    public boolean clearTableUpload(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        int res = db.delete(TABLE_RECOMENDACION,null,null);
+        if(res>0){
+            flag=true;
+            //new EvaluacionDAO(ctx).borrarByIdVisita(id);
+        }
+        db.close();
+        conn.close();
+        return flag;
     }
 
     public RecomendacionVO nuevoByIdCriterioRecomendacionIdVisita(int idCriterioRecomendacion, int idVisita) {

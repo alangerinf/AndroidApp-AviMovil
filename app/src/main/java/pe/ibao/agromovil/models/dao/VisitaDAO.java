@@ -63,7 +63,7 @@ public class VisitaDAO {
                         " WHERE "+
                             TABLE_VISITA_COL_EDITING+"="+"0"
                     ,null);
-            Toast.makeText(ctx,"contando visitas"+cursor.getCount(),Toast.LENGTH_LONG).show();
+           // Toast.makeText(ctx,"contando visitas"+cursor.getCount(),Toast.LENGTH_LONG).show();
             while (cursor.moveToNext() && cursor.getCount()>0){
                 VisitaVO temp;
                 Log.d(TAG,"hay primero");
@@ -112,7 +112,6 @@ public class VisitaDAO {
                     String nameFundo = f.getName();
                     temp.setNameFundo(nameFundo);
                     //obteniedno datos d e empresa
-
                     EmpresaVO empresaVO = new EmpresaDAO(ctx).consultarEmpresaByid(temp.getIdFundo());
 
                     temp.setIdEmpresa(empresaVO.getId());
@@ -133,7 +132,10 @@ public class VisitaDAO {
             }
             cursor.close();
         }catch (Exception e){
+            Log.d("visitaError","visita Error "+e.toString());
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
+
+
         }
 
         return visitaVOS;
@@ -304,6 +306,21 @@ public class VisitaDAO {
         if(res>0){
             flag=true;
             new EvaluacionDAO(ctx).borrarByIdVisita(id);
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
+
+    public boolean clearTableUpload(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        int res = db.delete(TABLE_VISITA,null,null);
+        if(res>0){
+            flag=true;
+            //new EvaluacionDAO(ctx).borrarByIdVisita(id);
         }
         db.close();
         conn.close();

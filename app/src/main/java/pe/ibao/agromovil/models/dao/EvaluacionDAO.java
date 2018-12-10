@@ -50,6 +50,22 @@ public class EvaluacionDAO {
         c.close();
         return flag;
     }
+    public boolean clearTableUpload(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        int res = db.delete(TABLE_EVALUACION,null,null);
+        if(res>0){
+            flag=true;
+            //new EvaluacionDAO(ctx).borrarByIdVisita(id);
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
+
+
 
     public boolean editarQR(int id,String qr){
         boolean flag = false;

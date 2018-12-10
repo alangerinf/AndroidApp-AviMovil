@@ -26,6 +26,13 @@ public class Utilities {
     public static final String DATABASE_NAME="data";
 
 
+
+    public static final String TABLE_COLAFOTOS="colaFotos",
+            TABLE_COLAFOTOS_COL_IDDB         ="idBD",
+            TABLE_COLAFOTOS_TYPECOL_IDDB     ="INTEGER",
+            TABLE_COLAFOTOS_COL_IDINTERNO    ="idInteno",
+            TABLE_COLAFOTOS_TYPECOL_IDINTERNO="INTEGER";
+
     public static final String TABLE_CONTACTO="contacto",
             TABLE_CONTACTO_COL_ID           ="id",
             TABLE_CONTACTO_TYPECOL_ID       ="INTEGER",
@@ -33,8 +40,6 @@ public class Utilities {
             TABLE_CONTACTO_TYPECOL_NAME     ="VARCHAR(50)",
             TABLE_CONTACTO_COL_IDFUNDO      ="idFundo",
             TABLE_CONTACTO_TYPECOL_IDFUNDO  ="INTEGER";
-
-
 
     public static final String TABLE_USUARIO="usuario",
             TABLE_USUARIO_COL_ID                ="id",
@@ -374,7 +379,11 @@ public class Utilities {
                     TABLE_RECOMENDACION_COL_IDVISITA                +" "+TABLE_RECOMENDACION_TYPECOL_IDVISITA+" NOT NULL , "+
                     TABLE_RECOMENDACION_COL_IDCRITERIORECOMENDACION +" "+TABLE_RECOMENDACION_TYPECOL_IDCRITERIORECOMENDACION+" NOT NULL "+
                     ")";
-
+    public static final String CREATE_TABLE_COLAFOTOS =
+            "CREATE TABLE "+TABLE_COLAFOTOS+" ("+
+                    TABLE_COLAFOTOS_COL_IDDB        +" "+TABLE_COLAFOTOS_TYPECOL_IDDB+" PRIMARY KEY, "+
+                    TABLE_COLAFOTOS_COL_IDINTERNO   +" "+TABLE_COLAFOTOS_TYPECOL_IDINTERNO+" NOT NULL "+
+                    ")";
 
 
 }

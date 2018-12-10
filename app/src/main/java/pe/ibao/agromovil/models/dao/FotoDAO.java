@@ -169,9 +169,10 @@ public class FotoDAO {
 
                     //terminado redimensionado de bitmap
                     ByteArrayOutputStream array = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,array);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,70,array);
                     byte[] imageByte = array.toByteArray();
                     String imageString = Base64.encodeToString(imageByte,Base64.DEFAULT);
+                  //  String imageString = StrinimageByte;
                     temp.setStringBitmap(imageString);
 
                 }catch (Exception e){
@@ -185,6 +186,25 @@ public class FotoDAO {
         }
         c.close();
         return temp;
+    }
+
+    public boolean borrarById_UPLOAD(int id){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+
+        int res = db.delete(TABLE_FOTO,TABLE_FOTO_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+            //new EvaluacionDAO(ctx).borrarByIdVisita(id);
+        }
+        db.close();
+        conn.close();
+        return flag;
     }
 
 

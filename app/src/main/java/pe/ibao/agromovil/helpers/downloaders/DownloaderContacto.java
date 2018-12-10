@@ -27,29 +27,32 @@ import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CONTACTO;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_FUNDO;
 
 public class DownloaderContacto {
-    public static int status = 0;
+    public static int status;
     Context ctx;
-    ProgressDialog progress;
+    //ProgressDialog progress;
     public DownloaderContacto(Context ctx){
         this.ctx = ctx;
         status = 0;
     }
 
     public void download(){
-        status = 0;
-        progress = new ProgressDialog(ctx);
-        progress.setCancelable(false);
-        progress.setMessage("Intentando descargar Contactos");
-        progress.show();
+        status = 1;
+      //  progress = new ProgressDialog(ctx);
+      //  progress.setCancelable(false);
+      //  progress.setMessage("Intentando descargar Contactos");
+      //  progress.show();
         StringRequest sr = new StringRequest(Request.Method.POST,
                 URL_DOWNLOAD_TABLE_CONTACTO,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
-                        progress.dismiss();
+        //                progress.dismiss();
                         try {
                             JSONArray main = new JSONArray(response);
+                            if(main.length()>0){
+                                new ContactoDAO(ctx).clearTableUpload();
+                                status=2;
+                            }
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
@@ -60,7 +63,7 @@ public class DownloaderContacto {
                                     Log.d("FUNDODOWN","logro insertar");
                                 }
                             }
-                            status = 1;
+                            status = 3;
                         } catch (JSONException e) {
                             Log.d("FUNDODOWN ",e.toString());
                             status = -1;
@@ -70,7 +73,7 @@ public class DownloaderContacto {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        progress.dismiss();
+          //              progress.dismiss();
                         Toast.makeText(ctx,"Error conectando con el servidor",Toast.LENGTH_LONG).show();
                         status = -2;
                     }
@@ -102,7 +105,7 @@ public class DownloaderContacto {
         progress.setMessage("Intentando descargar Fundos");
         progress.show();
        */
-        status = 0;
+        status = 1;
         StringRequest sr = new StringRequest(Request.Method.POST,
                 URL_DOWNLOAD_TABLE_CONTACTO,
                 new Response.Listener<String>() {
@@ -113,6 +116,10 @@ public class DownloaderContacto {
                         try {
                             JSONArray main = new JSONArray(response);
                             final int length = main.length();
+                            if(length>0){
+                                new ContactoDAO(ctx).clearTableUpload();
+                                status=2;
+                            }
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
@@ -131,7 +138,7 @@ public class DownloaderContacto {
                                     });
                                 }
                             }
-                            status = 1;
+                            status = 3;
                          //   porcentaje.setText(String.valueOf(tam));
 
                         } catch (JSONException e) {

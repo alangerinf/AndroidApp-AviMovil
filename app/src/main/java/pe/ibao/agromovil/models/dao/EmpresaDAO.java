@@ -115,5 +115,16 @@ public class EmpresaDAO {
         c.close();
     }
 
-
+    public boolean clearTableUpload(){
+        boolean flag = false;
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+        int res = db.delete(TABLE_EMPRESA,null,null);
+        if(res>0){
+            flag=true;
+        }
+        db.close();
+        conn.close();
+        return flag;
+    }
 }
