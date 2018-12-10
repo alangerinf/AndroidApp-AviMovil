@@ -33,11 +33,8 @@ public class FotoDAO {
     Context ctx;
 
     public FotoDAO(Context ctx) {
-
-
         this.ctx=ctx;
     }
-
 
     public FotoVO nuevoByIdMuestra(int idMuestra,String path) {
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );

@@ -32,6 +32,8 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL(Utilities.CREATE_TABLE_CRITERIORECOMENDACION);
         db.execSQL(Utilities.CREATE_TABLE_RECOMENDACION);
         db.execSQL(Utilities.CREATE_TABLE_CONFIGURACIONRECOMENDACION);
+
+        db.execSQL(Utilities.CREATE_TABLE_COLAFOTOS);
     }
 
     @Override
@@ -53,6 +55,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CRITERIORECOMENDACION);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_RECOMENDACION);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CONFIGURACIONRECOMENDACION);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_COLAFOTOS);
         onCreate(db);
     }
 }

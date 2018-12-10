@@ -1,6 +1,7 @@
 package pe.ibao.agromovil.utilities;
 
-import java.net.URL;
+
+
 
 public class Utilities {
 
@@ -22,16 +23,13 @@ public class Utilities {
     public static final String URL_UPLOAD_MASTER=URL_ROOT+"insertDataFromMovil.php";
     public static final String URL_UPLOAD_FOTOS=URL_ROOT+"insertFotos.php";
 
-
     public static final String DATABASE_NAME="data";
-
-
 
     public static final String TABLE_COLAFOTOS="colaFotos",
             TABLE_COLAFOTOS_COL_IDDB         ="idBD",
             TABLE_COLAFOTOS_TYPECOL_IDDB     ="INTEGER",
-            TABLE_COLAFOTOS_COL_IDINTERNO    ="idInteno",
-            TABLE_COLAFOTOS_TYPECOL_IDINTERNO="INTEGER";
+            TABLE_COLAFOTOS_COL_PATH         ="path",
+            TABLE_COLAFOTOS_TYPECOL_PATH     ="VARCHAR(100)";
 
     public static final String TABLE_CONTACTO="contacto",
             TABLE_CONTACTO_COL_ID           ="id",
@@ -381,8 +379,8 @@ public class Utilities {
                     ")";
     public static final String CREATE_TABLE_COLAFOTOS =
             "CREATE TABLE "+TABLE_COLAFOTOS+" ("+
-                    TABLE_COLAFOTOS_COL_IDDB        +" "+TABLE_COLAFOTOS_TYPECOL_IDDB+" PRIMARY KEY, "+
-                    TABLE_COLAFOTOS_COL_IDINTERNO   +" "+TABLE_COLAFOTOS_TYPECOL_IDINTERNO+" NOT NULL "+
+                    TABLE_COLAFOTOS_COL_IDDB    +" "+TABLE_COLAFOTOS_TYPECOL_IDDB+" PRIMARY KEY, "+
+                    TABLE_COLAFOTOS_COL_PATH    +" "+TABLE_COLAFOTOS_TYPECOL_PATH+" NOT NULL "+
                     ")";
 
 

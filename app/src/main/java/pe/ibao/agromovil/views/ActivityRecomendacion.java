@@ -81,7 +81,6 @@ public class ActivityRecomendacion extends Activity {
                 items[i]= listTipoRecomendaciones.get(i).getName();
             }
 
-
             dialogo.setTitle("Tipos de Recomendacion")
                     .setSingleChoiceItems(items, ActivityVisita.lastTipoRecomendacionSelected, new DialogInterface.OnClickListener() {
                         @Override

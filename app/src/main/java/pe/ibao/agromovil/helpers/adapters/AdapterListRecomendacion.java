@@ -171,8 +171,7 @@ public class AdapterListRecomendacion extends BaseAdapter{
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 recomendacionList.get(position).setCantidad(eTextCantidad.getText().toString());
-
-                new RecomendacionDAO(ctx).editarCantidadById(recomendacionList.get(position).getId(),Float.valueOf(recomendacionList.get(position).getCantidad()));
+                new RecomendacionDAO(ctx).editarCantidadById(recomendacionList.get(position).getId(),recomendacionList.get(position).getCantidad());
                 //AdapterListMuestras.super.notifyDataSetChanged();
             }
 

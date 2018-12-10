@@ -47,7 +47,6 @@ public class UploadMaster {
 
     Context ctx;
     ProgressDialog progress;
-
     public static int status;
 
     public UploadMaster(Context ctx)
@@ -61,48 +60,64 @@ public class UploadMaster {
         //progress.setCancelable(false);
         //progress.setMessage("Intentando descargar Configuracion Criterio");
         //progress.show();
-        status=0;
+        status=1;
         StringRequest sr = new StringRequest(Request.Method.POST,
                 URL_UPLOAD_MASTER,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                       //  progress.dismiss();
-                        Log.d("asd ","flag1");
-                        try {
-                            
-                            JSONObject main = new JSONObject(response);
-                            Log.d("asd ","flag1");
-                            if(main.getInt("success")==1){
-                                Log.d("asd ","flag2");
-                                JSONArray datosFotos = main.getJSONArray("data");
-                                status=1;
-                                for(int i=0;i<datosFotos.length();i++){
-                                    Toast.makeText(ctx,""+datosFotos.getJSONObject(i).getInt("idInspeccionEvidencia"),Toast.LENGTH_SHORT).show();
-                                    new UploadFotos(ctx).Upload(datosFotos.getJSONObject(i).getInt("idInspeccionEvidencia")
-                                            ,new FotoDAO(ctx).consultarById_Upload(datosFotos.getJSONObject(i).getInt("idFoto")).getStringBitmap()
-                                            ,i
-                                            ,datosFotos.length());
-                                    new FotoDAO(ctx).borrarById_UPLOAD(datosFotos.getJSONObject(i).getInt("idFoto"));
+                        Log.d("respuestaServidor",response);
+                        status=2;
+                        new VisitaDAO(ctx).clearTableUpload();
+                        new EvaluacionDAO(ctx).clearTableUpload();
+                        new MuestrasDAO(ctx).clearTableUpload();
+                        new RecomendacionDAO(ctx).clearTableUpload();
 
-                                }
-                                status=2;
-                                new VisitaDAO(ctx).clearTableUpload();
-                                new EvaluacionDAO(ctx).clearTableUpload();
-                                new MuestrasDAO(ctx).clearTableUpload();
-                                new RecomendacionDAO(ctx).clearTableUpload();
-
-                                Toast.makeText(ctx,datosFotos.toString(),Toast.LENGTH_LONG).show();
-                                Log.d("errorfotos",datosFotos.toString());
-
-                            }
-
-
-                        } catch (JSONException e) {
-                            Log.d("ERrrorJSon ",e.toString());
-                            Log.d("ERrrorJSon ",response);
-                            status=-1;
+                        if(response.charAt(0)=='<'){
+                            String termino = "</table></font>";
+                            int i = response.indexOf(termino);
+                            response = response.substring(i+termino.length());
+                            i = response.indexOf("{");
+                            response = response.substring(i);
                         }
+                        if(!response.isEmpty()){
+                            try {
+                                JSONObject main = new JSONObject(response);
+                                Log.d("asd ","flag1");
+                                if(main.getInt("success")==1){
+                                    Log.d("asd ","flag2");
+                                    JSONArray datosFotos = main.getJSONArray("data");
+                                    for(int i=0;i<datosFotos.length();i++){
+                                        Toast.makeText(ctx,""+datosFotos.getJSONObject(i).getInt("idInspeccionEvidencia"),Toast.LENGTH_SHORT).show();
+                                        UploadFotos.status=0;
+                                        new UploadFotos(ctx).Upload(
+                                                datosFotos.getJSONObject(i).getInt("idFoto")
+                                                ,datosFotos.getJSONObject(i).getInt("idInspeccionEvidencia")
+                                                ,new FotoDAO(ctx).consultarById_Upload(datosFotos.getJSONObject(i).getInt("idFoto")).getStringBitmap()
+                                                ,i
+                                                ,datosFotos.length());
+                                        while(UploadFotos.status!=3 || UploadFotos.status !=-1 || UploadFotos.status !=-2 || UploadFotos.status !=-3 ){
+                                            Thread.sleep(500);
+                                        }
+                                    }
+                                    status=3;
+                                    Toast.makeText(ctx,datosFotos.toString(),Toast.LENGTH_LONG).show();
+                                    Log.d("errorfotos",datosFotos.toString());
+                                }
+
+
+                            } catch (JSONException e) {
+                                Log.d("ERrrorJSon ",e.toString());
+                                Log.d("ERrrorJSon ",response);
+                                status=-1;
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }else{
+                            status=3;
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {

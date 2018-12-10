@@ -259,7 +259,7 @@ public class RecomendacionDAO {
         conn.close();
         return flag;
     }
-    public Boolean editarCantidadById(int id, Float s) {
+    public Boolean editarCantidadById(int id, String s) {
 
         boolean flag = false;
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
@@ -269,7 +269,7 @@ public class RecomendacionDAO {
                         String.valueOf(id),
                 };
         ContentValues values = new ContentValues();
-        values.put(TABLE_RECOMENDACION_COL_CANTIDAD,String.valueOf(s));
+        values.put(TABLE_RECOMENDACION_COL_CANTIDAD,s);
         int res = db.update(TABLE_RECOMENDACION
                 ,values,TABLE_RECOMENDACION_COL_ID+"=?"
                 ,parametros);
