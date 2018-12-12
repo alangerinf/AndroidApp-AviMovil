@@ -6,7 +6,8 @@ import java.util.List;
 
 public class VisitaVO {
     private int id;
-    private String fechaHora;
+    private String fechaHoraIni;
+    private String fechaHoraFin;
     private double lat;
     private double lon;
     private int idEmpresa;
@@ -22,11 +23,36 @@ public class VisitaVO {
     private boolean editing;
     private boolean statusContactoPersonalizado;
     private String contactoPersonalizado;
+    private String areaFundoVariedad;
+    private String sistemaRiego;
+
+    public String getSistemaRiego() {
+        return sistemaRiego;
+    }
+
+    public void setSistemaRiego(String sistemaRiego) {
+        this.sistemaRiego = sistemaRiego;
+    }
+
+    public String getAreaFundoVariedad() {
+        return areaFundoVariedad;
+    }
+
+    public void setAreaFundoVariedad(String areaFundoVariedad) {
+        this.areaFundoVariedad = areaFundoVariedad;
+    }
 
     public VisitaVO() {
 
     }
 
+    public String getFechaHoraFin() {
+        return fechaHoraFin;
+    }
+
+    public void setFechaHoraFin(String fechaHoraFin) {
+        this.fechaHoraFin = fechaHoraFin;
+    }
 
     public boolean isStatusContactoPersonalizado() {
         return statusContactoPersonalizado;
@@ -102,12 +128,12 @@ public class VisitaVO {
         this.id = id;
     }
 
-    public String getFechaHora() {
-        return fechaHora;
+    public String getFechaHoraIni() {
+        return fechaHoraIni;
     }
 
-    public void setFechaHora(String fechaHora) {
-        this.fechaHora = fechaHora;
+    public void setFechaHoraIni(String fechaHora) {
+        this.fechaHoraIni = fechaHora;
     }
 
     public double getLat() {

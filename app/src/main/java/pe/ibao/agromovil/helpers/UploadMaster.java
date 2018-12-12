@@ -69,18 +69,19 @@ public class UploadMaster {
                       //  progress.dismiss();
                         Log.d("respuestaServidor",response);
                         status=2;
+
+                        if(response.charAt(0)!='{'){
+                            int i = response.indexOf("success");
+                            if(i!=-1){
+                                response = response.substring(i-2);
+                            }
+                        }
+
                         new VisitaDAO(ctx).clearTableUpload();
                         new EvaluacionDAO(ctx).clearTableUpload();
                         new MuestrasDAO(ctx).clearTableUpload();
                         new RecomendacionDAO(ctx).clearTableUpload();
 
-                        if(response.charAt(0)=='<'){
-                            String termino = "</table></font>";
-                            int i = response.indexOf(termino);
-                            response = response.substring(i+termino.length());
-                            i = response.indexOf("{");
-                            response = response.substring(i);
-                        }
                         if(!response.isEmpty()){
                             try {
                                 JSONObject main = new JSONObject(response);
@@ -88,31 +89,38 @@ public class UploadMaster {
                                 if(main.getInt("success")==1){
                                     Log.d("asd ","flag2");
                                     JSONArray datosFotos = main.getJSONArray("data");
+                                    Log.d("datosFotos",datosFotos.toString());
                                     for(int i=0;i<datosFotos.length();i++){
-                                        Toast.makeText(ctx,""+datosFotos.getJSONObject(i).getInt("idInspeccionEvidencia"),Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(ctx,""+datosFotos.getJSONObject(i).getInt("idInspeccionEvidencia"),Toast.LENGTH_SHORT).show();
                                         UploadFotos.status=0;
-                                        new UploadFotos(ctx).Upload(
-                                                datosFotos.getJSONObject(i).getInt("idFoto")
-                                                ,datosFotos.getJSONObject(i).getInt("idInspeccionEvidencia")
-                                                ,new FotoDAO(ctx).consultarById_Upload(datosFotos.getJSONObject(i).getInt("idFoto")).getStringBitmap()
-                                                ,i
-                                                ,datosFotos.length());
-                                        while(UploadFotos.status!=3 || UploadFotos.status !=-1 || UploadFotos.status !=-2 || UploadFotos.status !=-3 ){
-                                            Thread.sleep(500);
+                                        JSONObject foto = new JSONObject(datosFotos.get(i).toString());
+                                        try{
+                                            int idInspeccionEvidencia = foto.getInt("idInspeccionEvidencia");
+                                                    new UploadFotos(ctx).Upload(
+                                                            foto.getInt("idFoto")
+                                                            ,idInspeccionEvidencia
+                                                            ,new FotoDAO(ctx).consultarById_Upload(
+                                                                    foto
+                                                                            .getInt("idFoto"))
+                                                                    .getStringBitmap()
+                                                            ,i
+                                                            ,datosFotos.length());
+                                            Log.d("datosfotos"+i,foto.toString());
+                                        }catch (Exception e){
+                                            Log.d("errorFotos",e.toString());
                                         }
                                     }
+                                    new FotoDAO(ctx).clearTableUpload();
                                     status=3;
-                                    Toast.makeText(ctx,datosFotos.toString(),Toast.LENGTH_LONG).show();
-                                    Log.d("errorfotos",datosFotos.toString());
+                                   // Toast.makeText(ctx,datosFotos.toString(),Toast.LENGTH_LONG).show();
+                                    Log.d("datosfotos",datosFotos.toString());
                                 }
-
+                                status=3;
 
                             } catch (JSONException e) {
-                                Log.d("ERrrorJSon ",e.toString());
-                                Log.d("ERrrorJSon ",response);
-                                status=-1;
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                                Log.d("ERrrorJSon ", e.toString());
+                                Log.d("ERrrorJSon ", response);
+                                status = -1;
                             }
                         }else{
                             status=3;
@@ -196,6 +204,12 @@ public class UploadMaster {
 
         AppController.getInstance().addToRequestQueue(sr);
     }
+
+
+
+
+
+
 
     private class UploadFileAsync extends AsyncTask<String, Void, String> {
         @Override

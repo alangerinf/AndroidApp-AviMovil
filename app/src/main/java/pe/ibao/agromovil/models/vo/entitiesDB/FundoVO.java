@@ -4,8 +4,17 @@ public class FundoVO {
 
     private int id;
     private String name;
+    private String sistemaRiego;
     private int idEmpresa;
 
+
+    public String getSistemaRiego() {
+        return sistemaRiego;
+    }
+
+    public void setSistemaRiego(String sistemaRiego) {
+        this.sistemaRiego = sistemaRiego;
+    }
 
     public FundoVO() {
     }

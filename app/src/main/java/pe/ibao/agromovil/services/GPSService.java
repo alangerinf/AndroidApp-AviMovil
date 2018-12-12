@@ -16,191 +16,113 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-public class GPSService extends Service implements LocationListener {
+public class GPSService extends Service{
 
-    private Context mContext;
+        private static final String TAG = "BOOMBOOMTESTGPS";
+        private LocationManager mLocationManager = null;
+        private static final int LOCATION_INTERVAL = 1000;
+        private static final float LOCATION_DISTANCE = 0f;
 
-    // flag for GPS status
-    boolean isGPSEnabled = false;
+        private class LocationListener implements android.location.LocationListener
+        {
+            Location mLastLocation;
 
-    // flag for network status
-    boolean isNetworkEnabled = false;
+            public LocationListener(String provider)
+            {
+                Log.e(TAG, "LocationListener " + provider);
+                mLastLocation = new Location(provider);
+            }
 
-    // flag for GPS status
-    boolean canGetLocation = false;
+            @Override
+            public void onLocationChanged(Location location)
+            {
+                Log.e(TAG, "onLocationChanged: " + location);
+                mLastLocation.set(location);
+            }
 
-    Location location; // location
-    double latitude; // latitude
-    double longitude; // longitude
+            @Override
+            public void onProviderDisabled(String provider)
+            {
+                Log.e(TAG, "onProviderDisabled: " + provider);
+            }
 
-    // The minimum distance to change Updates in meters
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 10; // 10 meters
+            @Override
+            public void onProviderEnabled(String provider)
+            {
+                Log.e(TAG, "onProviderEnabled: " + provider);
+            }
 
-    // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras)
+            {
+                Log.e(TAG, "onStatusChanged: " + provider);
+            }
+        }
 
-    // Declaring a Location Manager
-    protected LocationManager locationManager;
+        LocationListener[] mLocationListeners = new LocationListener[] {
+                new LocationListener(LocationManager.GPS_PROVIDER),
+                new LocationListener(LocationManager.NETWORK_PROVIDER)
+        };
 
+        @Override
+        public IBinder onBind(Intent arg0)
+        {
+            return null;
+        }
 
-    public GPSService(Context mContext) {
-        super();
-        this.mContext = mContext;
-    }
+        @Override
+        public int onStartCommand(Intent intent, int flags, int startId)
+        {
+            Log.e(TAG, "onStartCommand");
+            super.onStartCommand(intent, flags, startId);
+            return START_STICKY;
+        }
 
+        @Override
+        public void onCreate()
+        {
+            Log.e(TAG, "onCreate");
+            initializeLocationManager();
+            try {
+                mLocationManager.requestLocationUpdates(
+                        LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
+                        mLocationListeners[1]);
+            } catch (java.lang.SecurityException ex) {
+                Log.i(TAG, "fail to request location update, ignore", ex);
+            } catch (IllegalArgumentException ex) {
+                Log.d(TAG, "network provider does not exist, " + ex.getMessage());
+            }
+            try {
+                mLocationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE,
+                        mLocationListeners[0]);
+            } catch (java.lang.SecurityException ex) {
+                Log.i(TAG, "fail to request location update, ignore", ex);
+            } catch (IllegalArgumentException ex) {
+                Log.d(TAG, "gps provider does not exist " + ex.getMessage());
+            }
+        }
 
-    public Location getLocation() {
-        try {
-            locationManager = (LocationManager) mContext
-                    .getSystemService(LOCATION_SERVICE);
-
-            // getting GPS status
-            isGPSEnabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            // getting network status
-            isNetworkEnabled = locationManager
-                    .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-            if (!isGPSEnabled && !isNetworkEnabled) {
-                // no network provider is enabled
-            } else {
-                this.canGetLocation = true;
-                // First get location from Network Provider
-                if (isNetworkEnabled) {
-                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        // TODO: Consider calling
-                        locationManager.requestLocationUpdates(
-                                LocationManager.NETWORK_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("Network", "Network");
-                        if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-                            if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                            }
-                        }
-                    }
-
-                }
-                // if GPS Enabled get lat/long using GPS Services
-                if (isGPSEnabled) {
-                    if (location == null) {
-                        locationManager.requestLocationUpdates(
-                                LocationManager.GPS_PROVIDER,
-                                MIN_TIME_BW_UPDATES,
-                                MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("GPS Enabled", "GPS Enabled");
-                        if (locationManager != null) {
-                            location = locationManager
-                                    .getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                            if (location != null) {
-                                latitude = location.getLatitude();
-                                longitude = location.getLongitude();
-                            }
-                        }
+        @Override
+        public void onDestroy()
+        {
+            Log.e(TAG, "onDestroy");
+            super.onDestroy();
+            if (mLocationManager != null) {
+                for (int i = 0; i < mLocationListeners.length; i++) {
+                    try {
+                        mLocationManager.removeUpdates(mLocationListeners[i]);
+                    } catch (Exception ex) {
+                        Log.i(TAG, "fail to remove location listners, ignore", ex);
                     }
                 }
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
 
-        return location;
-    }
-
-    public void stopUsingGPS() {
-        if (locationManager != null) {
-            locationManager.removeUpdates(GPSService.this);
+        private void initializeLocationManager() {
+            Log.e(TAG, "initializeLocationManager");
+            if (mLocationManager == null) {
+                mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+            }
         }
     }
-
-    /**
-     * Function to get latitude
-     * */
-    public double getLatitude() {
-        if (location != null) {
-            latitude = location.getLatitude();
-        }
-
-        // return latitude
-        return latitude;
-    }
-
-    /**
-     * Function to get longitude
-     * */
-    public double getLongitude() {
-        if (location != null) {
-            longitude = location.getLongitude();
-        }
-
-        // return longitude
-        return longitude;
-    }
-
-    public boolean canGetLocation() {
-        return this.canGetLocation;
-    }
-
-    public void showSettingsAlert() {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
-
-        // Setting Dialog Title
-        alertDialog.setTitle("GPS is settings");
-
-        // Setting Dialog Message
-        alertDialog
-                .setMessage("GPS is not enabled. Do you want to go to settings menu?");
-
-        // On pressing Settings button
-        alertDialog.setPositiveButton("Settings",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(
-                                Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        mContext.startActivity(intent);
-                    }
-                });
-
-        // on pressing cancel button
-        alertDialog.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-
-        // Showing Alert Message
-        alertDialog.show();
-    }
-    @Override
-    public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-}

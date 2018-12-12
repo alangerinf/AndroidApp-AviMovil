@@ -105,7 +105,7 @@ public class AdapterListMuestras extends BaseAdapter{
             }
             if(i>9){
                 tViewNumFotos.setVisibility(View.VISIBLE);
-                tViewNumFotos.setText(String.valueOf(i)+"+");
+                tViewNumFotos.setText(String.valueOf(9)+"+");
             }
         }catch (Exception e){
 

@@ -1,8 +1,6 @@
 package pe.ibao.agromovil.utilities;
 
 
-
-
 public class Utilities {
 
     public static final String URL_ROOT= "http://apps.ibao.pe/agromovil/requests/";
@@ -63,7 +61,9 @@ public class Utilities {
             TABLE_FUNDO_COL_NAME                ="name",
             TABLE_FUNDO_TYPECOL_NAME            ="varchar(50)",
             TABLE_FUNDO_COL_IDEMPRESA           ="idEmpresa",
-            TABLE_FUNDO_TYPECOL_IDEMPRESA       ="INTEGER";
+            TABLE_FUNDO_TYPECOL_IDEMPRESA       ="INTEGER",
+            TABLE_FUNDO_COL_SISTEMARIEGO           ="sistemaRiego",
+            TABLE_FUNDO_TYPECOL_SISTEMARIEGO       ="INTEGER";
 
     public static final String TABLE_CULTIVO="cultivo",
             TABLE_CULTIVO_COL_ID                ="id",
@@ -86,7 +86,9 @@ public class Utilities {
             TABLE_FUNDOVARIEDAD_COL_IDFUNDO="idFundo",
             TABLE_FUNDOVARIEDAD_TYPECOL_IDFUNDO="INTEGER",
             TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD="idVariedad",
-            TABLE_FUNDOVARIEDAD_TYPECOL_IDVARIEDAD="INTEGER";
+            TABLE_FUNDOVARIEDAD_TYPECOL_IDVARIEDAD="INTEGER",
+            TABLE_FUNDOVARIEDAD_COL_AREA="areaProduccion",
+            TABLE_FUNDOVARIEDAD_TYPECOL_AREA="VARCHAR(20)";
 
     public static final String TABLE_CONFIGURACIONCRITERIO="configuracionCriterio",
             TABLE_CONFIGURACIONCRITERIO_COL_ID                  ="id",
@@ -118,8 +120,10 @@ public class Utilities {
     public static final String TABLE_VISITA="visita",
             TABLE_VISITA_COL_ID             ="id",
             TABLE_VISITA_TYPECOL_ID         ="INTEGER",
-            TABLE_VISITA_COL_FECHAHORA      ="fechaHoraInicio",
-            TABLE_VISITA_TYPECOL_FECHAHORA  ="date",
+            TABLE_VISITA_COL_FECHAHORAINI   ="fechaHoraInicio",
+            TABLE_VISITA_TYPECOL_FECHAHORAINI="date",
+            TABLE_VISITA_COL_FECHAHORAFIN    ="fechaHoraFin",
+            TABLE_VISITA_TYPECOL_FECHAHORAFIN="date",
             TABLE_VISITA_COL_EDITING        ="editing",
             TABLE_VISITA_TYPECOL_EDITING    ="BOOLEAN",
             TABLE_VISITA_COL_LATITUD        ="latitud",
@@ -261,7 +265,8 @@ public class Utilities {
     public static final String CREATE_TABLE_VISITA=
             "CREATE TABLE "+TABLE_VISITA+" (" +  //AAGREGGAR HORA  FIN - LATITUD LONGITUD FIN
                     TABLE_VISITA_COL_ID         +" "+TABLE_VISITA_TYPECOL_ID        +" PRIMARY KEY AUTOINCREMENT, " +
-                    TABLE_VISITA_COL_FECHAHORA  +" "+TABLE_VISITA_TYPECOL_FECHAHORA +" DEFAULT (datetime('now','localtime')), "+
+                    TABLE_VISITA_COL_FECHAHORAINI  +" "+TABLE_VISITA_TYPECOL_FECHAHORAINI +" DEFAULT (datetime('now','localtime')), "+
+                    TABLE_VISITA_COL_FECHAHORAFIN  +" "+TABLE_VISITA_TYPECOL_FECHAHORAFIN + ", "+
                     TABLE_VISITA_COL_EDITING    +" "+TABLE_VISITA_TYPECOL_EDITING   +", "+
                     TABLE_VISITA_COL_LATITUD    +" "+TABLE_VISITA_TYPECOL_LATITUD   +", "+
                     TABLE_VISITA_COL_LONGITUD   +" "+TABLE_VISITA_TYPECOL_LONGITUD  +", "+
@@ -273,9 +278,8 @@ public class Utilities {
             ")";
 
     /*** agregar
-     * areaFundo - float        <-----------table fundo
-     * areaVariedad - float     <-----------table variedad
-     * areaSistemaRiego - float <-----------table fundo
+     * area - float     <-----------table Fundovariedad
+     * SistemaRiego - float <-----------table fundo
      */
 
     public static final String CREATE_TABLE_TIPOINSPECCION=
@@ -302,8 +306,9 @@ public class Utilities {
 
     public static final String CREATE_TABLE_FUNDOVARIEDAD =
             "CREATE TABLE "+TABLE_FUNDOVARIEDAD+" (" +
-                    TABLE_FUNDOVARIEDAD_COL_ID        +" "+TABLE_FUNDOVARIEDAD_TYPECOL_ID+" PRIMARY KEY," +
-                    TABLE_FUNDOVARIEDAD_COL_IDFUNDO   +" "+TABLE_FUNDOVARIEDAD_TYPECOL_IDFUNDO+","+
+                    TABLE_FUNDOVARIEDAD_COL_ID        +" "+TABLE_FUNDOVARIEDAD_TYPECOL_ID+" PRIMARY KEY, " +
+                    TABLE_FUNDOVARIEDAD_COL_IDFUNDO   +" "+TABLE_FUNDOVARIEDAD_TYPECOL_IDFUNDO+", "+
+                    TABLE_FUNDOVARIEDAD_COL_AREA      +" "+TABLE_FUNDOVARIEDAD_TYPECOL_AREA+", "+
                     TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+" "+TABLE_FUNDOVARIEDAD_TYPECOL_IDVARIEDAD+
             ")";
 
@@ -324,6 +329,7 @@ public class Utilities {
             "CREATE TABLE "+TABLE_FUNDO+" (" +
                     TABLE_FUNDO_COL_ID        +" "+TABLE_FUNDO_TYPECOL_ID+" PRIMARY KEY," +
                     TABLE_FUNDO_COL_NAME      +" "+TABLE_FUNDO_TYPECOL_NAME+","+
+                    TABLE_FUNDO_COL_SISTEMARIEGO+" "+TABLE_FUNDO_TYPECOL_SISTEMARIEGO+", "+
                     TABLE_FUNDO_COL_IDEMPRESA +" "+TABLE_FUNDO_TYPECOL_IDEMPRESA+
             ")";
 

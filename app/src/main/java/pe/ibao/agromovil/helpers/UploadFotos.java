@@ -52,10 +52,7 @@ public class UploadFotos {
     }
 
     public void Upload(final int idInterno, final int idEvidencia, final String bitmap,int i,int cantidad){
-/*        progress = new ProgressDialog(ctx);
-        progress.setCancelable(false);
-        progress.setMessage("Subiendo Imagen "+i+"/"+cantidad);
-        progress.show();*/
+
         status =1;
         StringRequest sr = new StringRequest(Request.Method.POST,
                 URL_UPLOAD_FOTOS,
@@ -64,11 +61,13 @@ public class UploadFotos {
                     public void onResponse(String response) {
                         //progress.dismiss();
                         status=2;
+                        Log.d("asdFoto",response);
                         try {
                             JSONObject main = new JSONObject(response);
                             if(main.getInt("success")==1){
                                 Toast.makeText(ctx,""+idEvidencia+" success="+1,Toast.LENGTH_SHORT).show();
                                 new FotoDAO(ctx).borrarById_UPLOAD(idInterno);
+                                status =3;
                             }else{
                                 if(main.getInt("success")==0)
                                 {
@@ -111,7 +110,6 @@ public class UploadFotos {
                 Log.d("bitmapmandado",bitmap);
                 return params;
             }
-
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> headers = new HashMap<String, String>();
@@ -119,8 +117,6 @@ public class UploadFotos {
                 return headers;
             }
         };
-
         AppController.getInstance().addToRequestQueue(sr);
     }
-
 }

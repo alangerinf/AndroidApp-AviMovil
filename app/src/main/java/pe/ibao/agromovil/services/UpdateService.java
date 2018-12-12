@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.text.PrecomputedText;
 import android.util.Log;
 
 import pe.ibao.agromovil.R;
@@ -199,9 +200,9 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
     }
     @Override
     protected Boolean doInBackground(Void... params) {
-    Log.d("segundo","doInBackground");
+        Log.d("segundo","doInBackground");
 
-     //   new UpdateDB(ctx);
+        //   new UpdateDB(ctx);
         DownloaderContacto cont = new DownloaderContacto(ctx);
         cont.download();
         while(DownloaderContacto.status!=3){

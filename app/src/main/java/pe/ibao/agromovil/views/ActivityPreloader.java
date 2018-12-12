@@ -21,7 +21,6 @@ public class ActivityPreloader extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preloader);
 
-
         //delay de 1 segundo
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

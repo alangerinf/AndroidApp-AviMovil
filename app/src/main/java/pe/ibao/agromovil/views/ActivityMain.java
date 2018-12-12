@@ -1,41 +1,63 @@
 package pe.ibao.agromovil.views;
 
-import android.app.ProgressDialog;
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.HttpAuthHandler;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.helpers.UploadMaster;
-import pe.ibao.agromovil.models.dao.EvaluacionDAO;
-import pe.ibao.agromovil.models.dao.FotoDAO;
-import pe.ibao.agromovil.models.dao.MuestrasDAO;
-import pe.ibao.agromovil.models.dao.RecomendacionDAO;
+import pe.ibao.agromovil.helpers.LocationTracker;
+import pe.ibao.agromovil.helpers.ProviderLocationTracker;
 import pe.ibao.agromovil.models.dao.UsuarioDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 public class ActivityMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentMain.OnFragmentInteractionListener, FragmentListVisitas.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, FragmentMain.OnFragmentInteractionListener, FragmentListVisitas.OnFragmentInteractionListener
+ {
 
 
-    private Fragment myFragment= null;
+    private Fragment myFragment = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +66,11 @@ public class ActivityMain extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         myFragment = new FragmentMain();
 
 
-       getSupportFragmentManager().beginTransaction().replace(R.id.content_main,myFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.content_main, myFragment).commit();
 
         //verificar y estan actualizar de inmediato
 
@@ -70,7 +93,11 @@ public class ActivityMain extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -94,16 +121,25 @@ public class ActivityMain extends AppCompatActivity
     public void onStart() {
         super.onStart();
         String NombreU = new UsuarioDAO(getBaseContext()).verficarLogueo().getName();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view );
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
 
         View headerView = navigationView.getHeaderView(0);
         Menu menu = navigationView.getMenu();
         MenuItem inspeccion = menu.findItem(R.id.nav_new_inspection);
         ((TextView) headerView.findViewById(R.id.tViewUserName)).setText(NombreU);
-        if( new VisitaDAO(getBaseContext()).getEditing() != null){
+        if (new VisitaDAO(getBaseContext()).getEditing() != null) {
             inspeccion.setTitle("Continuar Inspección");
         }
+
+
+
     }
+
+
+
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,6 +150,7 @@ public class ActivityMain extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.logout) {
+            Toast.makeText(getBaseContext(),"deslogueo",Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -220,5 +257,9 @@ public class ActivityMain extends AppCompatActivity
 
 
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 
 }

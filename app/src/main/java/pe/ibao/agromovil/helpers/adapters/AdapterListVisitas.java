@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.models.dao.ContactoDAO;
 import pe.ibao.agromovil.models.dao.FundoDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
@@ -63,17 +64,23 @@ public class AdapterListVisitas extends BaseAdapter{
         final TextView tViewNameCultivo  = (TextView) v.findViewById(R.id.visita_tViewNameCultivo);
         final TextView tViewNameVariedad = (TextView) v.findViewById(R.id.visita_tViewNameVariedad);
         final TextView tViewNameContacto = (TextView) v.findViewById(R.id.visita_tViewNameContacto);
-
         final ImageView iViewBtnView = (ImageView) v.findViewById(R.id.visita_iViewBtnView);
         final ImageView iViewBtnDelete = (ImageView) v.findViewById(R.id.visita_iViewBtnDelete);
-
         final VisitaVO visitaVO = listVisitas.get(position);
 
-        tViewFechaHora.setText(visitaVO.getFechaHora());
+        tViewFechaHora.setText(visitaVO.getFechaHoraIni());
         tViewNameFundo.setText( new FundoDAO(ctx).consultarById(visitaVO.getIdFundo()).getName());
         tViewNameCultivo.setText( visitaVO.getNameCultivo());
         tViewNameVariedad.setText( visitaVO.getNameVariedad());
-        tViewNameContacto.setText( visitaVO.getNameContacto());
+
+        if(!visitaVO.isStatusContactoPersonalizado()){
+            if(visitaVO.getIdContacto()>0){
+                ContactoDAO contactoDAO = new ContactoDAO(ctx);
+                tViewNameContacto.setText(contactoDAO.consultarContactoByid(visitaVO.getIdContacto()).getName());
+            }
+        }else{
+            tViewNameContacto.setText(visitaVO.getContactoPersonalizado());
+        }
 
         v.setOnClickListener(new View.OnClickListener() {
             @Override

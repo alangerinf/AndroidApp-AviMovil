@@ -56,7 +56,7 @@ public class DownloaderContacto {
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                String nombre = String.valueOf(id)+"-"+data.getString("nombre");
+                                String nombre = /*String.valueOf(id)+"-"+*/ data.getString("nombre");
                                 int idFundo = data.getInt("idFundo");
                                 Log.d("FUNDODOWN","fila "+i+" : "+id+" "+nombre+" "+idFundo);
                                 if(new ContactoDAO(ctx).insertarContacto(id,nombre,idFundo)){
@@ -100,11 +100,7 @@ public class DownloaderContacto {
     }
 
     public void download(final TextView porcentaje, final TextView mensaje, final int ini, final int tam) {
-     /*   progress = new ProgressDialog(ctx);
-        progress.setCancelable(false);
-        progress.setMessage("Intentando descargar Fundos");
-        progress.show();
-       */
+
         status = 1;
         StringRequest sr = new StringRequest(Request.Method.POST,
                 URL_DOWNLOAD_TABLE_CONTACTO,

@@ -56,7 +56,7 @@ public class DownloaderEmpresa {
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                String nombre = String.valueOf(id)+"-"+data.getString("nombre");
+                                String nombre = /*String.valueOf(id)+"-"+*/data.getString("nombre");
                                 Log.d("EMPRESADOWN","fila "+i+" : "+id+" "+nombre);
                                 if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre)){
                                     Log.d("EMPRESADOWN","logro insertar");

@@ -16,7 +16,7 @@ import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.dao.EvaluacionDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 
-public class AdapterListEvaluacion extends BaseAdapter{
+public class    AdapterListEvaluacion extends BaseAdapter{
 
     Context ctx;
     private static List<EvaluacionVO> listEvaluacion;

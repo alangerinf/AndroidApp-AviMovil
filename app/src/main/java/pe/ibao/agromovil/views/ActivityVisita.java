@@ -287,8 +287,9 @@ public class ActivityVisita extends AppCompatActivity {
         }
         if(visita.getIdVariedad()>0){
             VariedadDAO variedadDAO = new VariedadDAO(this);
-            tViewVariedad.setText(variedadDAO.consultarVariedadById(visita.getIdCultivo()).getName());
+            tViewVariedad.setText(variedadDAO.consultarVariedadById(visita.getIdVariedad()).getName());
         }
+
         if(!visita.isStatusContactoPersonalizado()){
             if(visita.getIdContacto()>0){
                 ContactoDAO contactoDAO = new ContactoDAO(this);
@@ -299,8 +300,8 @@ public class ActivityVisita extends AppCompatActivity {
         }
 
 
-        if(visita.getFechaHora()!=null){
-            tViewHora.setText(visita.getFechaHora());
+        if(visita.getFechaHoraIni()!=null){
+            tViewHora.setText(visita.getFechaHoraIni());
         }
 
         listViewEvaluaciones.setAdapter(baseAdapter);
@@ -466,7 +467,7 @@ public class ActivityVisita extends AppCompatActivity {
 
     public void showListTipoRecomendacion(View view){
 
-        if(isEditable){
+        //if(isEditable){
             listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdFundoIdVariedad(visita.getIdFundo(),visita.getIdVariedad());
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
 
@@ -500,7 +501,7 @@ public class ActivityVisita extends AppCompatActivity {
                         }
                     });
             dialogo.show();
-        }
+        //}
 
     }
 

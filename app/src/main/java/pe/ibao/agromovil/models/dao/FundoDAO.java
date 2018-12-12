@@ -19,9 +19,11 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_AREA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_IDEMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_SISTEMARIEGO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
 
 public class FundoDAO {
@@ -48,12 +50,13 @@ public class FundoDAO {
         conn.close();
         return flag;
     }
-    public boolean insertarFundo(int id, String name,int idEmpresa){
+    public boolean insertarFundo(int id, String name,int idEmpresa,String sistemaRiego){
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_FUNDO_COL_ID,id);
         values.put(TABLE_FUNDO_COL_NAME,name);
+        values.put(TABLE_FUNDO_COL_SISTEMARIEGO,sistemaRiego);
         values.put(TABLE_FUNDO_COL_IDEMPRESA,idEmpresa);
         Long temp = db.insert(TABLE_FUNDO,TABLE_FUNDO_COL_ID,values);
         db.close();

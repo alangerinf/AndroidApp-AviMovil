@@ -57,10 +57,11 @@ public class DownloaderFundo {
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
-                                String nombre = String.valueOf(id)+"-"+data.getString("nombre");
+                                String nombre = /*String.valueOf(id)+"-"+*/data.getString("nombre");
                                 int idEmpresa = data.getInt("idEmpresa");
+                                String sistemaRiego = data.getString("areaSistemaRiego");
                                 Log.d("FUNDODOWN","fila "+i+" : "+id+" "+nombre+" "+idEmpresa);
-                                if(new FundoDAO(ctx).insertarFundo(id,nombre,idEmpresa)){
+                                if(new FundoDAO(ctx).insertarFundo(id,nombre,idEmpresa,sistemaRiego)){
                                     Log.d("FUNDODOWN","logro insertar");
                                 }
                             }
@@ -127,7 +128,8 @@ public class DownloaderFundo {
                                 String nombre = String.valueOf(id)+"-"+data.getString("nombre");
                                 int idEmpresa = data.getInt("idEmpresa");
                                 Log.d("FUNDODOWN","fila "+i+" : "+id+" "+nombre+" "+idEmpresa);
-                                if(new FundoDAO(ctx).insertarFundo(id,nombre,idEmpresa)){
+                                String areaSistema = data.getString("areaSistemaRiego");
+                                if(new FundoDAO(ctx).insertarFundo(id,nombre,idEmpresa,areaSistema)){
                                     Log.d("FUNDODOWN","logro insertar");
                                     android.os.Handler handler = new android.os.Handler();
                                     final int finalI = i;

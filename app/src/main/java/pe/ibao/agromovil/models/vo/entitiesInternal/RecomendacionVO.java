@@ -2,7 +2,7 @@ package pe.ibao.agromovil.models.vo.entitiesInternal;
 
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
 
-public class RecomendacionVO extends CriterioRecomendacionVO {
+public class    RecomendacionVO extends CriterioRecomendacionVO {
 
 
     private int ids;

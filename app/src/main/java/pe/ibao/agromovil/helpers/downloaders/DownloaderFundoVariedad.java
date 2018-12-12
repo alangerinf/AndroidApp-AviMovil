@@ -78,6 +78,7 @@ public class DownloaderFundoVariedad {
                                 int id = data.getInt("id");
                                 int idFundo = data.getInt("idFundo");
                                 int idVariedad = data.getInt("idVariedad");
+                                String area = data.getString("areaProduccion");
                                 Log.d("FUNDOVARIEDADDOWN","fila "+i+" : "+id+" "+idFundo+" "+idVariedad);
 
                                 ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
@@ -86,7 +87,9 @@ public class DownloaderFundoVariedad {
                                 ContentValues values = new ContentValues();
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_ID,id);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO,idFundo);
+                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_AREA,area);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD,idVariedad);
+
                                 Long temp = db.insert(TABLE_FUNDOVARIEDAD,Utilities.TABLE_FUNDOVARIEDAD_COL_ID,values);
 
                                 if(temp>0){
@@ -152,11 +155,13 @@ public class DownloaderFundoVariedad {
                                 clearFundoVariedadUpload();
                                 status=2;
                             }
+
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
                                 int idFundo = data.getInt("idFundo");
                                 int idVariedad = data.getInt("idVariedad");
+                                String area = data.getString("areaProduccion");
                                 Log.d("FUNDOVARIEDADDOWN","fila "+i+" : "+id+" "+idFundo+" "+idVariedad);
 
                                 ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
@@ -166,6 +171,7 @@ public class DownloaderFundoVariedad {
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_ID,id);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO,idFundo);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD,idVariedad);
+                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_AREA,area);
                                 Long temp = db.insert(TABLE_FUNDOVARIEDAD,Utilities.TABLE_FUNDOVARIEDAD_COL_ID,values);
 
                                 if(temp>0){

@@ -28,7 +28,6 @@ public class ActivityUpload extends AppCompatActivity {
         porcentaje = (TextView) findViewById(R.id.update_tViewPorcentaje);
         mensaje = (TextView) findViewById(R.id.update_tViewMensaje);
 
-
         Toast.makeText(getBaseContext(),"SUBIENDO",
                 Toast.LENGTH_SHORT).show();
         UploadMaster.status=0;
@@ -41,7 +40,6 @@ public class ActivityUpload extends AppCompatActivity {
                 ,new RecomendacionDAO(getBaseContext()).listarAll()
         );
         r.run();
-
     }
 
 
@@ -56,32 +54,80 @@ public class ActivityUpload extends AppCompatActivity {
                     Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         public void run() {
-                            mensaje.setText("Subiendo Fotos");
-                            porcentaje.setText("50%");
+                            mensaje.setText("Encontrando servidor");
+                            porcentaje.setText("0%");
                             Log.d("porcentaje ",porcentaje.getText().toString());
                             r.run();
                         }
                     },1);
 
-                    Log.d("qmierda",""+i);
+                    Log.d("qmierda",""+UploadMaster.status+" "+i);
                 }else {
-                    if (UploadMaster.status == 2) {
+
+                    Log.d("qmierda",""+i);
+                    if (UploadMaster.status == 3) {
+                        Handler handler = new Handler();
+                        handler.postDelayed(new Runnable() {
+                            public void run() {
+                                mensaje.setText("Subiendo Archivos");
+                                porcentaje.setText("100%");
+                                Log.d("porcentaje ",porcentaje.getText().toString());
+
+                            }
+                        },500);
                         openMain();
                     }else{
-                        if(UploadMaster.status == 0){
+
+                        if(UploadMaster.status == 2){
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
                                 public void run() {
                                     mensaje.setText("Subiendo Archivos");
-                                    porcentaje.setText("20%");
+                                    porcentaje.setText("50%");
                                     Log.d("porcentaje ",porcentaje.getText().toString());
                                     r.run();
                                 }
                             },500);
+                        }else{
+                            if(UploadMaster.status == -1){
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        mensaje.setText("Error de Conversion");
+                                        porcentaje.setText("-1%");
+                                        Log.d("porcentaje ",porcentaje.getText().toString());
+
+                                    }
+                                },500);
+                            }else{
+                                if(UploadMaster.status == -2) {
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            mensaje.setText("Error de Servidor");
+                                            porcentaje.setText("-2%");
+                                            Log.d("porcentaje ", porcentaje.getText().toString());
+
+                                        }
+                                    }, 500);
+                                }else {
+                                    Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        public void run() {
+                                            mensaje.setText("Error de Fatal");
+                                            porcentaje.setText("-3%");
+                                            Log.d("porcentaje ", porcentaje.getText().toString());
+
+                                        }
+                                    }, 500);
+                                }
+                            }
+                            openMain();
+                            finish();
                         }
                         Log.d("tamano",""+i);
-
                     }
+
                 }
             }
 
@@ -98,11 +144,12 @@ public class ActivityUpload extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
-
     @Override
     public void onBackPressed() {
         onBackPressed();
     }
 
 
+
 }
+
