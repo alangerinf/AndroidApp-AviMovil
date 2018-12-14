@@ -78,8 +78,8 @@ public class UploadMaster {
                         }
 
                         new VisitaDAO(ctx).clearTableUpload();
-                        new EvaluacionDAO(ctx).clearTableUpload();
-                        new MuestrasDAO(ctx).clearTableUpload();
+                        //new EvaluacionDAO(ctx).clearTableUpload();
+                        //new MuestrasDAO(ctx).clearTableUpload();
                         new RecomendacionDAO(ctx).clearTableUpload();
 
                         if(!response.isEmpty()){

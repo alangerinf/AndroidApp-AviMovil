@@ -1,5 +1,6 @@
 package pe.ibao.agromovil.models.dao;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -15,12 +16,17 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.nearby.connection.Payload;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesInternal.FotoVO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
+import pe.ibao.agromovil.views.ActivityPhotoGallery;
+import pe.ibao.agromovil.views.ActivityVisita;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FOTO;
@@ -309,11 +315,31 @@ public class FotoDAO {
         boolean flag = false;
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
+        List<FotoVO> list = new FotoDAO(ctx).listarByIdMuestra(idMuestra);
+
+        int tam = 0;
+        for(FotoVO f: list){
+            try{
+                File file = new File(f.getPath());
+                boolean delete = file.delete();
+                if(!delete){
+                    tam++;
+                    Log.d("fotoxdxd"," Error eliminando");
+                }else{
+                    Log.d("fotoxdxd","eliminado");
+                }
+            }catch (Exception e){
+                tam++;
+            }
+        }
+        if(tam>0){
+            Toast.makeText(ctx,"No se pudo Eliminar "+tam+" Foto"+(tam>1?"s":" !"),Toast.LENGTH_LONG).show();
+        }
+
         String[] parametros =
                 {
                         String.valueOf(idMuestra),
                 };
-
         int res = db.delete(TABLE_FOTO,TABLE_FOTO_COL_IDMUESTRA+"=?",parametros);
         if(res>0){
             flag=true;

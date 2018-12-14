@@ -45,9 +45,9 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class ActivityPhotoGallery extends AppCompatActivity {
 
-    private final String CARPETA_RAIZ = "misImagenes/";
-    private final String CARPETA_IMAGEN = "misFotos";
-    private final String DIRECTORIO_IMAGEN = CARPETA_RAIZ +CARPETA_IMAGEN;
+    public static final String CARPETA_RAIZ = "misImagenes/";
+    public static final String CARPETA_IMAGEN = "misFotos";
+    public static final String DIRECTORIO_IMAGEN = CARPETA_RAIZ +CARPETA_IMAGEN;
     static private String PATH = "";
     static ImageView iViewLienzo;
     static File fileImagen;
@@ -94,6 +94,23 @@ public class ActivityPhotoGallery extends AppCompatActivity {
             public void onClick(View v) {
             //    Toast.makeText(getBaseContext(),"id foto :"+MyRecyclerViewAdapter.idFotoFocus,Toast.LENGTH_SHORT).show();
                 if(new FotoDAO(getBaseContext()).borrarById(MyRecyclerViewAdapter.idFotoFocus)){
+                    int tam=0;
+                    try{
+                        File file = new File(new FotoDAO(getBaseContext()).consultarById(MyRecyclerViewAdapter.idFotoFocus).getPath());
+                        boolean delete = file.delete();
+                        if(!delete){
+                            tam++;
+                            Log.d("fotoxdxd"," Error eliminando");
+                        }else{
+                            Log.d("fotoxdxd","eliminado");
+                        }
+                    }catch (Exception e){
+                        tam++;
+                    }
+                    if(tam>0){
+                        Toast.makeText(getBaseContext(),"No se pudo Eliminar "+tam+" Foto"+(tam>1?"s":" !"),Toast.LENGTH_LONG).show();
+                    }
+
                     listFotos = new FotoDAO(getBaseContext()).listarByIdMuestra(idMuestra);
                     adapter = new MyRecyclerViewAdapter(getBaseContext(),listFotos,iViewLienzo,isEditable,idFotoFocus,btnDelete);
 //              adapter.setClickListener((MyRecyclerViewAdapter.ItemClickListener) this);
@@ -275,7 +292,7 @@ public class ActivityPhotoGallery extends AppCompatActivity {
                             new MediaScannerConnection.OnScanCompletedListener() {
                                 @Override
                                 public void onScanCompleted(String s, Uri uri) {
-                                    Log.i("Ruta","path : "+PATH);
+                                    Log.d("Ruta","path : "+PATH);
                                 }
                             });
 

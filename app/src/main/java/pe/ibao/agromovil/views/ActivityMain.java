@@ -150,7 +150,16 @@ public class ActivityMain extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.logout) {
-            Toast.makeText(getBaseContext(),"deslogueo",Toast.LENGTH_LONG).show();
+            if(new VisitaDAO(getBaseContext()).listAll().size()>0){
+                Toast.makeText(getBaseContext(),"   ¡ Aun no sincroniza\ntodas sus Inspecciones !",Toast.LENGTH_LONG).show();
+            }else {
+                Toast.makeText(getBaseContext(),"Desloagueando",Toast.LENGTH_LONG).show();
+                new UsuarioDAO(getBaseContext()).borrarTable();
+                Intent intent = new Intent(getBaseContext(),ActivityPreloader.class);
+                startActivity(intent);
+                finish();
+            }
+
             return true;
         }
 

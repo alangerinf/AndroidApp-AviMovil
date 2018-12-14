@@ -13,6 +13,7 @@ import java.util.List;
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.RecomendacionVO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION;
@@ -90,19 +91,26 @@ public class RecomendacionDAO {
         return recomendacionVOList;
 
     }
-    public boolean clearTableUpload(){
-        boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
-        SQLiteDatabase db = conn.getWritableDatabase();
-
-        int res = db.delete(TABLE_RECOMENDACION,null,null);
-        if(res>0){
-            flag=true;
-            //new EvaluacionDAO(ctx).borrarByIdVisita(id);
+    public float clearTableUpload(){
+        int cont= 0;
+        float r;
+        List<VisitaVO> listVisitas = new VisitaDAO(ctx).listarNoEditable();
+        if(listVisitas.size()>0){
+            for(int i=0;i<listVisitas.size();i++){
+                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                SQLiteDatabase db = conn.getWritableDatabase();
+                int res = db.delete(TABLE_RECOMENDACION,TABLE_RECOMENDACION_COL_IDVISITA+"="+listVisitas.get(i).getId(),null);
+                if(res==0){
+                    cont++;
+                }
+                db.close();
+                conn.close();
+            }
+            r = (((float)cont)*1.0f)/((float)listVisitas.size());
+        }else{
+            r = 1.0f;
         }
-        db.close();
-        conn.close();
-        return flag;
+        return r;
     }
 
     public RecomendacionVO nuevoByIdCriterioRecomendacionIdVisita(int idCriterioRecomendacion, int idVisita) {
