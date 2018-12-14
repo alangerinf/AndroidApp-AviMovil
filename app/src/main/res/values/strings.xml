@@ -54,4 +54,19 @@
     <string name="title_activity_xd">xd</string>
 
 
+    <!--lenguaje del usuario -->
+    <string name="empresa">Productor</string>
+    <string name="fundo">Fundo</string>
+    <string name="cultivo">Cultivo</string>
+    <string name="variedad">Variedad</string>
+    <string name="contacto">Contacto</string>
+
+    <string name="cabezeraSpnContacto">Seleccione Contacto</string>
+    <string name="cabezeraSpnEmpresa">Seleccione Productor</string>
+    <string name="cabezeraSpnFundo">Seleccione Fundo</string>
+    <string name="cabezeraSpnCultivo">Seleccione Cultivo</string>
+    <string name="cabezeraSpnVariedad">Seleccione Variedad</string>
+
+
+
 </resources>

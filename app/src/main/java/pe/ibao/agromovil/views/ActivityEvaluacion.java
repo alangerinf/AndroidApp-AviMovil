@@ -66,6 +66,15 @@ public class ActivityEvaluacion extends AppCompatActivity {
 
 
     private static int lastItemSelected=0;
+
+    public static int getLastItemSelected() {
+        return lastItemSelected;
+    }
+
+    public static void setLastItemSelected(int lastItemSelected) {
+        ActivityEvaluacion.lastItemSelected = lastItemSelected;
+    }
+
     private static int primeraEdicion;
     private static int idEvaluacion;
     private static int idTipoInspeccion;
@@ -217,6 +226,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
                 if(i != 0){
                     idTipoInspeccion = listTipoInspeccion.get(i-1).getId();
                     new EvaluacionDAO(getBaseContext()).editarIdTipoInspeccion(idEvaluacion,idTipoInspeccion);
+                    lastItemSelected=0;
                 }else{
                     Toast.makeText(getBaseContext(),"Seleccione una Inspeccion para ingresar Muestras",Toast.LENGTH_SHORT).show();
                 }

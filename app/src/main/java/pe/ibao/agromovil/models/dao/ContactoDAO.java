@@ -83,7 +83,10 @@ public class ContactoDAO {
                         " FROM "+
                             TABLE_CONTACTO+" as C"+
                         " WHERE "+
-                            "C."+TABLE_CONTACTO_COL_IDFUNDO+"="+String.valueOf(idFundo)
+                            "C."+TABLE_CONTACTO_COL_IDFUNDO+"="+String.valueOf(idFundo)+
+                        " ORDER BY "+
+                            "C."+TABLE_CONTACTO_COL_NAME+
+                            " ASC "
                     ,null);
             while (cursor.moveToNext()){
                 ContactoVO temp = new ContactoVO();

@@ -290,7 +290,7 @@ public class ActivityBasic extends AppCompatActivity {
 
     private void cargarNombreVariedades() {
         listNombreVariedades = new ArrayList<String>();
-        listNombreVariedades.add("Seleccione Variedad");
+        listNombreVariedades.add(getString(R.string.cabezeraSpnVariedad));
         for(VariedadVO var : listVariedades){
             listNombreVariedades.add(var.getName());
         }
@@ -305,7 +305,7 @@ public class ActivityBasic extends AppCompatActivity {
 
     private void cargarNombreCultivos() {
         listNombreCultivos = new ArrayList<String>();
-        listNombreCultivos.add("Seleccione Cultivos");
+        listNombreCultivos.add(getString(R.string.cabezeraSpnCultivo));
         for(CultivoVO cul : listCultivos){
             listNombreCultivos.add(cul.getName());
         }
@@ -320,7 +320,7 @@ public class ActivityBasic extends AppCompatActivity {
 
     private void cargarNombreFundos(){
         listNombreFundos = new ArrayList<String>();
-        listNombreFundos.add("Seleccione Fundo");
+        listNombreFundos.add(getString(R.string.cabezeraSpnFundo));
         for(FundoVO fun : listFundos){
             listNombreFundos.add(fun.getName());
         }
@@ -333,7 +333,7 @@ public class ActivityBasic extends AppCompatActivity {
     }
     private void cargarNombreEmpresas(){
         listNombreEmpresas = new ArrayList<String>();
-        listNombreEmpresas.add("Seleccione Empresa");
+        listNombreEmpresas.add(getString(R.string.cabezeraSpnEmpresa));
         for(EmpresaVO emp : listEmpresas){
             listNombreEmpresas.add(emp.getName());
         }
@@ -346,7 +346,7 @@ public class ActivityBasic extends AppCompatActivity {
     }
     private void cargarNombreContactos() {
         listNombreContactos = new ArrayList<String>();
-        listNombreContactos.add("Seleccione Contactos");
+        listNombreContactos.add(getString(R.string.cabezeraSpnContacto));
         for(ContactoVO co : listContactos){
             listNombreContactos.add(co.getName());
         }
@@ -361,7 +361,6 @@ public class ActivityBasic extends AppCompatActivity {
     }*/
     @Override
     public boolean onSupportNavigateUp() {
-        Log.d("hola","holamundobacisc");
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED,returnIntent);
         finish();
@@ -428,20 +427,14 @@ public class ActivityBasic extends AppCompatActivity {
                 setResult(Activity.RESULT_OK,returnIntent);
                 finish();
 
-
-
             }else{
                 Toast.makeText(getBaseContext(),"Elija un Contacto",Toast.LENGTH_SHORT).show();
             }
-
 
         }else{
             Toast.makeText(getBaseContext(),"Seleccione todos los campos",Toast.LENGTH_SHORT).show();
         }
 
-
     }
-
-
 
 }

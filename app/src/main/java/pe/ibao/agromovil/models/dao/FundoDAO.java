@@ -108,7 +108,10 @@ public class FundoDAO {
                         " FROM "+
                             TABLE_FUNDO+" as F"+
                         " WHERE "+
-                            "F."+TABLE_FUNDO_COL_IDEMPRESA+"="+  String.valueOf(idEmpresa)
+                            "F."+TABLE_FUNDO_COL_IDEMPRESA+"="+  String.valueOf(idEmpresa)+
+                        " ORDER BY "+
+                            "F."+TABLE_FUNDO_COL_NAME+
+                            " COLLATE UNICODE ASC"
                     ,null);
             while (cursor.moveToNext()){
                 FundoVO temp = new FundoVO();

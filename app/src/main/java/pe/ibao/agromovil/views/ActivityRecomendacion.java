@@ -37,6 +37,9 @@ public class ActivityRecomendacion extends Activity {
     private static TextView tViewTipoRecomendacion;
      static ListView lViewRecomendaciones;
 
+
+
+     private static int lastCriterioRecomendacionSelect=0;
     private AdapterListRecomendacion adapterListRecomendacion;
 
     @Override
@@ -118,11 +121,12 @@ public class ActivityRecomendacion extends Activity {
                 items[i]= listCriterioRecomendaciones.get(i).getName();
             }
             dialogo.setTitle("Recomendaciones")
-                    .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                    .setSingleChoiceItems(items, lastCriterioRecomendacionSelect, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            ActivityVisita.lastTipoRecomendacionSelected = which;
+
+                            lastCriterioRecomendacionSelect = which;
                             Toast.makeText(
                                     getBaseContext(),
                                     "Seleccionaste: "+ listCriterioRecomendaciones.get(which).getName(),

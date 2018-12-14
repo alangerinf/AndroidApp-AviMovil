@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import java.io.File;
@@ -138,9 +139,33 @@ public class FotoDAO {
 
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(ctx.getContentResolver(), uri);
 
+                    int rotate = 0;
+                    try {
+                        File imageFile = new File(temp.getPath());
+                        ExifInterface exif = new ExifInterface(
+                                imageFile.getAbsolutePath());
+                        int orientation = exif.getAttributeInt(
+                                ExifInterface.TAG_ORIENTATION,
+                                ExifInterface.ORIENTATION_NORMAL);
+
+                        switch (orientation) {
+                            case ExifInterface.ORIENTATION_ROTATE_270:
+                                rotate = 270;
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_180:
+                                rotate = 180;
+                                break;
+                            case ExifInterface.ORIENTATION_ROTATE_90:
+                                rotate = 90;
+                                break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                     //redimensionando bitmap
 
-                    final int tam=600;
+                    final int tam=500;
 
                     int ancho = bitmap.getWidth();
                     int alto = bitmap.getHeight();
@@ -159,14 +184,18 @@ public class FotoDAO {
                         scalaAlto = nuevoAlto/alto;
                         scalaAncho = nuevoAncho/ancho;
                     }
+
+
                     Matrix matrix = new Matrix();
+                    matrix.postRotate(rotate);
                     matrix.postScale(scalaAncho,scalaAlto);
 
-                    bitmap = Bitmap.createBitmap(bitmap,0,0,ancho,alto,matrix,false);
+
+                    bitmap = Bitmap.createBitmap(bitmap,0,0,ancho,alto,matrix,true);
 
                     //terminado redimensionado de bitmap
                     ByteArrayOutputStream array = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG,70,array);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,array);
                     byte[] imageByte = array.toByteArray();
                     String imageString = Base64.encodeToString(imageByte,Base64.DEFAULT);
                   //  String imageString = StrinimageByte;

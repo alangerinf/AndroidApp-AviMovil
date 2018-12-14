@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="empresas">
-        <item>Seleccione Empresa</item>
+        <item>@string/cabezeraSpnEmpresa</item>
         <item>AgroValle</item>
         <item>AgroPeru</item>
     </string-array>
 
     <string-array name="fundos">
-        <item>Selecccione Fundo</item>
+        <item>@string/cabezeraSpnFundo</item>
         <item>Fundo Santo Domingo</item>
         <item>Fundo San Juan</item>
         <item>Fundo Santa Clara</item>
@@ -15,30 +15,26 @@
     </string-array>
 
     <string-array name="cultivos">
-        <item>Seleccione Cultivo</item>
+        <item>@string/cabezeraSpnCultivo</item>
         <item>Palto</item>
         <item>Mandarina</item>
         <item>Papaya</item>
     </string-array>
 
     <string-array name="variedades">
-        <item>Seleccione Variedad</item>
+        <item>@string/cabezeraSpnVariedad</item>
         <item>W. Murcott 123.00 Ha.</item>
         <item>Biloxi 145.00 Ha.</item>
     </string-array>
 
     <string-array name="contactos">
-        <item>Seleccione Contacto</item>
+        <item>@string/cabezeraSpnContacto</item>
         <item>W. Murcott 123.00 Ha.</item>
         <item>Biloxi 145.00 Ha.</item>
     </string-array>
 
     <string-array name="inspecciones">
         <item>Fitosanidad Entomológicos</item>
-        <item>Problemas Fisiológicos</item>
-        <item>Estado Fenológico</item>
-        <item>Labores Agronómicas</item>
-        <item>Datos Climatológicos</item>
         <item>Fitosanidad Fitopatológicos</item>
     </string-array>
 </resources>

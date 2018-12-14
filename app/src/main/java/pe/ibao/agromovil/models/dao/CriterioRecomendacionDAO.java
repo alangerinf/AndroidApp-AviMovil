@@ -61,7 +61,6 @@ public class CriterioRecomendacionDAO {
                 temp.setIdTipoRecomendacion(cursor.getInt(4));
             }
             cursor.close();
-
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
@@ -104,28 +103,33 @@ public class CriterioRecomendacionDAO {
         SQLiteDatabase db = c.getReadableDatabase();
         List<CriterioRecomendacionVO> criterioRecomendacionVOS = new ArrayList<>();
         try{
-            Cursor cursor = db.rawQuery(
-                    "SELECT " +
-                            "CR."+TABLE_CRITERIORECOMENDACION_COL_ID+", " +//0
-                            "CR."+TABLE_CRITERIORECOMENDACION_COL_NAME+", " +//1
-                            "CR."+TABLE_CRITERIORECOMENDACION_COL_LISTUNIDADES+", "+//2
-                            "CR."+TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS+", "+//3
-                            "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+//4
-                            " FROM "+
-                            TABLE_CRITERIORECOMENDACION+" as CR ," +
-                            TABLE_FUNDOVARIEDAD+" as FV ,"+
-                            TABLE_CONFIGURACIONRECOMENDACION+" as COR"+
-                            " WHERE "+
-                            "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+"="+String.valueOf(idTipoRecomendacion)+
-                            " AND "+
-                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION+"="+"CR."+TABLE_CRITERIORECOMENDACION_COL_ID+
-                            " AND "+
-                            "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD+"="+"FV."+TABLE_FUNDOVARIEDAD_COL_ID+
-                            " AND "+
-                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDFUNDO+"="+String.valueOf(idFundo)+
-                            " AND "+
-                            "FV."+TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)
+
+            String consulta = "SELECT " +
+                    "CR."+TABLE_CRITERIORECOMENDACION_COL_ID+", " +//0
+                    "CR."+TABLE_CRITERIORECOMENDACION_COL_NAME+", " +//1
+                    "CR."+TABLE_CRITERIORECOMENDACION_COL_LISTUNIDADES+", "+//2
+                    "CR."+TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS+", "+//3
+                    "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+//4
+                    " FROM "+
+                    TABLE_CRITERIORECOMENDACION+" as CR ," +
+                    TABLE_FUNDOVARIEDAD+" as FV ,"+
+                    TABLE_CONFIGURACIONRECOMENDACION+" as COR"+
+                    " WHERE "+
+                    "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+"="+String.valueOf(idTipoRecomendacion)+
+                    " AND "+
+                    "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION+"="+"CR."+TABLE_CRITERIORECOMENDACION_COL_ID+
+                    " AND "+
+                    "COR."+TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD+"="+"FV."+TABLE_FUNDOVARIEDAD_COL_ID+
+                    " AND "+
+                    "FV."+TABLE_FUNDOVARIEDAD_COL_IDFUNDO+"="+String.valueOf(idFundo)+
+                    " AND "+
+                    "FV."+TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)+
+                    " ORDER BY "+
+                    "CR."+TABLE_CRITERIORECOMENDACION_COL_NAME+
+                    " COLLATE UNICODE ASC";
+            Cursor cursor = db.rawQuery(consulta
                     ,null);
+            Log.d("consultalsitaCR",consulta);
             while (cursor.moveToNext() && cursor.getCount()>0){
                 CriterioRecomendacionVO temp;
                 temp = new CriterioRecomendacionVO();

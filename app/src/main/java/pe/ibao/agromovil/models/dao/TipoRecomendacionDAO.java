@@ -106,7 +106,10 @@ public class TipoRecomendacionDAO {
                             " AND "+
                             "CR."+TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+"="+"TR."+TABLE_TIPORECOMENDACION_COL_ID+
                             " GROUP BY "+
-                            "TR."+TABLE_TIPORECOMENDACION_COL_NAME
+                            "TR."+TABLE_TIPORECOMENDACION_COL_ID+
+                            " ORDER BY "+
+                            "TR."+TABLE_TIPORECOMENDACION_COL_NAME+
+                            " COLLATE UNICODE ASC"
                     , null);
 
             if(cursor.getCount()>0){

@@ -1,21 +1,29 @@
 package pe.ibao.agromovil.helpers.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.dao.ContactoDAO;
 import pe.ibao.agromovil.models.dao.FundoDAO;
+import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 import pe.ibao.agromovil.views.ActivityVisita;
@@ -92,6 +100,7 @@ public class AdapterListVisitas extends BaseAdapter{
             }
         });
 
+
         iViewBtnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,16 +111,60 @@ public class AdapterListVisitas extends BaseAdapter{
             }
         });
 
+
         iViewBtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listVisitas.remove(position);
-                AdapterListVisitas.super.notifyDataSetChanged();
-                new VisitaDAO(ctx).borrarById(visitaVO.getId());
+                final Dialog dialogClose = new Dialog(ctx);
+                dialogClose.setContentView(R.layout.dialog_danger);
+                TextView mensaje = (TextView)  dialogClose.findViewById(R.id.textView11);
+                mensaje.setText("Usted esta apunto de Eliminar un Inspección Completa, ¿Esta seguro?");
+                Button btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_close);
+                Button btnDialogAcept = (Button) dialogClose.findViewById(R.id.buton_acept);
+                ImageView iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);
+
+                iViewDialogClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogClose.dismiss();
+                    }
+                });
+                btnDialogClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        dialogClose.dismiss();
+
+                    }
+                });
+
+                btnDialogAcept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        boolean x=new MuestrasDAO(ctx).borrarMuestraById(listVisitas.get(position).getId());
+                        if(!x){
+                            Toast.makeText(ctx,"Error al eliminar",Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(ctx,"Eliminado",Toast.LENGTH_SHORT).show();
+                        }
+                        listVisitas.remove(position);
+                        AdapterListVisitas.super.notifyDataSetChanged();
+                        new VisitaDAO(ctx).borrarById(visitaVO.getId());
+                        dialogClose.dismiss();
+                    }
+                });
+
+                dialogClose.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialogClose.show();
+
+
+
             }
         });
 
         return v;
     }
+
 
 }

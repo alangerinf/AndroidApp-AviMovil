@@ -93,21 +93,24 @@ public class TipoInspeccionDAO {
                     " SELECT "+
                             "TI."+TABLE_TIPOINSPECCION_COL_ID+", "+
                             "TI."+TABLE_TIPOINSPECCION_COL_NAME+
-                            " FROM "+
+                        " FROM "+
                             TABLE_VARIEDAD+" as V, "+
                             TABLE_FUNDO+" as F,"+
                             TABLE_FUNDOVARIEDAD+" as FV,"+
                             TABLE_TIPOINSPECCION+" as TI,"+
                             TABLE_CRITERIO+" as C,"+
                             TABLE_CONFIGURACIONCRITERIO+" as CC"+
-                            " WHERE "+
+                        " WHERE "+
                             "FV."+TABLE_FUNDOVARIEDAD_COL_IDFUNDO+"="+String.valueOf(idFundo)+" AND "+
                             "FV."+TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+"="+String.valueOf(idVariedad)+" AND "+
                             "FV."+TABLE_FUNDOVARIEDAD_COL_ID+"="+"CC."+TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD+" AND "+
                             "CC."+TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO+"="+"C."+TABLE_CRITERIO_COL_ID+" AND "+
                             "C."+TABLE_CRITERIO_COL_IDTIPOINSPECCION+"="+"TI."+TABLE_TIPOINSPECCION_COL_ID+
-                            " GROUP BY "+
-                            "TI."+TABLE_TIPOINSPECCION_COL_ID
+                        " GROUP BY "+
+                            "TI."+TABLE_TIPOINSPECCION_COL_ID+
+                        " ORDER BY "+
+                            "TI."+TABLE_TIPOINSPECCION_COL_NAME+
+                            " COLLATE UNICODE ASC"
                     , null);
             Log.d("eva123","idFundo "+idFundo);
             Log.d("eva123","idVariedad "+idVariedad);

@@ -84,7 +84,10 @@ public class CultivoDAO {
                         " FROM "+
                             TABLE_CULTIVO+" as C"+
                         " WHERE "+
-                            "C."+TABLE_CULTIVO_COL_ID+" = "+String.valueOf(id)
+                            "C."+TABLE_CULTIVO_COL_ID+" = "+String.valueOf(id)+
+                        " ORDER BY "+
+                            "C."+TABLE_CULTIVO_COL_NAME+
+                            " COLLATE UNICODE ASC "
                     ,null);
             cursor.moveToFirst();
             temp.setId(cursor.getInt(0));

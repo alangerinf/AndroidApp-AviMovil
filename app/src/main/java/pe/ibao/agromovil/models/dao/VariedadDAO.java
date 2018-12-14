@@ -33,7 +33,6 @@ public class VariedadDAO {
         this.ctx=ctx;
     }
 
-
     public boolean clearTableUpload(){
         boolean flag = false;
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
@@ -91,13 +90,16 @@ public class VariedadDAO {
         try{
             Cursor cursor = db.rawQuery(
                     " SELECT "+
-                            "F."+TABLE_VARIEDAD_COL_ID+", " +
-                            "F."+TABLE_VARIEDAD_COL_NAME+", " +
-                            "F."+TABLE_VARIEDAD_COL_IDCULTIVO+
+                            "V."+TABLE_VARIEDAD_COL_ID+", " +
+                            "V."+TABLE_VARIEDAD_COL_NAME+", " +
+                            "V."+TABLE_VARIEDAD_COL_IDCULTIVO+
                         " FROM "+
-                            TABLE_VARIEDAD+" as F"+
+                            TABLE_VARIEDAD+" as V"+
                         " WHERE "+
-                            "F."+TABLE_VARIEDAD_COL_IDCULTIVO+"="+  String.valueOf(idCultivo)
+                            "V."+TABLE_VARIEDAD_COL_IDCULTIVO+"="+  String.valueOf(idCultivo)+
+                        " ORDER BY "+
+                            "V."+TABLE_VARIEDAD_COL_NAME+
+                            " COLLATE UNICODE ASC"
                     ,null);
             while (cursor.moveToNext()){
                 VariedadVO temp = new VariedadVO();

@@ -281,9 +281,7 @@ public class VisitaDAO {
                             //obteiedno datos de  variedad
                             VariedadDAO variedadDAO = new VariedadDAO(ctx);
                             temp.setNameVariedad(variedadDAO.consultarVariedadById(temp.getIdVariedad()).getName());
-
                         }
-
                     }
                 cursor.close();
 

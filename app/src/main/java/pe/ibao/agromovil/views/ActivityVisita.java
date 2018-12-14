@@ -171,6 +171,7 @@ public class ActivityVisita extends AppCompatActivity {
                             mybundle.putString("fechaHora",evtemp.getTimeIni());
                             mybundle.putBoolean("isEditable",isEditable);
                         intent.putExtras(mybundle);
+                        ActivityEvaluacion.setLastItemSelected(0);
                         startActivityForResult(intent,REQUEST_EDIT_EVALUATION);
 
 
@@ -339,6 +340,7 @@ public class ActivityVisita extends AppCompatActivity {
             setListViewHeightBasedOnChildren(listViewEvaluaciones);
             */
             intent.putExtras(mybundle);
+            ActivityEvaluacion.setLastItemSelected(0);
             startActivityForResult(intent,REQUEST_EDIT_EVALUATION);
         }else{
             Toast.makeText(ctx,"Primero configura tus Datos Basicos",Toast.LENGTH_LONG).show();
@@ -574,8 +576,6 @@ public class ActivityVisita extends AppCompatActivity {
     }
 
 
-    private void showDeleteAlert(){
 
-    }
 
 }

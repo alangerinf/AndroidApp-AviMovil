@@ -97,7 +97,7 @@ public class EmpresaDAO {
         List<EmpresaVO> empresas = new  ArrayList<EmpresaVO>();
         try{
             String[] campos = {TABLE_EMPRESA_COL_ID,TABLE_EMPRESA_COL_NAME};
-            Cursor cursor= db.query(TABLE_EMPRESA,campos,null,null,null,null,null);
+            Cursor cursor= db.query(TABLE_EMPRESA,campos,null,null,null,null,TABLE_EMPRESA_COL_NAME+" COLLATE UNICODE ASC");
             while(cursor.moveToNext()){
                 EmpresaVO temp = new EmpresaVO();
                     temp.setId(cursor.getInt(0));
