@@ -1,14 +1,19 @@
 package pe.ibao.agromovil.helpers.adapters;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -20,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
+import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.dao.RecomendacionDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.RecomendacionVO;
 
@@ -51,6 +57,7 @@ public class AdapterListRecomendacion extends BaseAdapter{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        ctx = parent.getContext();
         View v = convertView;
          LayoutInflater inflater = LayoutInflater.from(ctx);
         v = inflater.inflate(R.layout.recomendacion_itemeditor_listview,null);
@@ -69,25 +76,63 @@ public class AdapterListRecomendacion extends BaseAdapter{
 
 
 
+
         btnDelete.setOnClickListener(new View.OnClickListener() {
-                                         @Override
+            @Override
             public void onClick(View v) {
 
-            boolean x = new RecomendacionDAO(ctx).borrarById(recomendacionList.get(position).getId());
-            if(!x)
-            {
-            Toast.makeText(ctx, "Error al eliminar", Toast.LENGTH_SHORT).show();
-            }else
+                try {
 
-            {
-            Toast.makeText(ctx, "Eliminado", Toast.LENGTH_SHORT).show();
+                    final Dialog dialogClose = new Dialog(ctx);
+                    dialogClose.setContentView(R.layout.dialog_danger);
+                    Button btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_close);
+                    Button btnDialogAcept = (Button) dialogClose.findViewById(R.id.buton_acept);
+                    ImageView iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);
+
+                    iViewDialogClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogClose.dismiss();
+                        }
+                    });
+                    btnDialogClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            dialogClose.dismiss();
+
+                        }
+                    });
+
+                    btnDialogAcept.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            boolean x = new RecomendacionDAO(ctx).borrarById(recomendacionList.get(position).getId());
+                            if(!x)
+                            {
+                                Toast.makeText(ctx, "Error al eliminar", Toast.LENGTH_SHORT).show();
+                            }else
+
+                            {
+                                Toast.makeText(ctx, "Eliminado", Toast.LENGTH_SHORT).show();
+                            }
+                            recomendacionList.remove(position);
+                            AdapterListRecomendacion.super.notifyDataSetChanged();
+                            dialogClose.dismiss();
+                        }
+                    });
+
+                    dialogClose.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialogClose.show();
+
+                }catch (Exception e){
+                    Log.d("delete",e.toString());
+                }
+
+
             }
-            recomendacionList.remove(position);
-            AdapterListRecomendacion.super.
-
-            notifyDataSetChanged();
-            }});
-
+        });
         /****
 
          spn unidades

@@ -16,7 +16,6 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.nearby.connection.Payload;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;

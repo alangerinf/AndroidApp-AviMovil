@@ -159,13 +159,27 @@ public class FragmentMain extends Fragment {
 
     void openNewInspection(){
 
-        Intent intent;
-        intent = new Intent(getActivity(), ActivityVisita.class);
+        Intent i;
+        i = new Intent(getActivity(), ActivityVisita.class);
 
-        VisitaVO visitaTemp = new VisitaDAO(getContext()).intentarNuevo();
-            intent.putExtra("idVisita",visitaTemp.getId());
-            intent.putExtra("isEditable",true);
-        startActivity(intent);
+
+        String lat="";
+        String lon="";
+        if(new VisitaDAO(getContext()).getEditing()==null){
+            lat = String.valueOf(ActivityMain.getCurrentLatitude());
+            lon =String.valueOf(ActivityMain.getCurrentLongitude());
+            VisitaVO visitaTemp = new VisitaDAO(getContext()).intentarNuevo();
+            new VisitaDAO(getContext()).setLatLonIniById(visitaTemp.getId(),lat,lon);
+            visitaTemp = new VisitaDAO(getContext()).intentarNuevo();
+            i.putExtra("isEditable", true);
+            i.putExtra("idVisita", visitaTemp.getId());
+        }else {
+            VisitaVO visitaTemp = new VisitaDAO(getContext()).intentarNuevo();
+            i.putExtra("isEditable", true);
+            i.putExtra("idVisita", visitaTemp.getId());
+        }
+        i.putExtra("isClosedVisita",false);
+        startActivity(i);
     }
 
 

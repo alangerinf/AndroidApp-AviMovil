@@ -126,10 +126,14 @@ public class Utilities {
             TABLE_VISITA_TYPECOL_FECHAHORAFIN="date",
             TABLE_VISITA_COL_EDITING        ="editing",
             TABLE_VISITA_TYPECOL_EDITING    ="BOOLEAN",
-            TABLE_VISITA_COL_LATITUD        ="latitud",
-            TABLE_VISITA_TYPECOL_LATITUD    ="double",
-            TABLE_VISITA_COL_LONGITUD       ="longitud",
-            TABLE_VISITA_TYPECOL_LONGITUD   ="double",
+            TABLE_VISITA_COL_LATITUDINI        ="latitudIni",
+            TABLE_VISITA_TYPECOL_LATITUDINI    ="varchar(50)",
+            TABLE_VISITA_COL_LONGITUDINI       ="longitudIni",
+            TABLE_VISITA_TYPECOL_LONGITUDINI   ="varchar(50)",
+            TABLE_VISITA_COL_LATITUDFIN        ="latitudFin",
+            TABLE_VISITA_TYPECOL_LATITUDFIN    ="varchar(50)",
+            TABLE_VISITA_COL_LONGITUDFIN       ="longitudFin",
+            TABLE_VISITA_TYPECOL_LONGITUDFIN   ="varchar(50)",
             TABLE_VISITA_COL_IDFUNDO        ="idFundo",
             TABLE_VISITA_TYPECOL_IDFUNDO    ="INTEGER",
             TABLE_VISITA_COL_IDVARIEDAD     ="idVariedad",
@@ -263,18 +267,20 @@ public class Utilities {
 
 
     public static final String CREATE_TABLE_VISITA=
-            "CREATE TABLE "+TABLE_VISITA+" (" +  //AAGREGGAR HORA  FIN - LATITUD LONGITUD FIN
-                    TABLE_VISITA_COL_ID         +" "+TABLE_VISITA_TYPECOL_ID        +" PRIMARY KEY AUTOINCREMENT, " +
+            "CREATE TABLE "+TABLE_VISITA+" (" +
+                    TABLE_VISITA_COL_ID            +" "+TABLE_VISITA_TYPECOL_ID        +" PRIMARY KEY AUTOINCREMENT, " +
                     TABLE_VISITA_COL_FECHAHORAINI  +" "+TABLE_VISITA_TYPECOL_FECHAHORAINI +" DEFAULT (datetime('now','localtime')), "+
                     TABLE_VISITA_COL_FECHAHORAFIN  +" "+TABLE_VISITA_TYPECOL_FECHAHORAFIN + ", "+
-                    TABLE_VISITA_COL_EDITING    +" "+TABLE_VISITA_TYPECOL_EDITING   +", "+
-                    TABLE_VISITA_COL_LATITUD    +" "+TABLE_VISITA_TYPECOL_LATITUD   +", "+
-                    TABLE_VISITA_COL_LONGITUD   +" "+TABLE_VISITA_TYPECOL_LONGITUD  +", "+
-                    TABLE_VISITA_COL_IDFUNDO    +" "+TABLE_VISITA_TYPECOL_IDFUNDO   +", "+
-                    TABLE_VISITA_COL_IDVARIEDAD +" "+TABLE_VISITA_TYPECOL_IDVARIEDAD+", "+
+                    TABLE_VISITA_COL_EDITING       +" "+TABLE_VISITA_TYPECOL_EDITING   +", "+
+                    TABLE_VISITA_COL_LATITUDINI    +" "+TABLE_VISITA_TYPECOL_LATITUDINI   +", "+
+                    TABLE_VISITA_COL_LONGITUDINI   +" "+TABLE_VISITA_TYPECOL_LONGITUDINI  +", "+
+                    TABLE_VISITA_COL_LATITUDFIN    +" "+TABLE_VISITA_TYPECOL_LATITUDFIN   +", "+
+                    TABLE_VISITA_COL_LONGITUDFIN   +" "+TABLE_VISITA_TYPECOL_LONGITUDFIN  +", "+
+                    TABLE_VISITA_COL_IDFUNDO       +" "+TABLE_VISITA_TYPECOL_IDFUNDO   +", "+
+                    TABLE_VISITA_COL_IDVARIEDAD    +" "+TABLE_VISITA_TYPECOL_IDVARIEDAD+", "+
                     TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO+" "+TABLE_VISITA_TYPECOL_ISCONTACTOPERSONALIZADO+" DEFAULT 0, "+
                     TABLE_VISITA_COL_CONTACTOPERSONALIZADO  +" "+TABLE_VISITA_TYPECOL_CONTACTOPERSONALIZADO+", "+
-                    TABLE_VISITA_COL_IDCONTACTO +" "+TABLE_VISITA_TYPECOL_IDCONTACTO+
+                    TABLE_VISITA_COL_IDCONTACTO    +" "+TABLE_VISITA_TYPECOL_IDCONTACTO+
             ")";
 
     /*** agregar

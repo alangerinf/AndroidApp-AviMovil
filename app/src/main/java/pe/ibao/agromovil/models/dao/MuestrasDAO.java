@@ -93,18 +93,24 @@ public class MuestrasDAO {
 
     }
 
-    public boolean clearTableUpload(){
+    public boolean clearTableUpload(int id){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
 
-        int res = db.delete(TABLE_MUESTRA,null,null);
+        int res = db.delete(TABLE_MUESTRA,TABLE_MUESTRA_COL_ID+"=?",parametros);
         if(res>0){
             flag=true;
-            //new EvaluacionDAO(ctx).borrarByIdVisita(id);
         }
         db.close();
         conn.close();
+
+        //new FotoDAO(ctx).borrarByIdMuestra(id);
+
         return flag;
     }
 
@@ -307,6 +313,8 @@ public class MuestrasDAO {
 
         return flag;
     }
+
+
 
 
     public boolean borrarValorByIdEvaluacion(int idEvaluacion){

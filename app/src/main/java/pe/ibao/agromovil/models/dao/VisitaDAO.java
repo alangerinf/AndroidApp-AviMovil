@@ -37,8 +37,10 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_IDCONTACTO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_IDFUNDO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_IDVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_LATITUD;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_LONGITUD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_LATITUDFIN;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_LATITUDINI;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_LONGITUDFIN;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_LONGITUDINI;
 
 public class VisitaDAO {
 
@@ -59,14 +61,16 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_ID        +", " +//0
                             "V."+TABLE_VISITA_COL_FECHAHORAINI +", " +//1
                             "V."+TABLE_VISITA_COL_EDITING   +", " +//2
-                            "V."+TABLE_VISITA_COL_LATITUD   +", " +//3
-                            "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
+                            "V."+TABLE_VISITA_COL_LATITUDINI   +", " +//3
+                            "V."+TABLE_VISITA_COL_LONGITUDINI  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
                             "V."+TABLE_VISITA_COL_IDCONTACTO+", "+//7
                             "V."+TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO+", "+//8
                             "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+", "+//9
-                            "V."+TABLE_VISITA_COL_FECHAHORAFIN+//10
+                            "V."+TABLE_VISITA_COL_FECHAHORAFIN+", "+//10
+                            "V."+TABLE_VISITA_COL_LATITUDFIN+", "+//11
+                            "V."+TABLE_VISITA_COL_LONGITUDFIN+//12
                         " FROM "+
                             TABLE_VISITA+" as V "+
                         " WHERE "+
@@ -84,9 +88,9 @@ public class VisitaDAO {
                 Log.d(TAG,"2");
                 temp.setEditing(cursor.getInt(2)>0);
                 Log.d(TAG,"3");
-                temp.setLat(cursor.getDouble(3));
+                temp.setLatIni(cursor.getString(3));
                 Log.d(TAG,"4");
-                temp.setLon(cursor.getDouble(4));
+                temp.setLonIni(cursor.getString(4));
                 Log.d(TAG,"5");
                 temp.setIdFundo(cursor.getInt(5));
                 Log.d(TAG,"6");
@@ -99,6 +103,10 @@ public class VisitaDAO {
                 temp.setContactoPersonalizado(cursor.getString(9));
                 Log.d(TAG,"10");
                 temp.setFechaHoraFin(cursor.getString(10));
+                Log.d(TAG,"11");
+                temp.setLatFin(cursor.getString(11));
+                Log.d(TAG,"12");
+                temp.setLonFin(cursor.getString(12));
 
                 if(!temp.isStatusContactoPersonalizado()){
                     temp.setContactoPersonalizado(new ContactoDAO(ctx).consultarContactoByid(temp.getIdContacto()).getName());
@@ -201,14 +209,16 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_ID        +", " +//0
                             "V."+TABLE_VISITA_COL_FECHAHORAINI +", " +//1
                             "V."+TABLE_VISITA_COL_EDITING   +", " +//2
-                            "V."+TABLE_VISITA_COL_LATITUD   +", " +//3
-                            "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
+                            "V."+TABLE_VISITA_COL_LATITUDINI   +", " +//3
+                            "V."+TABLE_VISITA_COL_LONGITUDINI  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
                             "V."+TABLE_VISITA_COL_IDCONTACTO+", "+//7
                             "V."+TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO+", "+//8
                             "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+", "+//9
-                            "V."+TABLE_VISITA_COL_FECHAHORAFIN+//10
+                            "V."+TABLE_VISITA_COL_FECHAHORAFIN+", "+//10
+                            "V."+TABLE_VISITA_COL_LATITUDFIN+", "+//11
+                            "V."+TABLE_VISITA_COL_LONGITUDFIN+//12
                             " FROM "+
                             TABLE_VISITA+" as V "
                     ,null);
@@ -223,9 +233,9 @@ public class VisitaDAO {
                 Log.d(TAG,"2");
                 temp.setEditing(cursor.getInt(2)>0);
                 Log.d(TAG,"3");
-                temp.setLat(cursor.getDouble(3));
+                temp.setLatIni(cursor.getString(3));
                 Log.d(TAG,"4");
-                temp.setLon(cursor.getDouble(4));
+                temp.setLonIni(cursor.getString(4));
                 Log.d(TAG,"5");
                 temp.setIdFundo(cursor.getInt(5));
                 Log.d(TAG,"6");
@@ -238,7 +248,10 @@ public class VisitaDAO {
                 temp.setContactoPersonalizado(cursor.getString(9));
                 Log.d(TAG,"10");
                 temp.setFechaHoraFin(cursor.getString(10));
-
+                Log.d(TAG,"11");
+                temp.setLatFin(cursor.getString(11));
+                Log.d(TAG,"12");
+                temp.setLonFin(cursor.getString(12));
                 if(!temp.isStatusContactoPersonalizado()){
                     temp.setContactoPersonalizado(new ContactoDAO(ctx).consultarContactoByid(temp.getIdContacto()).getName());
                     //   Toast.makeText(ctx,temp.getContactoPersonalizado(),Toast.LENGTH_LONG).show();
@@ -341,14 +354,16 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_ID        +", " +//0
                             "V."+TABLE_VISITA_COL_FECHAHORAINI +", " +//1
                             "V."+TABLE_VISITA_COL_EDITING   +", " +//2
-                            "V."+TABLE_VISITA_COL_LATITUD   +", " +//3
-                            "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
+                            "V."+TABLE_VISITA_COL_LATITUDINI   +", " +//3
+                            "V."+TABLE_VISITA_COL_LONGITUDINI  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
                             "V."+TABLE_VISITA_COL_IDCONTACTO+", "+//7
                             "V."+TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO+", "+//8
                             "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+", "+//9
-                            "V."+TABLE_VISITA_COL_FECHAHORAFIN+//10
+                            "V."+TABLE_VISITA_COL_FECHAHORAFIN+", "+//10
+                            "V."+TABLE_VISITA_COL_LATITUDFIN+", "+//11
+                            "V."+TABLE_VISITA_COL_LONGITUDFIN+//12
                         " FROM "+
                             TABLE_VISITA+" as V "+
 
@@ -367,9 +382,9 @@ public class VisitaDAO {
                         Log.d(TAG,"2");
                         temp.setEditing(cursor.getInt(2)>0);
                         Log.d(TAG,"3");
-                        temp.setLat(cursor.getDouble(3));
+                        temp.setLatIni(cursor.getString(3));
                         Log.d(TAG,"4");
-                        temp.setLon(cursor.getDouble(4));
+                        temp.setLonIni(cursor.getString(4));
                         Log.d(TAG,"5");
                         temp.setIdFundo(cursor.getInt(5));
                         Log.d(TAG,"6");
@@ -382,7 +397,10 @@ public class VisitaDAO {
                         temp.setContactoPersonalizado(cursor.getString(9));
                         Log.d(TAG,"10");
                         temp.setFechaHoraFin(cursor.getString(10));
-
+                        Log.d(TAG,"11");
+                        temp.setLatFin(cursor.getString(11));
+                        Log.d(TAG,"12");
+                        temp.setLonFin(cursor.getString(12));
                 if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
 
                             //obteniedo datos d e fundo
@@ -433,7 +451,7 @@ public class VisitaDAO {
 
 
     public boolean cambiarIdFundoIdVariedadIdContactoIsPersonalizadoContacto(int id,int idFundo, int idVariedad,int idContacto, boolean isPersonalizado, String Contacto){
-      boolean flag = false;
+        boolean flag = false;
         ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
         SQLiteDatabase db = c.getWritableDatabase();
         String[] parametros =
@@ -441,11 +459,76 @@ public class VisitaDAO {
                         String.valueOf(id),
                 };
         ContentValues values = new ContentValues();
-            values.put(TABLE_VISITA_COL_IDFUNDO,String.valueOf(idFundo));
-            values.put(TABLE_VISITA_COL_IDVARIEDAD,String.valueOf(idVariedad));
-            values.put(TABLE_VISITA_COL_IDCONTACTO,idContacto);
-            values.put(TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO,isPersonalizado);
-            values.put(TABLE_VISITA_COL_CONTACTOPERSONALIZADO,Contacto);
+        values.put(TABLE_VISITA_COL_IDFUNDO,String.valueOf(idFundo));
+        values.put(TABLE_VISITA_COL_IDVARIEDAD,String.valueOf(idVariedad));
+        values.put(TABLE_VISITA_COL_IDCONTACTO,idContacto);
+        values.put(TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO,isPersonalizado);
+        values.put(TABLE_VISITA_COL_CONTACTOPERSONALIZADO,Contacto);
+        int res = db.update(TABLE_VISITA,values,TABLE_VISITA_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        c.close();
+        return  flag;
+    }
+    public boolean setLatLonIniById(int id,String lat, String lon){
+        boolean flag = false;
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        SQLiteDatabase db = c.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+        ContentValues values = new ContentValues();
+        values.put(TABLE_VISITA_COL_LATITUDINI,lat);
+        values.put(TABLE_VISITA_COL_LONGITUDINI,lon);
+        int res = db.update(TABLE_VISITA,values,TABLE_VISITA_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        c.close();
+        return  flag;
+    }
+    public boolean setFechaHoraFinById(int id){
+        boolean flag = false;
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        SQLiteDatabase db = c.getWritableDatabase();
+
+        /*String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+
+        ContentValues values = new ContentValues();
+        values.put(TABLE_VISITA_COL_LATITUDINI,lat);
+        values.put(TABLE_VISITA_COL_LONGITUDINI,lon);
+        */
+        String sql = "UPDATE "+
+                        TABLE_VISITA+
+                     " SET "+
+                        TABLE_VISITA_COL_FECHAHORAFIN+" = datetime('now','localtime')  "+
+                     " WHERE " +
+                        TABLE_VISITA_COL_ID+"="+String.valueOf(id);
+        db.execSQL(sql);
+        /*int res = db.update(TABLE_VISITA,values,TABLE_VISITA_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        c.close();
+        */
+        return  flag;
+    }
+    public boolean setLatLonFinById(int id,String lat, String lon){
+        boolean flag = false;
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        SQLiteDatabase db = c.getWritableDatabase();
+        String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+        ContentValues values = new ContentValues();
+        values.put(TABLE_VISITA_COL_LATITUDFIN,lat);
+        values.put(TABLE_VISITA_COL_LONGITUDFIN,lon);
         int res = db.update(TABLE_VISITA,values,TABLE_VISITA_COL_ID+"=?",parametros);
         if(res>0){
             flag=true;
@@ -508,7 +591,7 @@ public class VisitaDAO {
         SQLiteDatabase db = conn.getWritableDatabase();
         List<VisitaVO> listVisita = new VisitaDAO(ctx).listarNoEditable();
         for(int i=0;i<listVisita.size();i++){
-            new EvaluacionDAO(ctx).borrarByIdVisita(listVisita.get(i).getId());
+            new EvaluacionDAO(ctx).clearTableUpload(listVisita.get(i).getId());
             borrarById(listVisita.get(i).getId());
             flag=true;
         }
@@ -557,14 +640,16 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_ID        +", " +//0
                             "V."+TABLE_VISITA_COL_FECHAHORAINI+", " +//1
                             "V."+TABLE_VISITA_COL_EDITING   +", " +//2
-                            "V."+TABLE_VISITA_COL_LATITUD   +", " +//3
-                            "V."+TABLE_VISITA_COL_LONGITUD  +", " +//4
+                            "V."+TABLE_VISITA_COL_LATITUDINI   +", " +//3
+                            "V."+TABLE_VISITA_COL_LONGITUDINI  +", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
                             "V."+TABLE_VISITA_COL_IDCONTACTO+", "+//7
                             "V."+TABLE_VISITA_COL_ISCONTACTOPERSONALIZADO+", "+//8
                             "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+", "+//9
-                            "V."+TABLE_VISITA_COL_FECHAHORAFIN+//10
+                            "V."+TABLE_VISITA_COL_FECHAHORAFIN+", "+//10
+                            "V."+TABLE_VISITA_COL_LATITUDFIN+", "+//11
+                            "V."+TABLE_VISITA_COL_LONGITUDFIN+//12
                             " FROM "+
                             TABLE_VISITA+" as V "+
 
@@ -583,9 +668,9 @@ public class VisitaDAO {
                 Log.d(TAG,"2");
                 temp.setEditing(cursor.getInt(2)>0);
                 Log.d(TAG,"3");
-                temp.setLat(cursor.getDouble(3));
+                temp.setLatIni(cursor.getString(3));
                 Log.d(TAG,"4");
-                temp.setLon(cursor.getDouble(4));
+                temp.setLonIni(cursor.getString(4));
                 Log.d(TAG,"5");
                 temp.setIdFundo(cursor.getInt(5));
                 Log.d(TAG,"6");
@@ -598,6 +683,10 @@ public class VisitaDAO {
                 temp.setContactoPersonalizado(cursor.getString(9));
                 Log.d(TAG,"10");
                 temp.setFechaHoraFin(cursor.getString(10));
+                Log.d(TAG,"11");
+                temp.setLatFin(cursor.getString(11));
+                Log.d(TAG,"12");
+                temp.setLonFin(cursor.getString(12));
 
                 if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
 

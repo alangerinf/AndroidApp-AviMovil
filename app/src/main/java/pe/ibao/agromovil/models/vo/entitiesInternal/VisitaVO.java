@@ -8,8 +8,10 @@ public class VisitaVO {
     private int id;
     private String fechaHoraIni;
     private String fechaHoraFin;
-    private double lat;
-    private double lon;
+    private String latIni;
+    private String lonIni;
+    private String latFin;
+    private String lonFin;
     private int idEmpresa;
     private String nameEmpresa;
     private int idFundo;
@@ -136,20 +138,36 @@ public class VisitaVO {
         this.fechaHoraIni = fechaHora;
     }
 
-    public double getLat() {
-        return lat;
+    public String getLatIni() {
+        return latIni;
     }
 
-    public void setLat(double lat) {
-        this.lat = lat;
+    public void setLatIni(String latIni) {
+        this.latIni = latIni;
     }
 
-    public double getLon() {
-        return lon;
+    public String getLonIni() {
+        return lonIni;
     }
 
-    public void setLon(double lon) {
-        this.lon = lon;
+    public void setLonIni(String lonIni) {
+        this.lonIni = lonIni;
+    }
+
+    public String getLatFin() {
+        return latFin;
+    }
+
+    public void setLatFin(String latFin) {
+        this.latFin = latFin;
+    }
+
+    public String getLonFin() {
+        return lonFin;
+    }
+
+    public void setLonFin(String lonFin) {
+        this.lonFin = lonFin;
     }
 
     public int getIdFundo() {

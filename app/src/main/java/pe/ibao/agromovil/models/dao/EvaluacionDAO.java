@@ -52,20 +52,26 @@ public class EvaluacionDAO {
         c.close();
         return flag;
     }
-    public float clearTableUpload(){
-        int cont= 0;
-        float r;
-        List<VisitaVO> listVisitas = new VisitaDAO(ctx).listarNoEditable();
-        if(listVisitas.size()>0){
-            for(int i=0;i<listVisitas.size();i++){
-                new EvaluacionDAO(ctx).borrarByIdVisita(listVisitas.get(i).getId());
-                cont++;
+    public int clearTableUpload(int idVisita){
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        SQLiteDatabase db = conn.getWritableDatabase();
+
+        List<EvaluacionVO> evas = new EvaluacionDAO(ctx).listarByIdVisita(idVisita);
+
+        String[] parametros = {String.valueOf(idVisita)};
+        int res = db.delete(Utilities.TABLE_EVALUACION,TABLE_EVALUACION_COL_IDVISITA+"=?",parametros);
+
+        Log.d("borrando",String.valueOf(res));
+
+        for(EvaluacionVO ev : evas){
+            //eliminando muestras
+            List<MuestraVO> muestras = new MuestrasDAO(ctx).listarByIdEvaluacion(ev.getId());
+            for(MuestraVO m : muestras){
+                new MuestrasDAO(ctx).clearTableUpload(m.getId());
             }
-            r = (((float)cont)*1.0f)/((float)listVisitas.size());
-        }else{
-            r = 1.0f;
         }
-        return r;
+
+        return res;
     }
 
 
@@ -215,7 +221,6 @@ public class EvaluacionDAO {
         }
 
         return res;
-
     }
 
 

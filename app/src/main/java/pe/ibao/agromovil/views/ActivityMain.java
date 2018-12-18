@@ -1,28 +1,21 @@
 package pe.ibao.agromovil.views;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
@@ -30,42 +23,44 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.HttpAuthHandler;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import pe.ibao.agromovil.R;
-import pe.ibao.agromovil.helpers.LocationTracker;
-import pe.ibao.agromovil.helpers.ProviderLocationTracker;
 import pe.ibao.agromovil.models.dao.UsuarioDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-
 public class ActivityMain extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, FragmentMain.OnFragmentInteractionListener, FragmentListVisitas.OnFragmentInteractionListener
- {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        FragmentMain.OnFragmentInteractionListener,
+        FragmentListVisitas.OnFragmentInteractionListener,
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener
+        ,LocationListener{
 
-
+    public static final int REQUEST_PERMISION_GPS=12;
     private Fragment myFragment = null;
-
-
+    public static final String TAG = ActivityMain.class.getSimpleName();
+    private GoogleApiClient mGoogleApiClient;
+    private static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private LocationRequest mLocationRequest;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         myFragment = new FragmentMain();
 
@@ -74,17 +69,6 @@ public class ActivityMain extends AppCompatActivity
 
         //verificar y estan actualizar de inmediato
 
-
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-*/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -95,9 +79,46 @@ public class ActivityMain extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        mLocationRequest = LocationRequest.create ()
+                .setPriority (LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval (1 * 1000) // 10 segundos, en milisegundos
+                .setFastestInterval (1 * 1000); // 1 segundo, en milisegundos
+
     }
 
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_PERMISION_GPS) {
+            if (grantResults.length == 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                //Permiso concedido
+
+                Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+                if (location == null) {
+                    Log.i(TAG, "locacion nula al conectar");
+              //      LocationServices.FusedLocationApi.requestLocationUpdates (mGoogleApiClient, mLocationRequest, this);
+                }
+                else {
+                    handleNewLocation (location);
+                }
+
+            } else {
+                //Permiso denegado:
+                //Deberíamos deshabilitar toda la funcionalidad relativa a la localización.
+
+                Log.e(TAG, "Permiso denegado");
+            }
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -122,8 +143,6 @@ public class ActivityMain extends AppCompatActivity
         super.onStart();
         String NombreU = new UsuarioDAO(getBaseContext()).verficarLogueo().getName();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
-
         View headerView = navigationView.getHeaderView(0);
         Menu menu = navigationView.getMenu();
         MenuItem inspeccion = menu.findItem(R.id.nav_new_inspection);
@@ -133,12 +152,7 @@ public class ActivityMain extends AppCompatActivity
         }
 
 
-
     }
-
-
-
-
 
 
     @Override
@@ -150,12 +164,12 @@ public class ActivityMain extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.logout) {
-            if(new VisitaDAO(getBaseContext()).listAll().size()>0){
-                Toast.makeText(getBaseContext(),"   ¡ Aun no sincroniza\ntodas sus Inspecciones !",Toast.LENGTH_LONG).show();
-            }else {
-                Toast.makeText(getBaseContext(),"Desloagueando",Toast.LENGTH_LONG).show();
+            if (new VisitaDAO(getBaseContext()).listAll().size() > 0) {
+                Toast.makeText(getBaseContext(), "   ¡ Aun no sincroniza\ntodas sus Inspecciones !", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getBaseContext(), "Desloagueando", Toast.LENGTH_LONG).show();
                 new UsuarioDAO(getBaseContext()).borrarTable();
-                Intent intent = new Intent(getBaseContext(),ActivityPreloader.class);
+                Intent intent = new Intent(getBaseContext(), ActivityPreloader.class);
                 startActivity(intent);
                 finish();
             }
@@ -175,44 +189,58 @@ public class ActivityMain extends AppCompatActivity
         boolean isFrame = false;
         Intent i = null;
 
-        boolean isUpload=false;
-        boolean isDownload=false;
+        boolean isUpload = false;
+        boolean isDownload = false;
 
         if (id == R.id.nav_new_inspection) {
-            isFrame=false;
+            isFrame = false;
             i = new Intent(this, ActivityVisita.class);
-            VisitaVO visitaTemp = new VisitaDAO(this).intentarNuevo();
-            i.putExtra("isEditable",true);
-            i.putExtra("idVisita",visitaTemp.getId());
-            myFragment= new FragmentMain();
-        } else if (id == R.id.nav_recent_visits){
-            Toast.makeText(getBaseContext(),"recent visit!",
+            String lat="";
+            String lon="";
+            if(new VisitaDAO(this).getEditing()==null){
+                lat = String.valueOf(getCurrentLatitude());
+                lon =String.valueOf(getCurrentLongitude());
+                VisitaVO visitaTemp = new VisitaDAO(this).intentarNuevo();
+                new VisitaDAO(this).setLatLonIniById(visitaTemp.getId(),lat,lon);
+                visitaTemp = new VisitaDAO(this).intentarNuevo();
+                i.putExtra("isEditable", true);
+                i.putExtra("idVisita", visitaTemp.getId());
+            }else {
+                VisitaVO visitaTemp = new VisitaDAO(this).intentarNuevo();
+                i.putExtra("isEditable", true);
+                i.putExtra("idVisita", visitaTemp.getId());
+            }
+            i.putExtra("isClosedVisita",false);
+
+            myFragment = new FragmentMain();
+        } else if (id == R.id.nav_recent_visits) {
+            Toast.makeText(getBaseContext(), "recent visit!",
                     Toast.LENGTH_SHORT).show();
-            isFrame=true;
+            isFrame = true;
             myFragment = new FragmentListVisitas();
             i = new Intent(this, FragmentListVisitas.class);
-        }else if(id == R.id.upload){
+        } else if (id == R.id.upload) {
             //comprobar internet
-            isUpload=true;
-        }else if(id == R.id.download){
-            isDownload=true;
+            isUpload = true;
+        } else if (id == R.id.download) {
+            isDownload = true;
         }
 
-        if(!(isUpload || isDownload)){
-            if(isFrame){
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_main,myFragment).commit();
-            }else {
+        if (!(isUpload || isDownload)) {
+            if (isFrame) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_main, myFragment).commit();
+            } else {
                 startActivity(i);
             }
-        }else {
-            isConnectedToInternetToUpdate(isDownload?"down":"up");
+        } else {
+            isConnectedToInternetToUpdate(isDownload ? "down" : "up");
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    void isConnectedToInternetToUpdate(final String caso){
+    void isConnectedToInternetToUpdate(final String caso) {
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -225,16 +253,16 @@ public class ActivityMain extends AppCompatActivity
                 if (networkInfo != null && networkInfo.isConnected()) {
                     // Si hay conexión a Internet en este momento
                     //Toast.makeText(getBaseContext(),"Conectando...",Toast.LENGTH_SHORT).show();
-                    switch (caso){
+                    switch (caso) {
                         case "up":
 
-                            if(new VisitaDAO(getBaseContext()).listarNoEditable().size()>0){
+                            if (new VisitaDAO(getBaseContext()).listarNoEditable().size() > 0) {
                                 startActivity(
                                         new Intent(getBaseContext(), ActivityUpload.class)
                                 );
                                 finish();
-                            }else{
-                                Toast.makeText(getBaseContext(),"No hay Inspecciones por Subir",
+                            } else {
+                                Toast.makeText(getBaseContext(), "No hay Inspecciones por Subir",
                                         Toast.LENGTH_LONG).show();
                             }
 
@@ -248,7 +276,7 @@ public class ActivityMain extends AppCompatActivity
                             break;
                     }
                 } else {
-                    Toast.makeText(getBaseContext(),"No hay internet!",
+                    Toast.makeText(getBaseContext(), "No hay internet!",
                             Toast.LENGTH_SHORT).show();
 
                 }
@@ -265,10 +293,102 @@ public class ActivityMain extends AppCompatActivity
     }
 
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.i(TAG, "Location services connected.");
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_PERMISION_GPS);
+        } else {
+
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+            if (location == null) {
+                Log.i(TAG, "locacion nula al conectar");
+                LocationServices.FusedLocationApi.requestLocationUpdates (mGoogleApiClient, mLocationRequest, this);
+            }
+            else {
+                handleNewLocation (location);
+            }
+
+        }
+
+
+
+    }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Location services suspended. Please reconnect.");
     }
+
+    private static double currentLatitude= 0.0d;
+    private static double currentLongitude= 0.0d;
+
+    public static double getCurrentLatitude() {
+        return currentLatitude;
+    }
+
+    public static void setCurrentLatitude(double currentLatitude) {
+        ActivityMain.currentLatitude = currentLatitude;
+    }
+
+    public static double getCurrentLongitude() {
+        return currentLongitude;
+    }
+
+    public static void setCurrentLongitude(double currentLongitude) {
+        ActivityMain.currentLongitude = currentLongitude;
+    }
+
+
+    private void handleNewLocation(Location location) {
+        Log.d(TAG,"hola " + location.toString());
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        Log.d(TAG,latLng.toString());
+    }
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution ()) {
+            try {
+                // Inicie una actividad que intente resolver el error
+                connectionResult.startResolutionForResult (this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace ();
+            }
+        } else{
+
+        Log.i (TAG, "La conexión de los servicios de ubicación falló con el código" + connectionResult.getErrorCode ());
+        }
+}
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mGoogleApiClient.connect();
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause ();
+        if (mGoogleApiClient.isConnected ()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates (mGoogleApiClient, this);
+            mGoogleApiClient.disconnect ();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        handleNewLocation (location);
+    }
+
 
 }

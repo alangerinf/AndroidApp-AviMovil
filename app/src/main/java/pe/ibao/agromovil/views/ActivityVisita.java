@@ -1,14 +1,19 @@
 package pe.ibao.agromovil.views;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,12 +29,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.dao.ContactoDAO;
 import pe.ibao.agromovil.models.dao.CultivoDAO;
+import pe.ibao.agromovil.models.dao.EmpresaDAO;
 import pe.ibao.agromovil.models.dao.EvaluacionDAO;
 import pe.ibao.agromovil.models.dao.FundoDAO;
 import pe.ibao.agromovil.models.dao.TipoRecomendacionDAO;
@@ -39,8 +52,18 @@ import pe.ibao.agromovil.models.vo.entitiesDB.TipoRecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
-public class ActivityVisita extends AppCompatActivity {
+public class ActivityVisita extends AppCompatActivity implements
+        GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener
+        ,LocationListener {
 
+
+    public static final String TAG = ActivityVisita.class.getSimpleName();
+    private GoogleApiClient mGoogleApiClient;
+    private static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+    private LocationRequest mLocationRequest;
+
+    static final public int REQUEST_PERMISION_GPS=12;
     static final public int REQUEST_BASICS_DATA = 1;  // The request code
     static final public int REQUEST_EDIT_EVALUATION=2;
     static final public String REQUEST_EMPRESA = "empresa_request";
@@ -49,6 +72,7 @@ public class ActivityVisita extends AppCompatActivity {
     static final public String REQUEST_VARIEDAD = "variedad_request";
     static final public String REQUEST_CONTACTO = "contacto_request";
 
+    private TextView tViewEmpresa;
     private TextView tViewContacto;
     private TextView tViewFundo;
     private TextView tViewCultivo;
@@ -64,7 +88,7 @@ public class ActivityVisita extends AppCompatActivity {
     private static VisitaVO visita;
     private static BaseAdapter baseAdapter;
     private  List<EvaluacionVO> evaluacionVOList = new ArrayList<>();
-    private String TAG="newvisit";
+
     public static Context ctx;
     static Bundle xx;
 
@@ -78,6 +102,7 @@ public class ActivityVisita extends AppCompatActivity {
     static FloatingActionButton floatBtnNuevo;
 
     private static boolean isEditable;
+    private static boolean isClosedVisita;
 
     public static int REQUEST_RECOMENDACION=56;
 
@@ -94,11 +119,13 @@ public class ActivityVisita extends AppCompatActivity {
         Bundle b = i.getExtras();
 
         isEditable= b.getBoolean("isEditable",false);
+        isClosedVisita = b.getBoolean("isClosedVisita",true);
         int idTemp =b.getInt("idVisita");
 
         visitaDAO = new VisitaDAO(this);
         visita = visitaDAO.buscarById((long)idTemp);
 
+        tViewEmpresa    = (TextView) findViewById(R.id.tViewEmpresa);
         tViewContacto   = (TextView) findViewById(R.id.tViewContacto);
         tViewFundo      = (TextView) findViewById(R.id.tViewFundo);
         tViewCultivo    = (TextView) findViewById(R.id.tViewCultivo);
@@ -173,7 +200,6 @@ public class ActivityVisita extends AppCompatActivity {
                         intent.putExtras(mybundle);
                         ActivityEvaluacion.setLastItemSelected(0);
                         startActivityForResult(intent,REQUEST_EDIT_EVALUATION);
-
 
                     }
                 });
@@ -277,6 +303,12 @@ public class ActivityVisita extends AppCompatActivity {
 
         };
 
+        if(visita.getIdEmpresa()>0){
+            EmpresaDAO empresaDAO  = new EmpresaDAO(this);
+            tViewEmpresa.setText(empresaDAO.consultarEmpresaByid(visita.getIdEmpresa()).getName());
+        }
+
+
         if(visita.getIdFundo()>0){
             FundoDAO fundoDAO = new FundoDAO(this);
             tViewFundo.setText(fundoDAO.consultarById(visita.getIdFundo()).getName());
@@ -314,6 +346,46 @@ public class ActivityVisita extends AppCompatActivity {
                     "Agrege Evaluaciones",
                     Toast.LENGTH_SHORT)
                     .show();
+        }
+
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        mLocationRequest = LocationRequest.create ()
+                .setPriority (LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval (1 * 1000) // 10 segundos, en milisegundos
+                .setFastestInterval (1 * 1000); // 1 segundo, en milisegundos
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_PERMISION_GPS) {
+            if (grantResults.length == 1
+                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                //Permiso concedido
+
+                Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+                if (location == null) {
+                    Log.i(TAG, "locacion nula al conectar");
+                    //      LocationServices.FusedLocationApi.requestLocationUpdates (mGoogleApiClient, mLocationRequest, this);
+                }
+                else {
+                    handleNewLocation (location);
+                }
+
+            } else {
+                //Permiso denegado:
+                //Deberíamos deshabilitar toda la funcionalidad relativa a la localización.
+
+                Log.e(TAG, "Permiso denegado");
+            }
         }
     }
 
@@ -391,6 +463,8 @@ public class ActivityVisita extends AppCompatActivity {
                 if (resultCode == RESULT_OK) {
                     String temp = data.getStringExtra(REQUEST_FUNDO);
                     tViewFundo.setText(temp);
+                    temp = data.getStringExtra(REQUEST_EMPRESA);
+                    tViewEmpresa.setText(temp);
                     temp=data.getStringExtra(REQUEST_CULTIVO);
                     tViewCultivo.setText(temp);
                     temp=data.getStringExtra(REQUEST_VARIEDAD);
@@ -441,9 +515,7 @@ public class ActivityVisita extends AppCompatActivity {
             if(!evaluacionVOList.isEmpty()) {
                 Toast.makeText(ctx, "Usted ya tiene evaluaciones agregadas",Toast.LENGTH_LONG).show();
             }else{
-
                 Intent intent = new Intent(this,ActivityBasic.class);
-
                 Bundle mybundle = new Bundle();
                 if(visita.getIdFundo()>0 && visita.getIdVariedad()>0){
                     mybundle.putInt("isFirst",0);
@@ -456,10 +528,8 @@ public class ActivityVisita extends AppCompatActivity {
                 mybundle.putInt("idVariedad",visita.getIdVariedad());
                 mybundle.putInt("idVisita",visita.getId());
                 mybundle.putInt("idContacto",visita.getIdContacto());
-
                 intent.putExtras(mybundle);
                 startActivityForResult(intent, REQUEST_BASICS_DATA);
-
             }
         }
     }
@@ -529,6 +599,11 @@ public class ActivityVisita extends AppCompatActivity {
                             ,Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(this,ActivityMain.class);
                     startActivity(i);
+                    if(!isClosedVisita){
+                        new VisitaDAO(ctx).setLatLonFinById(visita.getId(),String.valueOf(currentLatitude),String.valueOf(currentLongitude));
+                        new VisitaDAO(ctx).setFechaHoraFinById(visita.getId());
+                    }
+
                     overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
                     finish();
                 }else{
@@ -541,7 +616,7 @@ public class ActivityVisita extends AppCompatActivity {
             }else{
                 Toast.makeText(
                         getBaseContext()
-                        ,"Comprete todas las  Evaluaciones para poder Finalizar"
+                        ,"Complete todas las  Evaluaciones para poder Finalizar"
                         ,Toast.LENGTH_LONG).show();
             }
         }else{
@@ -576,6 +651,99 @@ public class ActivityVisita extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.i(TAG, "Location services connected.");
 
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_PERMISION_GPS);
+        } else {
+
+            Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+            if (location == null) {
+                Log.i(TAG, "locacion nula al conectar");
+                LocationServices.FusedLocationApi.requestLocationUpdates (mGoogleApiClient, mLocationRequest, this);
+            }
+            else {
+                handleNewLocation (location);
+            }
+
+        }
+
+
+
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i(TAG, "Location services suspended. Please reconnect.");
+    }
+
+    private static double currentLatitude= 0.0d;
+    private static double currentLongitude= 0.0d;
+
+    public static double getCurrentLatitude() {
+        return currentLatitude;
+    }
+
+    public static void setCurrentLatitude(double currentLatitude) {
+        ActivityVisita.currentLatitude = currentLatitude;
+    }
+
+    public static double getCurrentLongitude() {
+        return currentLongitude;
+    }
+
+    public static void setCurrentLongitude(double currentLongitude) {
+        ActivityVisita.currentLongitude = currentLongitude;
+    }
+
+
+    private void handleNewLocation(Location location) {
+        Log.d(TAG,"hola " + location.toString());
+        currentLatitude = location.getLatitude();
+        currentLongitude = location.getLongitude();
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        Log.d(TAG,latLng.toString());
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution ()) {
+            try {
+                // Inicie una actividad que intente resolver el error
+                connectionResult.startResolutionForResult (this, CONNECTION_FAILURE_RESOLUTION_REQUEST);
+            } catch (IntentSender.SendIntentException e) {
+                e.printStackTrace ();
+            }
+        } else{
+            Log.i (TAG, "La conexión de los servicios de ubicación falló con el código" + connectionResult.getErrorCode ());
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mGoogleApiClient.connect();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause ();
+        if (mGoogleApiClient.isConnected ()) {
+            LocationServices.FusedLocationApi.removeLocationUpdates (mGoogleApiClient, this);
+            mGoogleApiClient.disconnect ();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        handleNewLocation (location);
+    }
 
 }
