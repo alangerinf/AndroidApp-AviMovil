@@ -417,17 +417,18 @@ public class ActivityEvaluacion extends AppCompatActivity {
             }
 
 
-            dialogo.setTitle("Criterios")
+            dialogo.setTitle("Criterios de Evaluación")
                     .setSingleChoiceItems(items, lastItemSelected, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             lastItemSelected=which;
-                            Toast.makeText(
+                            /*Toast.makeText(
                                     getBaseContext(),
                                     "Seleccionaste: " + CRITERIOS.get(which).getName(),
                                     Toast.LENGTH_SHORT)
                                     .show();
+                            */
                             CriterioVO temp = CRITERIOS.get(which);
                             Log.d("locomata","antes de mandar "+idEvaluacion+" "+temp.getId());
                             MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId(),new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getIdTipoInspeccion());

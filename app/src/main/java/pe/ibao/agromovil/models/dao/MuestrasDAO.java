@@ -81,7 +81,7 @@ public class MuestrasDAO {
                     temp.setType(cri.getType());
                     temp.setMagnitud(cri.getMagnitud());
                 }else{
-                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG).show();
                 }
                 muestraVOList.add(temp);
             }
@@ -170,7 +170,7 @@ public class MuestrasDAO {
                 res.setType(temp.getType());
                 res.setMagnitud(temp.getMagnitud());
             }else{
-                Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG).show();
             }
 
             Log.d("locomata","datos encontrados"+
@@ -236,7 +236,7 @@ public class MuestrasDAO {
                 res.setType(temp.getType());
                 res.setMagnitud(temp.getMagnitud());
             }else{
-                Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG).show();
             }
 
             Log.d("locomata","datos encontrados"+
@@ -378,7 +378,7 @@ public class MuestrasDAO {
                     temp.setType(cri.getType());
                     temp.setMagnitud(cri.getMagnitud());
                 }else{
-                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG).show();
                 }
                 muestraVOList.add(temp);
             }

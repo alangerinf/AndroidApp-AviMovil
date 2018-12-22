@@ -1,9 +1,11 @@
 package pe.ibao.agromovil.views;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ListView;
@@ -35,12 +37,11 @@ public class ActivityRecomendacion extends Activity {
     private static List<RecomendacionVO> listRecomendaciones;
 
     private static TextView tViewTipoRecomendacion;
-     static ListView lViewRecomendaciones;
-
-
+    static ListView lViewRecomendaciones;
 
      private static int lastCriterioRecomendacionSelect=0;
     private AdapterListRecomendacion adapterListRecomendacion;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +49,13 @@ public class ActivityRecomendacion extends Activity {
         setContentView(R.layout.activity_recomendaciones);
         tViewTipoRecomendacion = (TextView) findViewById(R.id.tViewTipoRecomendacion);
         lViewRecomendaciones = (ListView) findViewById(R.id.listRecomedacion);
+
         Intent i = getIntent();
 
         Bundle b = i.getExtras();
             isEditable= b.getBoolean("isEditable",false);
             tipoRecomendacion = new TipoRecomendacionDAO(this).consultarByid(b.getInt("idTipoRecomendacion"));
             visita = new VisitaDAO(this).buscarById((long)b.getInt("idVisita"));
-
             tViewTipoRecomendacion.setText(tipoRecomendacion.getName());
 
         listRecomendaciones = new RecomendacionDAO(getBaseContext())
@@ -62,10 +63,13 @@ public class ActivityRecomendacion extends Activity {
                         ,visita.getId());
         //Toast.makeText(getBaseContext(),""+listRecomendaciones.size(),Toast.LENGTH_LONG).show();
         //actualizar adaptador
-        adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones);
+        adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones,isEditable);
         lViewRecomendaciones.setAdapter(adapterListRecomendacion);
 
-
+        if(!isEditable){
+            FloatingActionButton plus = (FloatingActionButton) findViewById(R.id.fButton_ReturnVisita);
+            plus.setClickable(false);
+        }
     }
 
     public void end(View view) {
@@ -74,7 +78,7 @@ public class ActivityRecomendacion extends Activity {
 
 
     public void showListTipoRecomendacion(View view){
-        if(isEditable){
+       // if(isEditable){
             listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdFundoIdVariedad(visita.getIdFundo(),visita.getIdVariedad());
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
 
@@ -103,12 +107,12 @@ public class ActivityRecomendacion extends Activity {
                                             ,visita.getId());
                            // Toast.makeText(getBaseContext(),""+listRecomendaciones.size(),Toast.LENGTH_LONG).show();
                             //actualizar adaptador
-                            adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones);
+                            adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones,isEditable);
                             lViewRecomendaciones.setAdapter(adapterListRecomendacion);
                         }
                     });
             dialogo.show();
-        }
+        //}
 
     }
 
@@ -143,7 +147,7 @@ public class ActivityRecomendacion extends Activity {
                                                                         ,visita.getId());
                             //Toast.makeText(getBaseContext(),""+listRecomendaciones.size(),Toast.LENGTH_LONG).show();
                             //actualizar adaptador
-                            adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones);
+                            adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones,isEditable);
                             lViewRecomendaciones.setAdapter(adapterListRecomendacion);
                         }
                     });

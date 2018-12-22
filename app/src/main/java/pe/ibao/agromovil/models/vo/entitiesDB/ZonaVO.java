@@ -1,27 +1,15 @@
 package pe.ibao.agromovil.models.vo.entitiesDB;
 
-public class EmpresaVO {
-
+public class ZonaVO {
     private int id;
     private String name;
-    private int idZona;
 
-    public EmpresaVO() {
+    public ZonaVO(){
     }
 
-    public EmpresaVO(int id, String name,int idZona) {
+    public ZonaVO(int id, String name) {
         this.id = id;
         this.name = name;
-        this.idZona = idZona;
-    }
-
-
-    public int getIdZona() {
-        return idZona;
-    }
-
-    public void setIdZona(int idZona) {
-        this.idZona = idZona;
     }
 
     public int getId() {

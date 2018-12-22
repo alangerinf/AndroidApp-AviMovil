@@ -9,9 +9,9 @@
 
     <!--drawer options -->
     <string name="drawer_item_1">Nueva Inspección</string>
-    <string name="drawer_item_2">Visitas Recientes</string>
+    <string name="drawer_item_2">Inspecciones Recientes</string>
     <string name="drawer_item_3">Sincronizar</string>
-    <string name="drawer_item_3_menu_item_1">Subir a la Nube</string>
+    <string name="drawer_item_3_menu_item_1">Enviar Data</string>
 
     <string name="title_basics_activity">Datos Básicos</string>
     <string name="main_fragment_welcome">Hola Usuario</string>
@@ -50,7 +50,7 @@
     <string name="take_photo_help">Toca en cualquier parte de la pantalla para tomar una foto</string>
     <string name="title_activity_recomendaciones">Recomendaciones</string>
     <string name="title_activity_photo_gallery">PhotoGallery</string>
-    <string name="drawer_item_4_menu_item_1">Actualizar</string>
+    <string name="drawer_item_4_menu_item_1">Actualizar Data</string>
     <string name="title_activity_xd">xd</string>
 
 
@@ -60,9 +60,11 @@
     <string name="cultivo">Cultivo</string>
     <string name="variedad">Variedad</string>
     <string name="contacto">Contacto</string>
+    <string name="zona">Zona</string>
 
     <string name="cabezeraSpnContacto">Seleccione Contacto</string>
     <string name="cabezeraSpnEmpresa">Seleccione Productor</string>
+    <string name="cabezeraSpnZona">Seleccione Zona</string>
     <string name="cabezeraSpnFundo">Seleccione Fundo</string>
     <string name="cabezeraSpnCultivo">Seleccione Cultivo</string>
     <string name="cabezeraSpnVariedad">Seleccione Variedad</string>

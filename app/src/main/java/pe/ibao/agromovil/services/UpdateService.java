@@ -30,6 +30,7 @@ import pe.ibao.agromovil.helpers.downloaders.DownloaderFundoVariedad;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderTipoInspeccion;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderTipoRecomendacion;
 import pe.ibao.agromovil.helpers.downloaders.DownloaderVariedad;
+import pe.ibao.agromovil.helpers.downloaders.DownloaderZona;
 import pe.ibao.agromovil.utilities.UpdateDB;
 
 public class UpdateService extends IntentService {
@@ -56,6 +57,7 @@ public class UpdateService extends IntentService {
         new DownloaderTipoRecomendacion(getBaseContext());
         new DownloaderConfiguracionRecomendacion(getBaseContext());
         new DownloaderCriterioRecomendacion(getBaseContext());
+        new DownloaderZona(getBaseContext());
     }
 
     @Override
@@ -103,90 +105,95 @@ public class UpdateService extends IntentService {
     Runnable r = new Runnable() {
         @Override
         public void run() {
-            final int resultStatus = Activity.RESULT_OK;
-            Log.d("holaasd", "empesando");
-            int[] i = new int[12];
-            i[0] = DownloaderConfiguracionCriterio.status;
-            i[1] = DownloaderConfiguracionRecomendacion.status;
-            i[2] = DownloaderContacto.status;
-            i[3] = DownloaderCriterio.status;
-            i[4] = DownloaderCriterioRecomendacion.status;
-            i[5] = DownloaderCultivo.status;
-            i[6] = DownloaderEmpresa.status;
-            i[7] = DownloaderFundo.status;
-            i[8] = DownloaderFundoVariedad.status;
-            i[9] = DownloaderTipoInspeccion.status;
-            i[10] = DownloaderTipoRecomendacion.status;
-            i[11] = DownloaderVariedad.status;
 
-            Log.d("holaasd", "111");
-            String m0 = "Buscando Actulizacion";
-            final String m1 = "Actualizando";
-            final String m2 = "Buscando Actulizacion";
-            final String m3 = "Error de Conversion";
-            final String m4 = "Error de Conexion";
-            //   mensaje.setText(m0);
-            int cont2 = 0;
-            int cont3 = 0;
-            boolean act = false;
-            Log.d("holaasd", "while");
-            //verificando si todos las  descargas terminaron
-            for (int n = 0; n < i.length; n++) {
+            boolean flag = true;
 
-                if (i[n] == 3) {
-                    cont3++;
-                    Log.d("hola", "cont3:" + cont3);
-                    act = true;
-                } else {
-                    if (i[n] == 2) {
-                        cont2++;
+            while (flag){
+                final int resultStatus = Activity.RESULT_OK;
+                Log.d("holaasd", "empesando");
+                int[] i = new int[13];
+                i[0] = DownloaderConfiguracionCriterio.status;
+                i[1] = DownloaderConfiguracionRecomendacion.status;
+                i[2] = DownloaderContacto.status;
+                i[3] = DownloaderCriterio.status;
+                i[4] = DownloaderCriterioRecomendacion.status;
+                i[5] = DownloaderCultivo.status;
+                i[6] = DownloaderEmpresa.status;
+                i[7] = DownloaderFundo.status;
+                i[8] = DownloaderFundoVariedad.status;
+                i[9] = DownloaderTipoInspeccion.status;
+                i[10] = DownloaderTipoRecomendacion.status;
+                i[11] = DownloaderVariedad.status;
+                i[12] = DownloaderZona.status;
+
+                Log.d("holaasd", "111");
+                String m0 = "Buscando Actulizacion";
+                final String m1 = "Actualizando";
+                final String m2 = "Buscando Actulizacion";
+                final String m3 = "Error de Conversion";
+                final String m4 = "Error de Conexion";
+                //   mensaje.setText(m0);
+                int cont2 = 0;
+                int cont3 = 0;
+                boolean act = false;
+                Log.d("holaasd", "while");
+                //verificando si todos las  descargas terminaron
+                for (int n = 0; n < i.length; n++) {
+                    if (i[n] == 3) {
+                        cont3++;
+                        Log.d("hola", "cont3:" + cont3);
                         act = true;
                     } else {
-                        if (i[n] == -1) {
-                            Log.d("holaasd", "qqqqq1" + n);
-                            String mensaje = m3;
-                            int por = -1;
-                            publishResults(Activity.RESULT_CANCELED, mensaje, por);
-                            return;
+                        if (i[n] == 2) {
+                            cont2++;
+                            act = true;
                         } else {
-                            if (i[n] == -2) {
-                                Log.d("holaasd", "qqqqqq2" + n);
-                                String mensaje = m4;
-                                int por = -2;
+                            if (i[n] == -1) {
+                                Log.d("holaasd", "qqqqq1" + n);
+                                String mensaje = m3;
+                                int por = -1;
                                 publishResults(Activity.RESULT_CANCELED, mensaje, por);
-                                Log.d("holasd","cancle-2");
                                 return;
+                            } else {
+                                if (i[n] == -2) {
+                                    Log.d("holaasd", "qqqqqq2" + n);
+                                    String mensaje = m4;
+                                    int por = -2;
+                                    flag=false;
+                                    publishResults(Activity.RESULT_CANCELED, mensaje, por);
+                                    Log.d("holasd","cancle-2");
+                                    return;
+                                }
                             }
                         }
                     }
                 }
-            }
 
-            Log.d("holahola3",""+cont3);
-            Log.d("holahola2",""+cont2);
+                Log.d("holahola3",""+cont3);
+                Log.d("holahola2",""+cont2);
 
-            if (cont3 == i.length) {
+                if (cont3 == i.length) {
 
-                        publishResults(Activity.RESULT_OK, "Actulizacion Terminada", 100);
-                        return;
+                    publishResults(Activity.RESULT_OK, "Actulizacion Terminada", 100);
+                    flag=false;
+                    return;
 
-            } else {
-                Log.d("holahola", "" + i.length);
-                Log.d("holahola", "" + cont3);
-                final boolean a = act;
-                final int porce = (int) ((float) cont3 / (float) i.length * 100);
+                } else {
+                    Log.d("holahola", "" + i.length);
+                    Log.d("holahola", "" + cont3);
+                    final boolean a = act;
+                    final int porce = (int) ((float) cont3 / (float) i.length * 100);
 
-                publishResults(Activity.RESULT_OK, m1, porce);
-                try {
-                    Thread.sleep(5);
-                } catch (InterruptedException e) {
-                    Log.d("hola", e.toString());
+                    publishResults(Activity.RESULT_OK, m1, porce);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Log.d("hola", e.toString());
+                    }
+
+
                 }
-                r.run();
-
-
             }
-
         }
 
     };
@@ -203,6 +210,23 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
         Log.d("segundo","doInBackground");
 
         //   new UpdateDB(ctx);
+
+
+        DownloaderConfiguracionRecomendacion core= new DownloaderConfiguracionRecomendacion(ctx);
+        core.download();
+        while(DownloaderConfiguracionRecomendacion.status!=3){
+            if(DownloaderConfiguracionRecomendacion.status==-2 || DownloaderConfiguracionRecomendacion.status==-1){
+                Log.d("segundo","seperando configuracionrecomendacion"+DownloaderContacto.status);
+                return null;
+            }
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+
         DownloaderContacto cont = new DownloaderContacto(ctx);
         cont.download();
         while(DownloaderContacto.status!=3){
@@ -217,11 +241,28 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
                 e.printStackTrace();
             }
         }
+
+
+        DownloaderZona zona = new DownloaderZona(ctx);
+        zona.download();
+        while(DownloaderZona.status!=3){
+            if(DownloaderZona.status==-2 || DownloaderZona.status==-1){
+                Log.d("segundo","seperando zona"+DownloaderContacto.status);
+                return null;
+            }
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         DownloaderEmpresa emp = new DownloaderEmpresa(ctx);
         emp.download();
         while(DownloaderEmpresa.status!=3){
             if(DownloaderEmpresa.status==-2 || DownloaderEmpresa.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando empresa"+DownloaderContacto.status);
                 return null;
             }
             try {
@@ -234,7 +275,7 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
         fun.download();
         while(DownloaderFundo.status!=3){
             if(DownloaderFundo.status==-2 || DownloaderFundo.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando fundo"+DownloaderContacto.status);
                 return null;
             }
             try {
@@ -247,7 +288,7 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
         cul.download();
         while(DownloaderCultivo.status!=3){
             if(DownloaderCultivo.status==-2 || DownloaderCultivo.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando cultivo"+DownloaderContacto.status);
                 return null;
             }
             try {
@@ -260,7 +301,7 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
         var.download();
         while(DownloaderVariedad.status!=3){
             if(DownloaderVariedad.status==-2 || DownloaderVariedad.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando vareidad"+DownloaderContacto.status);
                 return null;
             }
             try {
@@ -273,7 +314,7 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
         fva.download();
         while(DownloaderFundoVariedad.status!=3){
             if(DownloaderFundoVariedad.status==-2 || DownloaderFundoVariedad.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando fundovariedad"+DownloaderContacto.status);
                 return null;
             }
             try {
@@ -286,7 +327,7 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
         ti.download();
         while(DownloaderTipoInspeccion.status!=3){
             if(DownloaderTipoInspeccion.status==-2 || DownloaderTipoInspeccion.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando tipoinspeccion"+DownloaderContacto.status);
                 return null;
             }
             try {
@@ -299,7 +340,7 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
         cc.download();
         while(DownloaderConfiguracionCriterio.status!=3){
             if(DownloaderConfiguracionCriterio.status==-2 || DownloaderConfiguracionCriterio.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando configuracioncriterio"+DownloaderContacto.status);
                 return null;
             }
             try {
@@ -312,7 +353,7 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
         cri.download();
         while(DownloaderCriterio.status!=3){
             if(DownloaderCriterio.status==-2 || DownloaderCriterio.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando criterio"+DownloaderContacto.status);
                 return null;
             }
             try {
@@ -325,7 +366,7 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
         tre.download();
         while(DownloaderTipoRecomendacion.status!=3){
             if(DownloaderTipoRecomendacion.status==-2 || DownloaderTipoRecomendacion.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando tiporecomendacion"+DownloaderContacto.status);
                 return null;
             }
             try {
@@ -334,24 +375,12 @@ class actualizar extends AsyncTask<Void, Integer, Boolean> {
                 e.printStackTrace();
             }
         }
-        DownloaderConfiguracionRecomendacion core= new DownloaderConfiguracionRecomendacion(ctx);
-        core.download();
-        while(DownloaderConfiguracionRecomendacion.status!=3){
-            if(DownloaderConfiguracionRecomendacion.status==-2 || DownloaderConfiguracionRecomendacion.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
-                return null;
-            }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+
         DownloaderCriterioRecomendacion cre = new DownloaderCriterioRecomendacion(ctx);
         cre.download();
         while(DownloaderCriterioRecomendacion.status!=3){
             if(DownloaderCriterioRecomendacion.status==-2 || DownloaderCriterioRecomendacion.status==-1){
-                Log.d("segundo","seperando contacto"+DownloaderContacto.status);
+                Log.d("segundo","seperando criteriorecomendacion"+DownloaderContacto.status);
                 return null;
             }
             try {

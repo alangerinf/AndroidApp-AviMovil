@@ -80,7 +80,7 @@ public class LoginHelper {
                                     if( verificarLogueo() != null){
                                         UsuarioVO u = verificarLogueo();
                                         if(u!=null){
-                                            Toast.makeText(ctx,"HOLA "+u.getName(),Toast.LENGTH_LONG).show();
+                                            Toast.makeText(ctx,"Espere un momento...",Toast.LENGTH_LONG).show();
                                             Intent intent = new Intent(ctx, ActivityUpdate.class);
                                             ctx.startActivity(intent);
                                         }else {

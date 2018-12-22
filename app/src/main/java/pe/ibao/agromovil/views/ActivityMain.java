@@ -214,8 +214,7 @@ public class ActivityMain extends AppCompatActivity
 
             myFragment = new FragmentMain();
         } else if (id == R.id.nav_recent_visits) {
-            Toast.makeText(getBaseContext(), "recent visit!",
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getBaseContext(), "recent visit!",Toast.LENGTH_SHORT).show();
             isFrame = true;
             myFragment = new FragmentListVisitas();
             i = new Intent(this, FragmentListVisitas.class);

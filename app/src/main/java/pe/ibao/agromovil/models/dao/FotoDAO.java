@@ -110,7 +110,7 @@ public class FotoDAO {
             }
             cursor.close();
         }catch (Exception e){
-            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT);
+            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
         c.close();
         return temp;
@@ -213,7 +213,7 @@ public class FotoDAO {
             }
             cursor.close();
         }catch (Exception e){
-            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT);
+            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
         c.close();
         return temp;

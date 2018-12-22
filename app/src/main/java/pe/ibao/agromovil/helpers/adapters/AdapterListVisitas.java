@@ -22,6 +22,7 @@ import java.util.List;
 
 import pe.ibao.agromovil.R;
 import pe.ibao.agromovil.models.dao.ContactoDAO;
+import pe.ibao.agromovil.models.dao.EmpresaDAO;
 import pe.ibao.agromovil.models.dao.FundoDAO;
 import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
@@ -68,6 +69,7 @@ public class AdapterListVisitas extends BaseAdapter{
         v = inflater.inflate(R.layout.visita_itemeditor_list_view,null);
 
         final TextView tViewFechaHora = (TextView) v.findViewById(R.id.visita_tViewFechaHora);
+        final TextView tViewNameEmpresa    = (TextView) v.findViewById(R.id.visita_tViewNameEmpresa);
         final TextView tViewNameFundo    = (TextView) v.findViewById(R.id.visita_tViewNameFundo);
         final TextView tViewNameCultivo  = (TextView) v.findViewById(R.id.visita_tViewNameCultivo);
         final TextView tViewNameVariedad = (TextView) v.findViewById(R.id.visita_tViewNameVariedad);
@@ -80,7 +82,10 @@ public class AdapterListVisitas extends BaseAdapter{
         tViewNameFundo.setText( new FundoDAO(ctx).consultarById(visitaVO.getIdFundo()).getName());
         tViewNameCultivo.setText( visitaVO.getNameCultivo());
         tViewNameVariedad.setText( visitaVO.getNameVariedad());
-
+        if(visitaVO.getIdEmpresa()>0){
+            EmpresaDAO empresaDAO  = new EmpresaDAO(ctx);
+            tViewNameEmpresa.setText(empresaDAO.consultarEmpresaByid(visitaVO.getIdEmpresa()).getName());
+        }
         if(!visitaVO.isStatusContactoPersonalizado()){
             if(visitaVO.getIdContacto()>0){
                 ContactoDAO contactoDAO = new ContactoDAO(ctx);
@@ -118,7 +123,7 @@ public class AdapterListVisitas extends BaseAdapter{
                 final Dialog dialogClose = new Dialog(ctx);
                 dialogClose.setContentView(R.layout.dialog_danger);
                 TextView mensaje = (TextView)  dialogClose.findViewById(R.id.textView11);
-                mensaje.setText("Usted esta apunto de Eliminar un Inspección Completa, ¿Esta seguro?");
+                mensaje.setText("Esta apunto de eliminar una inspección\n¿DESEA CONTINUAR?");
                 Button btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_close);
                 Button btnDialogAcept = (Button) dialogClose.findViewById(R.id.buton_acept);
                 ImageView iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);

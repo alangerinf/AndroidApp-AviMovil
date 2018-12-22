@@ -80,7 +80,7 @@ public class RecomendacionDAO {
                     temp.setListFrecuancias(cri.getListFrecuancias());
                     temp.setIdTipoRecomendacion(cri.getIdTipoRecomendacion());
                 }else{
-                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG).show();
                 }
                 recomendacionVOList.add(temp);
             }
@@ -165,7 +165,7 @@ public class RecomendacionDAO {
                     res.setListFrecuancias(temp.getListFrecuancias());
                     res.setIdTipoRecomendacion(temp.getIdTipoRecomendacion());
                 }else{
-                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG).show();
                 }
             }
             cursor.close();
@@ -326,7 +326,7 @@ public class RecomendacionDAO {
                     temp.setListFrecuancias(cri.getListFrecuancias());
                     temp.setIdTipoRecomendacion(cri.getIdTipoRecomendacion());
                 }else{
-                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG);
+                    Toast.makeText(ctx,"Error de data interna",Toast.LENGTH_LONG).show();
                 }
                 recomendacionVOList.add(temp);
             }

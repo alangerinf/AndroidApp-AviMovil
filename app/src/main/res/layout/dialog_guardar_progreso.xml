@@ -40,7 +40,7 @@
             android:layout_marginEnd="45dp"
             android:layout_marginStart="45dp"
             android:layout_marginTop="24dp"
-            android:text="Atención !"
+            android:text="¡ Atención !"
             android:textAlignment="center"
             android:textColor="@color/primaryDark"
             android:textSize="25sp"

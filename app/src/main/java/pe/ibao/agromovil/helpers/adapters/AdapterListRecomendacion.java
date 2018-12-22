@@ -34,9 +34,11 @@ public class AdapterListRecomendacion extends BaseAdapter{
     private Context ctx;
     private ListView listView;
     private List<RecomendacionVO> recomendacionList;
+    private boolean isEditable;
 
-    public AdapterListRecomendacion(Context ctx, List<RecomendacionVO> recomendacionList) {
+    public AdapterListRecomendacion(Context ctx, List<RecomendacionVO> recomendacionList, Boolean isEditable) {
         this.ctx = ctx;
+        this.isEditable = isEditable;
         this.recomendacionList = recomendacionList;
     }
 
@@ -73,7 +75,15 @@ public class AdapterListRecomendacion extends BaseAdapter{
         eTextComentario.setClickable(true);
 
 
-
+        if(!isEditable){
+            btnDelete.setVisibility(View.INVISIBLE);
+            spnUnidades.setEnabled(false);
+            spnFreciencia.setEnabled(false);
+            eTextCantidad.setFocusable(false);
+            eTextCantidad.setClickable(false);
+            eTextComentario.setFocusable(false);
+            eTextComentario.setClickable(false);
+        }
 
 
 
@@ -88,7 +98,8 @@ public class AdapterListRecomendacion extends BaseAdapter{
                     Button btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_close);
                     Button btnDialogAcept = (Button) dialogClose.findViewById(R.id.buton_acept);
                     ImageView iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);
-
+                    TextView mensaje = (TextView) dialogClose.findViewById(R.id.textView11);
+                    mensaje.setText("Esta a punto de eliminar una recomendación\n¿DESEA CONTINUAR?");
                     iViewDialogClose.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -115,7 +126,7 @@ public class AdapterListRecomendacion extends BaseAdapter{
                             }else
 
                             {
-                                Toast.makeText(ctx, "Eliminado", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(ctx, "Eliminado", Toast.LENGTH_SHORT).show();
                             }
                             recomendacionList.remove(position);
                             AdapterListRecomendacion.super.notifyDataSetChanged();

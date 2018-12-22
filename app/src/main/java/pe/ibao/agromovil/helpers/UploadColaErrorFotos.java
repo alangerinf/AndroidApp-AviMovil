@@ -52,13 +52,13 @@ public class UploadColaErrorFotos {
                         try {
                             JSONObject main = new JSONObject(response);
                             if(main.getInt("success")==1){
-                                Toast.makeText(ctx,""+idEvidencia+" success="+1,Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(ctx,""+idEvidencia+" success="+1,Toast.LENGTH_SHORT).show();
                                 new ColaUploadFotosDAO(ctx).borrarById(idEvidencia);
                                 status =3;
                             }else{
                                 if(main.getInt("success")==0)
                                 {
-                                    Toast.makeText(ctx,""+idEvidencia+" success="+0,Toast.LENGTH_SHORT).show();
+                                   // Toast.makeText(ctx,""+idEvidencia+" success="+0,Toast.LENGTH_SHORT).show();
                                     status =-3;
                                 }
                             }

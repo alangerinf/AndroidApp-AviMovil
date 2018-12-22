@@ -27,6 +27,13 @@ import pe.ibao.agromovil.utilities.Utilities;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CONFIGURACIONCRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_FUNDOVARIEDAD;
 
@@ -71,7 +78,18 @@ public class DownloaderConfiguracionCriterio {
                                 clearConfiguracionCriterioUpload();
                                 status=2;
                             }
+
+                            String insert = "INSERT INTO " +
+                                    TABLE_CONFIGURACIONCRITERIO+
+                                    "("+TABLE_CONFIGURACIONCRITERIO_COL_ID+","+
+                                    TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO+","+
+                                    TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD+
+                                    ")"+
+                                    "VALUES ";
+
                             for(int i=0;i<main.length();i++){
+
+                                /*
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
                                 int idFundoVariedad = data.getInt("idFundoVariedad");
@@ -93,7 +111,48 @@ public class DownloaderConfiguracionCriterio {
 
                                 db.close();
                                 conn.close();
+                            */
+                                JSONObject data = new JSONObject(main.get(i).toString());
+                                int id = data.getInt("id");
+                                int idFundoVariedad = data.getInt("idFundoVariedad");
+                                int idCriterio = data.getInt("idCriterioInspeccion");
+                                Log.d("CONFCRI",""+id);
+                                insert=insert+"("+id+","+idCriterio+","+idFundoVariedad+")";
+                                if(i%1000==0){
+                                    try{
+                                        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                                        SQLiteDatabase db = conn.getWritableDatabase();
+                                        db.execSQL(insert);
+                                        db.close();
+                                        conn.close();
+                                        insert = "INSERT INTO " +
+                                                TABLE_CONFIGURACIONCRITERIO+
+                                                "("+TABLE_CONFIGURACIONCRITERIO_COL_ID+","+
+                                                TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO+","+
+                                                TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD+
+                                                ")"+
+                                                "VALUES ";
+                                    }catch (Exception e){
+                                        Log.d("errorCR",e.toString());
+                                    }
+                                }else {
+                                    if(main.length()-1!=i ){
+                                        insert=insert+",";
+                                    }
+                                }
+
                             }
+
+                            try{
+                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                                SQLiteDatabase db = conn.getWritableDatabase();
+                                db.execSQL(insert);
+                                db.close();
+                                conn.close();
+                            }catch (Exception e){
+                                Log.d("errorCR",e.toString());
+                            }
+
                             status = 3;
                         } catch (JSONException e) {
                             Log.d("CONFCRITERIODOWN ",e.toString());

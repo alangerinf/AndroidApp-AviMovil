@@ -57,8 +57,9 @@ public class DownloaderEmpresa {
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
                                 String nombre = /*String.valueOf(id)+"-"+*/data.getString("nombre");
+                                int zona = /*String.valueOf(id)+"-"+*/data.getInt("zona");
                                 Log.d("EMPRESADOWN","fila "+i+" : "+id+" "+nombre);
-                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre)){
+                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre,zona)){
                                     Log.d("EMPRESADOWN","logro insertar");
                                 }
                             }
@@ -124,13 +125,13 @@ public class DownloaderEmpresa {
                                 int id = data.getInt("id");
                                 String nombre = String.valueOf(id)+"-"+data.getString("nombre");
                                 Log.d("EMPRESADOWN","fila "+i+" : "+id+" "+nombre);
-                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre)){
+                                int zona = data.getInt("zona");
+                                if(new EmpresaDAO(ctx).insertarEmpresa(id,nombre,zona)){
                                     Log.d("EMPRESADOWN","logro insertar");
                                     android.os.Handler handler = new android.os.Handler();
                                     final int finalI = i;
                                     handler.post(new Runnable() {
                                         public void run() {
-
                                             porcentaje.setText("" + (ini + ((finalI * tam) / length)) + "%");
                                         }
                                     });

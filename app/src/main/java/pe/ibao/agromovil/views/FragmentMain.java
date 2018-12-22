@@ -121,8 +121,8 @@ public class FragmentMain extends Fragment {
 
         String NombreU = new UsuarioDAO(getContext()).verficarLogueo().getName();
 
-        ((TextView)getView().findViewById(R.id.fmain_tViewSaludo1)).setText("Hola "+NombreU+" !");
-        ((TextView)getView().findViewById(R.id.fmain_tViewSaludo2)).setText("Hola "+NombreU+" !");
+        ((TextView)getView().findViewById(R.id.fmain_tViewSaludo1)).setText(NombreU);
+        ((TextView)getView().findViewById(R.id.fmain_tViewSaludo2)).setText(NombreU);
 
         layoutNewInspection = (RelativeLayout) getView().findViewById(R.id.layout_new_Inspection);
         layoutNewInspection.setOnClickListener(new View.OnClickListener() {

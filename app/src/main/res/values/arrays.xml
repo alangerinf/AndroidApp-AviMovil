@@ -5,6 +5,11 @@
         <item>AgroValle</item>
         <item>AgroPeru</item>
     </string-array>
+    <string-array name="zonas">
+        <item>@string/cabezeraSpnZona</item>
+        <item>AgroValle</item>
+        <item>AgroPeru</item>
+    </string-array>
 
     <string-array name="fundos">
         <item>@string/cabezeraSpnFundo</item>

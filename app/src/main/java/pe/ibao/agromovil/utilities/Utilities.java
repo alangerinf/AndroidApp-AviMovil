@@ -17,11 +17,19 @@ public class Utilities {
     public static final String URL_DOWNLOAD_TABLE_CRITERIORECOMENDACION=URL_ROOT+"getCriterioRecomendaciones.php";
     public static final String URL_DOWNLOAD_TABLE_TIPORECOMENDACION=URL_ROOT+"getTipoRecomendaciones.php";
     public static final String URL_DOWNLOAD_TABLE_CONFIGURACIONRECOMENDACION=URL_ROOT+"getConfiguracionRecomendaciones.php";
+    public static final String URL_DOWNLOAD_TABLE_ZONA=URL_ROOT+"getZonas.php";
 
     public static final String URL_UPLOAD_MASTER=URL_ROOT+"insertDataFromMovil.php";
     public static final String URL_UPLOAD_FOTOS=URL_ROOT+"insertFotos.php";
 
     public static final String DATABASE_NAME="data";
+
+
+    public static final String TABLE_ZONA="zona",
+            TABLE_ZONA_COL_ID       ="id",
+            TABLE_ZONA_TYPECOL_ID   ="INTEGER",
+            TABLE_ZONA_COL_NAME     ="name",
+            TABLE_ZONA_TYPECOL_NAME ="VARCHAR(50)";
 
     public static final String TABLE_COLAFOTOS="colaFotos",
             TABLE_COLAFOTOS_COL_IDDB         ="idBD",
@@ -53,7 +61,9 @@ public class Utilities {
             TABLE_EMPRESA_COL_ID                ="id",
             TABLE_EMPRESA_TYPECOL_ID            ="INTEGER",
             TABLE_EMPRESA_COL_NAME              ="name",
-            TABLE_EMPRESA_TYPECOL_NAME          ="varchar(50)";
+            TABLE_EMPRESA_TYPECOL_NAME          ="varchar(50)",
+            TABLE_EMPRESA_COL_IDZONA ="idZona",
+            TABLE_EMPRESA_TYPECOL_IDZONA        ="INTEGER";
 
     public static final String TABLE_FUNDO  ="fundo",
             TABLE_FUNDO_COL_ID                  ="id",
@@ -234,6 +244,13 @@ public class Utilities {
 
 
     //SCRIPTS SQL CREATE TABLES
+
+    public static final String CREATE_TABLE_ZONA =
+            "CREATE TABLE "+TABLE_ZONA+" ("+
+                TABLE_ZONA_COL_ID   +" "+TABLE_ZONA_TYPECOL_ID+" PRIMARY KEY ,"+
+                TABLE_ZONA_COL_NAME +" "+TABLE_ZONA_TYPECOL_NAME+" "+
+            ")";
+
     public static final String CREATE_TABLE_FOTO =
             "CREATE TABLE "+TABLE_FOTO+" ("+
                     TABLE_FOTO_COL_ID       +" "+TABLE_FOTO_TYPECOL_ID       +" PRIMARY KEY AUTOINCREMENT, "+
@@ -342,7 +359,8 @@ public class Utilities {
     public static final String CREATE_TABLE_EMPRESA =
             "CREATE TABLE "+TABLE_EMPRESA+" (" +
                     TABLE_EMPRESA_COL_ID        +" "+TABLE_EMPRESA_TYPECOL_ID+" PRIMARY KEY," +
-                    TABLE_EMPRESA_COL_NAME      +" "+TABLE_EMPRESA_TYPECOL_NAME+
+                    TABLE_EMPRESA_COL_NAME      +" "+TABLE_EMPRESA_TYPECOL_NAME+", "+
+                    TABLE_EMPRESA_COL_IDZONA +" "+TABLE_EMPRESA_TYPECOL_IDZONA+
             ")";
 
     public static final String CREATE_TABLE_USUARIO =
@@ -394,6 +412,4 @@ public class Utilities {
                     TABLE_COLAFOTOS_COL_IDDB    +" "+TABLE_COLAFOTOS_TYPECOL_IDDB+" PRIMARY KEY, "+
                     TABLE_COLAFOTOS_COL_PATH    +" "+TABLE_COLAFOTOS_TYPECOL_PATH+" NOT NULL "+
                     ")";
-
-
 }

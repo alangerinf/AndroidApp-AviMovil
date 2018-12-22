@@ -65,7 +65,7 @@ public class    AdapterListEvaluacion extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 //tomarFoto();
-                Toast.makeText(ctx,"Borrando"+position,Toast.LENGTH_LONG).show();
+             //   Toast.makeText(ctx,"Borrando"+position,Toast.LENGTH_LONG).show();
                 try{
                     listEvaluacion.remove(listEvaluacion.get(position));
                     EvaluacionDAO evaluacionDAO = new EvaluacionDAO(ctx);

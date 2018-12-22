@@ -24,13 +24,18 @@ import pe.ibao.agromovil.models.dao.EmpresaDAO;
 import pe.ibao.agromovil.models.dao.FundoDAO;
 import pe.ibao.agromovil.models.dao.VariedadDAO;
 import pe.ibao.agromovil.models.dao.VisitaDAO;
+import pe.ibao.agromovil.models.dao.ZonaDAO;
 import pe.ibao.agromovil.models.vo.entitiesDB.ContactoVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.CultivoVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.VariedadVO;
+import pe.ibao.agromovil.models.vo.entitiesDB.ZonaVO;
 
 public class ActivityBasic extends AppCompatActivity {
+
+    private static List<ZonaVO> listZonas;
+    private static List<String> listNombreZonas;
 
     private static List<EmpresaVO> listEmpresas;
     private static List<String> listNombreEmpresas;
@@ -48,6 +53,7 @@ public class ActivityBasic extends AppCompatActivity {
     private static List<String> listNombreContactos;
 
     String TAG = "1199232";
+    private static Spinner spnZona;
     private static Spinner spnEmpresa;
     private static Spinner spnFundo;
     private static Spinner spnVariedad;
@@ -56,6 +62,7 @@ public class ActivityBasic extends AppCompatActivity {
     private static EditText eTextContacto;
     private static CheckBox checkPersonalizado;
 
+    private static int idZona;
     private static int idEmpresa;
     private static int idFundo;
     private static int idCultivo;
@@ -74,6 +81,7 @@ public class ActivityBasic extends AppCompatActivity {
         //setupActionBar();
 
         eTextContacto= (EditText) findViewById(R.id.eTextContacto);
+        spnZona = (Spinner) findViewById(R.id.spnZona);
         spnEmpresa = (Spinner) findViewById(R.id.spnEmpresa);
         spnFundo = (Spinner) findViewById(R.id.spnFundo);
         spnCultivo = (Spinner) findViewById(R.id.spnCultivo);
@@ -83,15 +91,16 @@ public class ActivityBasic extends AppCompatActivity {
         checkPersonalizado = (CheckBox) findViewById(R.id.checkBox);
         spnContacto.setEnabled(false);
         //cargar los nombre a ram
-        cargarEmpresas();
+        cargarZonas();
         cargarCultivos();
 
         //inicializando adaptadpres de spn iniciales
-        ArrayAdapter<CharSequence> adaptadorEmpresas = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreEmpresas);
+        ArrayAdapter<CharSequence> adaptadorZonas = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreZonas);
         ArrayAdapter<CharSequence> adaptadorCultivos = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreCultivos);
         //seteando esos adaptadores
+        spnZona.setAdapter(adaptadorZonas);
         spnCultivo.setAdapter(adaptadorCultivos);
-        spnEmpresa.setAdapter(adaptadorEmpresas);
+
 
         //reciviendo parametros de la actividad anterior
         recibidos = getIntent().getExtras();
@@ -105,6 +114,7 @@ public class ActivityBasic extends AppCompatActivity {
                 idContacto= recibidos.getInt("idContacto");
                 //eTextContacto.setText(contacto);
                 idEmpresa=recibidos.getInt("idEmpresa");
+                idZona = new EmpresaDAO(getBaseContext()).consultarEmpresaByid(idEmpresa).getIdZona();
                 idFundo =recibidos.getInt("idFundo");
                 idCultivo=recibidos.getInt("idCultivo");
                 idVariedad=recibidos.getInt("idVariedad");
@@ -113,52 +123,78 @@ public class ActivityBasic extends AppCompatActivity {
                 checkPersonalizado.setChecked(isContactoPersonalizado);
                 eTextContacto.setText(contactoPersonalizado);
                 Log.d(TAG,""+idEmpresa+" "+idFundo+" "+idCultivo+" "+idVariedad+" "+idVisita+" "+idContacto);
+                Log.d(TAG,"ID EMPRESA = "+(idEmpresa));
+                Log.d(TAG,"ID ZONA = "+(idZona));
+                for(int w=0;w<listZonas.size();w++){
+                    if(listZonas.get(w).getId()==idZona){
+                        Log.d(TAG,"Zona ENCONTRADA POS = "+(w+1));
+                        spnZona.setSelection(w+1);
+                        spnZona.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int q, long l) {
+                                if(q != 0){
+                                    cargarEmpresas();
+                                    spnEmpresa.setEnabled(true);
+                                    ArrayAdapter<CharSequence> adaptadorEmpresas = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreEmpresas);
+                                    spnEmpresa.setAdapter(adaptadorEmpresas);
+                                    for(int i=0;i<listEmpresas.size();i++){
+                                        if(listEmpresas.get(i).getId()==idEmpresa){
+                                            Log.d(TAG,"EMPRESA ENCONTRADA POS = "+i+1);
+                                            spnEmpresa.setSelection(i+1);
+                                            spnEmpresa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                                    if(i != 0){
+                                                        cargarFundos();
+                                                        spnFundo.setEnabled(true);
+                                                        ArrayAdapter<CharSequence> adaptadorFundos = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreFundos);
+                                                        spnFundo.setAdapter(adaptadorFundos);
+                                                        for(int j = 0 ; j<listFundos.size();j++){
+                                                            if(listFundos.get(j).getId()==idFundo){
+                                                                spnFundo.setSelection(j+1);
+                                                                spnFundo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()  {
+                                                                    @Override
+                                                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                                        if(position !=0){
+                                                                            cargarContactos();
+                                                                            spnContacto.setEnabled(true);
+                                                                            ArrayAdapter<CharSequence> adaptadorContactos = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreContactos);
+                                                                            spnContacto.setAdapter(adaptadorContactos);
+                                                                            for(int k =0 ; k< listContactos.size();k++){
+                                                                                if(listContactos.get(k).getId()==idContacto){
+                                                                                    spnContacto.setSelection(k+1);
+                                                                                }
+                                                                            }
+                                                                        }else{
+                                                                            spnContacto.setEnabled(false);
+                                                                        }
+                                                                    }
 
-                for(int i=0;i<listEmpresas.size();i++){
-                    if(listEmpresas.get(i).getId()==idEmpresa){
-                        Log.d(TAG,"EMPRESA ENCONTRADA POS = "+i+1);
-                        spnEmpresa.setSelection(i+1);
+                                                                    @Override
+                                                                    public void onNothingSelected(AdapterView<?> parent) {
 
-                        spnEmpresa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                if(i != 0){
-                                    cargarFundos();
-                                    spnFundo.setEnabled(true);
-                                    ArrayAdapter<CharSequence> adaptadorFundos = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreFundos);
-                                    spnFundo.setAdapter(adaptadorFundos);
-                                    for(int j = 0 ; j<listFundos.size();j++){
-                                        if(listFundos.get(j).getId()==idFundo){
-                                            spnFundo.setSelection(j+1);
-                                            spnFundo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()  {
-                                                @Override
-                                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                                    if(position !=0){
-                                                        cargarContactos();
-                                                        spnContacto.setEnabled(true);
-                                                        ArrayAdapter<CharSequence> adaptadorContactos = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreContactos);
-                                                        spnContacto.setAdapter(adaptadorContactos);
-                                                        for(int k =0 ; k< listContactos.size();k++){
-                                                            if(listContactos.get(k).getId()==idContacto){
-                                                                spnContacto.setSelection(k+1);
+                                                                    }
+                                                                });
+
+
                                                             }
                                                         }
+
                                                     }else{
-                                                        spnContacto.setEnabled(false);
+                                                        spnFundo.setEnabled(false);
+                                                        spnFundo.setSelection(0);
                                                     }
                                                 }
-
-                                                @Override
-                                                public void onNothingSelected(AdapterView<?> parent) {
-
+                                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                                    return;
                                                 }
                                             });
-
-
+                                            break;
                                         }
                                     }
-
                                 }else{
+                                    spnEmpresa.setEnabled(false);
+                                    spnEmpresa.setSelection(0);
                                     spnFundo.setEnabled(false);
+                                    spnFundo.setSelection(0);
                                 }
                             }
                             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -166,8 +202,14 @@ public class ActivityBasic extends AppCompatActivity {
                             }
                         });
                         break;
+
+                    }else {
+                        Log.d(TAG,"Zona no ENCONTRADA POS = "+(w+1));
                     }
+
                 }
+
+
 
                 for(int i=0;i<listCultivos.size();i++) {
                     if (listCultivos.get(i).getId() == idCultivo) {
@@ -199,36 +241,55 @@ public class ActivityBasic extends AppCompatActivity {
 
 
 
-            }else{//si es la primera vez q ingresan
-                Log.d(TAG,"es primera edicion");
+            }else {//si es la primera vez q ingresan
+                Log.d(TAG, "es primera edicion");
+                spnEmpresa.setEnabled(false);
+                spnZona.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int q, long l) {
+                        if(q != 0){
+                            cargarEmpresas();
+                            spnEmpresa.setEnabled(true);
+                            ArrayAdapter<CharSequence> adaptadorEmpresas = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreEmpresas);
+                            spnEmpresa.setAdapter(adaptadorEmpresas);
+                            spnEmpresa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    if(i != 0){
+                                        cargarFundos();
+                                        spnFundo.setEnabled(true);
+                                        ArrayAdapter<CharSequence> adaptadorFundos = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreFundos);
+                                        spnFundo.setAdapter(adaptadorFundos);
+                                        spnFundo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                            @Override
+                                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                                if(position != 0){
+                                                    cargarContactos();
+                                                    spnContacto.setEnabled(true);
+                                                    ArrayAdapter<CharSequence> adaptadorContactos = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreContactos);
+                                                    spnContacto.setAdapter(adaptadorContactos);
+                                                }else{
+                                                    spnContacto.setEnabled(false);
+                                                }
 
-                spnEmpresa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        if(i != 0){
-                            cargarFundos();
-                            spnFundo.setEnabled(true);
-                            ArrayAdapter<CharSequence> adaptadorFundos = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreFundos);
-                            spnFundo.setAdapter(adaptadorFundos);
-                            spnFundo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    if(position != 0){
-                                        cargarContactos();
-                                        spnContacto.setEnabled(true);
-                                        ArrayAdapter<CharSequence> adaptadorContactos = new ArrayAdapter(getBaseContext(),android.R.layout.simple_spinner_item,listNombreContactos);
-                                        spnContacto.setAdapter(adaptadorContactos);
+                                            }
+
+                                            @Override
+                                            public void onNothingSelected(AdapterView<?> parent) {
+
+                                            }
+                                        });
                                     }else{
-                                        spnContacto.setEnabled(false);
+                                        spnFundo.setEnabled(false);
                                     }
-
                                 }
-
-                                @Override
-                                public void onNothingSelected(AdapterView<?> parent) {
-
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                    return;
                                 }
                             });
+
                         }else{
+                            spnEmpresa.setSelection(0);
+                            spnEmpresa.setEnabled(false);
+                            spnFundo.setSelection(0);
                             spnFundo.setEnabled(false);
                         }
                     }
@@ -236,6 +297,9 @@ public class ActivityBasic extends AppCompatActivity {
                         return;
                     }
                 });
+
+
+
 
                 spnCultivo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -266,7 +330,6 @@ public class ActivityBasic extends AppCompatActivity {
                     spnContacto.setVisibility(View.VISIBLE);
                 }
 
-
             }
         });
 
@@ -295,7 +358,6 @@ public class ActivityBasic extends AppCompatActivity {
             listNombreVariedades.add(var.getName());
         }
     }
-
 
     private void cargarCultivos(){
         CultivoDAO cultivoDAO = new CultivoDAO(getBaseContext());
@@ -326,9 +388,25 @@ public class ActivityBasic extends AppCompatActivity {
         }
     }
 
+    private void cargarZonas() {
+        ZonaDAO zonaDAO = new ZonaDAO(getBaseContext());
+        listZonas = zonaDAO.listZonas();
+      //  Toast.makeText(getBaseContext(),""+listZonas.size(),Toast.LENGTH_LONG).show();
+        cargarNombreZonas();
+    }
+    private void cargarNombreZonas(){
+        listNombreZonas = new ArrayList<String>();
+        listNombreZonas.add(getString(R.string.cabezeraSpnZona));
+        for(ZonaVO zon : listZonas){
+            listNombreZonas.add(zon.getName());
+        }
+    }
+
+
     private void cargarEmpresas() {
         EmpresaDAO empresaDAO = new EmpresaDAO(getBaseContext());
-        listEmpresas = empresaDAO.listEmpresas();
+        int posZona = spnZona.getSelectedItemPosition();
+        listEmpresas = empresaDAO.listEmpresasByIdZona(listZonas.get(posZona-1).getId());
         cargarNombreEmpresas();
     }
     private void cargarNombreEmpresas(){
@@ -340,8 +418,8 @@ public class ActivityBasic extends AppCompatActivity {
     }
     private void cargarContactos() {
         ContactoDAO contactoDAO = new ContactoDAO(getBaseContext());
-        int posEmpresa = spnFundo.getSelectedItemPosition();
-        listContactos = contactoDAO.listarByIdFundo(listFundos.get(posEmpresa-1).getId());
+        int posFundo = spnFundo.getSelectedItemPosition();
+        listContactos = contactoDAO.listarByIdFundo(listFundos.get(posFundo-1).getId());
         cargarNombreContactos();
     }
     private void cargarNombreContactos() {

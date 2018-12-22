@@ -52,6 +52,7 @@
                 android:id="@+id/rec_spnFrecuencia"
                 style="@style/Widget.AppCompat.DropDownItem.Spinner"
                 android:layout_width="match_parent"
+                android:spinnerMode="dialog"
                 android:layout_height="wrap_content"
                 android:entries="@array/empresas" />
         </RelativeLayout>
@@ -82,6 +83,7 @@
         <Spinner
             android:id="@+id/rec_spnUnidades"
             android:layout_width="match_parent"
+            android:spinnerMode="dialog"
             android:layout_height="wrap_content"
             android:entries="@array/empresas" />
 

@@ -32,12 +32,12 @@ public class ActivityPreloader extends AppCompatActivity {
 
                 if (networkInfo != null && networkInfo.isConnected()) {
                     // Si hay conexión a Internet en este momento
-                    Toast.makeText(getBaseContext(),"Online Mode On!",
-                            Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getBaseContext(),"Online Mode On!",
+                      //      Toast.LENGTH_SHORT).show();
 
                 } else {
-                    Toast.makeText(getBaseContext(),"Offline Mode On!",
-                            Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getBaseContext(),"Offline Mode On!",
+                    //        Toast.LENGTH_SHORT).show();
                     //varieble para comprovar si esas logueado
                 }
 

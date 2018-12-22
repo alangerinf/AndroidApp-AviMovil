@@ -74,7 +74,7 @@ public class TipoRecomendacionDAO {
             cursor.close();
 
         }catch (Exception e){
-            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT);
+            Toast.makeText(ctx,e.toString(),Toast.LENGTH_LONG).show();
         }
         c.close();
         return temp;
@@ -122,7 +122,7 @@ public class TipoRecomendacionDAO {
             }
             cursor.close();
         }catch (Exception e){
-            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx,e.toString(),Toast.LENGTH_LONG).show();
         }
         c.close();
         return tipoRecomendacionVOS;

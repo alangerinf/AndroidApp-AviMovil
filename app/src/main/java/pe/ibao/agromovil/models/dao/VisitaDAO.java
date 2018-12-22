@@ -554,13 +554,13 @@ public class VisitaDAO {
                 c.close();
                 resVisita = getEditing();
                 Log.d(TAG,"--->"+resVisita.getFechaHoraIni());
-                Toast.makeText(ctx, "Nueva Visita Registrada:" + id, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(ctx, "Nueva Visita Registrada:" + id, Toast.LENGTH_SHORT).show();
             }
             catch (Exception e){
                 Log.d(TAG,"Intentar nuevo"+e.toString());
             }
         } else{
-            Toast.makeText(ctx,"Abriendo Visita "/*+resVisita.getId()*/,Toast.LENGTH_SHORT).show();
+           // Toast.makeText(ctx,"Abriendo Visita "/*+resVisita.getId()*/,Toast.LENGTH_SHORT).show();
         }
         return resVisita;
     }

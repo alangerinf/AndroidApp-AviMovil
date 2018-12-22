@@ -15,6 +15,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(Utilities.CREATE_TABLE_USUARIO);
+        db.execSQL(Utilities.CREATE_TABLE_ZONA);
         db.execSQL(Utilities.CREATE_TABLE_EMPRESA);
         db.execSQL(Utilities.CREATE_TABLE_FUNDO);
         db.execSQL(Utilities.CREATE_TABLE_CULTIVO);
@@ -40,6 +41,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_USUARIO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EMPRESA);
+        db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_ZONA);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_FUNDO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_CULTIVO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_VARIEDAD);

@@ -4,9 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.widget.Toast;
 
-import java.net.PortUnreachableException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +17,11 @@ import pe.ibao.agromovil.utilities.Utilities;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_IDZONA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_IDEMPRESA;
-import static pe.ibao.agromovil.utilities.Utilities.TABLE_MUESTRA;
 
 public class EmpresaDAO {
 
@@ -46,12 +46,13 @@ public class EmpresaDAO {
         return flag;
     }
 
-    public boolean insertarEmpresa(int id, String name){
+    public boolean insertarEmpresa(int id, String name,int idZona){
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_EMPRESA_COL_ID,id);
         values.put(Utilities.TABLE_EMPRESA_COL_NAME,name);
+        values.put(Utilities.TABLE_EMPRESA_COL_IDZONA,idZona);
         Long temp = db.insert(Utilities.TABLE_EMPRESA,Utilities.TABLE_EMPRESA_COL_ID,values);
         db.close();
         return (temp>0)?true:false;
@@ -62,17 +63,25 @@ public class EmpresaDAO {
         EmpresaVO temp = null;
         try{
             temp = new EmpresaVO();
-            Cursor cursor = db.rawQuery("SELECT E."+TABLE_EMPRESA_COL_ID+", E."+TABLE_EMPRESA_COL_NAME+" FROM "+TABLE_EMPRESA+" as E"+" WHERE "+"E."+TABLE_EMPRESA_COL_ID+" = "+String.valueOf(id),null);
+            Cursor cursor = db.rawQuery(
+                    "SELECT " +
+                        "E."+TABLE_EMPRESA_COL_ID+", " +
+                        "E."+TABLE_EMPRESA_COL_NAME+", "+
+                        "E."+TABLE_EMPRESA_COL_IDZONA+
+                        " FROM "+TABLE_EMPRESA+" as E"+
+                        " WHERE "+"E."+TABLE_EMPRESA_COL_ID+" = "+String.valueOf(id)
+            ,null);
             cursor.moveToFirst();
                 temp.setId(cursor.getInt(0));
                 temp.setName(cursor.getString(1));
+                temp.setIdZona(cursor.getInt(2));
             cursor.close();
         }catch (Exception e){
-            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT);
+            Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
         }
         return temp;
     }
-
+/*
     public EmpresaVO consultarEmpresaByIdFundo(int idFundo){
         SQLiteDatabase db = c.getReadableDatabase();
         EmpresaVO empresaVO = null;
@@ -92,16 +101,26 @@ public class EmpresaDAO {
         }
         return empresaVO;
     }
-    public List<EmpresaVO> listEmpresas(){
+  */
+    public List<EmpresaVO> listEmpresasByIdZona(int idZona){
         SQLiteDatabase db = c.getReadableDatabase();
-        List<EmpresaVO> empresas = new  ArrayList<EmpresaVO>();
+        List<EmpresaVO> empresas = new  ArrayList<>();
         try{
-            String[] campos = {TABLE_EMPRESA_COL_ID,TABLE_EMPRESA_COL_NAME};
-            Cursor cursor= db.query(TABLE_EMPRESA,campos,null,null,null,null,TABLE_EMPRESA_COL_NAME+" COLLATE UNICODE ASC");
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " +
+                            "E."+TABLE_EMPRESA_COL_ID+", " +
+                            "E."+TABLE_EMPRESA_COL_NAME+", "+
+                            "E."+TABLE_EMPRESA_COL_IDZONA+
+                            " FROM "+TABLE_EMPRESA+" as E"+
+                            " WHERE "+"E."+TABLE_EMPRESA_COL_IDZONA+" = "+String.valueOf(idZona)
+                    ,null);
             while(cursor.moveToNext()){
                 EmpresaVO temp = new EmpresaVO();
                     temp.setId(cursor.getInt(0));
                     temp.setName(cursor.getString(1));
+                    temp.setIdZona(cursor.getInt(2));
+                    Log.d("EmpresaDAOxdxd",""+temp.getName());
                 empresas.add(temp);
                // Toast.makeText(ctx,temp.getName(),Toast.LENGTH_SHORT).show();
             }

@@ -18,11 +18,10 @@
         android:layout_height="703dp"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
-
-        android:scaleType="matrix"
+        android:scaleType="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background" />
+        android:src="@drawable/background2_desenfocado" />
 
 
     <android.support.constraint.ConstraintLayout
@@ -54,7 +53,7 @@
             app:layout_constraintEnd_toStartOf="@+id/eTextUser"
             app:layout_constraintTop_toTopOf="@+id/eTextUser"
             app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/ic_account_circle" />
+            android:src="@drawable/ic_account_circle" />
 
 
         <EditText
@@ -109,7 +108,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/eTextPassword"
             app:layout_constraintEnd_toStartOf="@+id/eTextPassword"
             app:layout_constraintTop_toTopOf="@+id/eTextPassword"
-            app:srcCompat="@drawable/ic_lock" />
+            android:src="@drawable/ic_lock" />
 
         <ImageButton
             android:id="@+id/imgbtn_enter"
@@ -178,7 +177,7 @@
         app:layout_constraintStart_toStartOf="@+id/linearLayout2"
         app:layout_constraintTop_toTopOf="@+id/linearLayout2"
         app:layout_constraintVertical_bias="0.3"
-        app:srcCompat="@drawable/ic_app" />
+        android:src="@drawable/logo_incavo" />
 
     <ImageView
         android:id="@+id/imageView13"

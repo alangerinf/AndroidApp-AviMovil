@@ -41,6 +41,34 @@
 
 
         <RelativeLayout
+            android:id="@+id/relativeLayout20"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="8dp"
+
+            android:background="@drawable/shape_secondary_r15_borderlight_v2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/tViewEmpesa"
+            app:layout_constraintTop_toBottomOf="@+id/tViewZona">
+
+            <Spinner
+                android:id="@+id/spnZona"
+                style="@style/Widget.AppCompat.DropDownItem.Spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:dropDownWidth="match_parent"
+                android:entries="@array/zonas"
+                android:minWidth="15dp"
+                android:paddingVertical="5dp"
+                android:spinnerMode="dialog"
+                android:textAlignment="center"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/relativeLayout5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -140,10 +168,25 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/empresa"
             android:textColor="@color/primary"
             android:textSize="18sp"
-            android:text="@string/empresa"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout20" />
+
+        <TextView
+            android:id="@+id/tViewZona"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/zona"
+            android:textColor="@color/primary"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.05"
             app:layout_constraintStart_toStartOf="parent"
@@ -186,7 +229,7 @@
             android:id="@+id/textView35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/contacto"
             android:textColor="@color/primary"
             android:textSize="18sp"

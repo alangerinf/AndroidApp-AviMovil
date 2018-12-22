@@ -160,7 +160,9 @@ public class AdapterListMuestras extends BaseAdapter{
                 Button btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_close);
                 Button btnDialogAcept = (Button) dialogClose.findViewById(R.id.buton_acept);
                 ImageView iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);
+                TextView mensaje = (TextView) dialogClose.findViewById(R.id.textView11);
 
+                mensaje.setText("Esta a punto de eliminar un criterio de evaluación\n¿DESEA CONTINUAR?");
                 iViewDialogClose.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -184,7 +186,7 @@ public class AdapterListMuestras extends BaseAdapter{
                         if(!x){
                             Toast.makeText(ctx,"Error al eliminar",Toast.LENGTH_SHORT).show();
                         }else{
-                            Toast.makeText(ctx,"Eliminado",Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(ctx,"Eliminado",Toast.LENGTH_SHORT).show();
                         }
                         listMuestas.remove(position);
                         AdapterListMuestras.super.notifyDataSetChanged();

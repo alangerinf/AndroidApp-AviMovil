@@ -42,7 +42,7 @@ public class ActivityEscanerQR extends AppCompatActivity implements ZXingScanner
     public void handleResult(Result result) {
         Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(500);
-        Toast.makeText(getApplicationContext(),result.getText(),Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(),result.getText(),Toast.LENGTH_SHORT).show();
         Intent returnIntent = new Intent();
         returnIntent.putExtra(ActivityEvaluacion.QR_RESULT,result.getText());
         setResult(Activity.RESULT_OK,returnIntent);

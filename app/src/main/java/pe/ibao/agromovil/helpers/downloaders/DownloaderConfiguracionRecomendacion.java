@@ -28,6 +28,12 @@ import pe.ibao.agromovil.utilities.Utilities;
 
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_ZONA;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_ZONA_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_ZONA_COL_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CONFIGURACIONRECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_VARIEDAD;
 
@@ -72,7 +78,15 @@ public class DownloaderConfiguracionRecomendacion {
                                 clearConfiguracionRecomendacionUpload();
                                 status=2;
                             }
+                            String insert = "INSERT INTO " +
+                                        TABLE_CONFIGURACIONRECOMENDACION+
+                                    "("+TABLE_CONFIGURACIONRECOMENDACION_COL_ID+","+
+                                        TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD+","+
+                                        TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION+
+                                    ")"+
+                                    "VALUES ";
                             for(int i=0;i<main.length();i++){
+                                /*
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
                                 int idFundoVariedad = data.getInt("idFundoVariedad");
@@ -94,7 +108,56 @@ public class DownloaderConfiguracionRecomendacion {
 
                                 db.close();
                                 conn.close();
+                            */
+                                JSONObject data = new JSONObject(main.get(i).toString());
+                                int id = data.getInt("id");
+                                int idFundoVariedad = data.getInt("idFundoVariedad");
+                                int idCriterioRecomendacion = data.getInt("idCriterioRecomendacion");
+                                Log.d("CONFRECO",""+id);
+                                insert=insert+"("+id+","+idFundoVariedad+","+idCriterioRecomendacion+")";
+
+                                if(i%1000==0){
+                                    try{
+                                        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                                        SQLiteDatabase db = conn.getWritableDatabase();
+                                        db.execSQL(insert);
+                                        db.close();
+                                        conn.close();
+                                        insert = "INSERT INTO " +
+                                                TABLE_CONFIGURACIONRECOMENDACION+
+                                                "("+TABLE_CONFIGURACIONRECOMENDACION_COL_ID+","+
+                                                TABLE_CONFIGURACIONRECOMENDACION_COL_IDFUNDOVARIEDAD+","+
+                                                TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION+
+                                                ")"+
+                                                "VALUES ";
+
+                                    }catch (Exception e){
+                                        Log.d("errorCR",e.toString());
+                                    }
+                                }else {
+                                    if(main.length()-1!=i ){
+                                        insert=insert+",";
+                                    }
+                                }
+
+
+
+
                             }
+
+
+
+                            try{
+                            ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                            SQLiteDatabase db = conn.getWritableDatabase();
+                                db.execSQL(insert);
+                                db.close();
+                                conn.close();
+                            }catch (Exception e){
+                                Log.d("errorCR",e.toString());
+                            }
+
+
                             status = 3;
                         } catch (JSONException e) {
                             Log.d("CONFRECO ",e.toString());
