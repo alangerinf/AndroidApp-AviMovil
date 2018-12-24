@@ -211,7 +211,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
             //fijamos el son donde es
 
         }else{
-            Toast.makeText(this, "Agregue Muestras", Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(this, "Agregue Muestras", Toast.LENGTH_SHORT).show();
 
         }
 
@@ -228,7 +228,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
                     new EvaluacionDAO(getBaseContext()).editarIdTipoInspeccion(idEvaluacion,idTipoInspeccion);
                     lastItemSelected=0;
                 }else{
-                    Toast.makeText(getBaseContext(),"Seleccione una Inspeccion para ingresar Muestras",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(),"Seleccione una evalución para visualizar  los criterios",Toast.LENGTH_SHORT).show();
                 }
             }
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -396,7 +396,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
     }
     private void cargarNombreTipoInspeccion(){
         listNombreTipoInspeccion = new ArrayList<>();
-        listNombreTipoInspeccion.add("Seleccione Tipo");
+        listNombreTipoInspeccion.add("Seleccione Evaluación");
         for(TipoInspeccionVO temp : listTipoInspeccion){
             listNombreTipoInspeccion.add(temp.getName());
         }

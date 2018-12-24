@@ -165,9 +165,13 @@ public class ActivityMain extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.logout) {
             if (new VisitaDAO(getBaseContext()).listAll().size() > 0) {
-                Toast.makeText(getBaseContext(), "   ¡ Aun no sincroniza\ntodas sus Inspecciones !", Toast.LENGTH_LONG).show();
+                if(new VisitaDAO(getBaseContext()).getEditing()==null){
+                    Toast.makeText(getBaseContext(), "   ¡ Aun no sincroniza\ntodas sus Inspecciones !", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getBaseContext(), "   ¡ No puede cerrar sesión\nculmine su inspección actual!", Toast.LENGTH_LONG).show();
+                }
             } else {
-                Toast.makeText(getBaseContext(), "Desloagueando", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Cerrando Sesión", Toast.LENGTH_LONG).show();
                 new UsuarioDAO(getBaseContext()).borrarTable();
                 Intent intent = new Intent(getBaseContext(), ActivityPreloader.class);
                 startActivity(intent);
@@ -261,7 +265,7 @@ public class ActivityMain extends AppCompatActivity
                                 );
                                 finish();
                             } else {
-                                Toast.makeText(getBaseContext(), "No hay Inspecciones por Subir",
+                                Toast.makeText(getBaseContext(), "No hay Inspecciones para sincronizar",
                                         Toast.LENGTH_LONG).show();
                             }
 

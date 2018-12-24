@@ -165,6 +165,7 @@ public class ActivityBasic extends AppCompatActivity {
                                                                             }
                                                                         }else{
                                                                             spnContacto.setEnabled(false);
+                                                                            spnContacto.setSelection(0);
                                                                         }
                                                                     }
 
@@ -229,6 +230,7 @@ public class ActivityBasic extends AppCompatActivity {
                                     }
                                 }else{
                                     spnVariedad.setEnabled(false);
+                                    spnVariedad.setSelection(0);
                                 }
                             }
                             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -268,6 +270,7 @@ public class ActivityBasic extends AppCompatActivity {
                                                     spnContacto.setAdapter(adaptadorContactos);
                                                 }else{
                                                     spnContacto.setEnabled(false);
+                                                    spnContacto.setSelection(0);
                                                 }
 
                                             }
@@ -279,6 +282,7 @@ public class ActivityBasic extends AppCompatActivity {
                                         });
                                     }else{
                                         spnFundo.setEnabled(false);
+                                        spnFundo.setSelection(0);
                                     }
                                 }
                                 public void onNothingSelected(AdapterView<?> adapterView) {
@@ -310,6 +314,7 @@ public class ActivityBasic extends AppCompatActivity {
                             spnVariedad.setAdapter(adaptadorFundos);
                         }else{
                             spnVariedad.setEnabled(false);
+                            spnVariedad.setSelection(0);
                         }
                     }
                     public void onNothingSelected(AdapterView<?> adapterView) {
@@ -499,7 +504,7 @@ public class ActivityBasic extends AppCompatActivity {
                 if(!res){
                     Toast.makeText(getBaseContext(),"Error al intententar Modificar",Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(getBaseContext(),"Informacion Actualizada",Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getBaseContext(),"Informacion Actualizada",Toast.LENGTH_SHORT).show();
                 }
 
                 setResult(Activity.RESULT_OK,returnIntent);

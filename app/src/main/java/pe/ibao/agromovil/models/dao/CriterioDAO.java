@@ -147,7 +147,10 @@ public class CriterioDAO {
                             " AND "+
                             "FV."+TABLE_FUNDOVARIEDAD_COL_ID+"="+"CC."+TABLE_CONFIGURACIONCRITERIO_COL_IDFUNDOVARIEDAD+
                             " AND "+
-                            "CC."+TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO+"="+"C."+TABLE_CRITERIO_COL_ID
+                            "CC."+TABLE_CONFIGURACIONCRITERIO_COL_IDCRITERIO+"="+"C."+TABLE_CRITERIO_COL_ID+
+                            " ORDER BY "+
+                            "C."+TABLE_CRITERIO_COL_NAME+
+                            " COLLATE UNICODE ASC"
                     ,null);
             while (cursor.moveToNext()){
                 CriterioVO temp = new CriterioVO();

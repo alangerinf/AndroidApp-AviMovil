@@ -160,8 +160,7 @@ public class DownloaderTipoRecomendacion {
             protected Map<String,String> getParams(){
                 Map<String, String> params = new HashMap<String, String>();
                /* params.put(POST_USER, user);
-                params.put(POST_PASSWORD, pass);
-                */
+                params.put(POST_PASSWORD, pass);*/
                 return params;
             }
 

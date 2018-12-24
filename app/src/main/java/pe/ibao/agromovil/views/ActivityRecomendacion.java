@@ -94,11 +94,13 @@ public class ActivityRecomendacion extends Activity {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             ActivityVisita.lastTipoRecomendacionSelected = which;
+                            /*
                             Toast.makeText(
                                     getBaseContext(),
                                     "Seleccionaste: " + listTipoRecomendaciones.get(which).getName(),
                                     Toast.LENGTH_SHORT)
                                     .show();
+                            */
                             tipoRecomendacion = listTipoRecomendaciones.get(which);
                             tViewTipoRecomendacion.setText(tipoRecomendacion.getName());
                             //actualizar datos de toda la pagina
@@ -131,11 +133,13 @@ public class ActivityRecomendacion extends Activity {
                             dialog.dismiss();
 
                             lastCriterioRecomendacionSelect = which;
+                            /*
                             Toast.makeText(
                                     getBaseContext(),
                                     "Seleccionaste: "+ listCriterioRecomendaciones.get(which).getName(),
                                     Toast.LENGTH_SHORT)
                                     .show();
+                            */
                             criterioRecomendacion = listCriterioRecomendaciones.get(which);
 
                             new RecomendacionDAO(getBaseContext())

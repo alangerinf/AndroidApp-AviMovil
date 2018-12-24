@@ -142,7 +142,7 @@ public class ActivityVisita extends AppCompatActivity implements
             btnFinalizar.setVisibility(View.INVISIBLE);
             floatBtnNuevo.setVisibility(View.INVISIBLE);
             ((FloatingActionButton) findViewById(R.id.floatingActionButton)).setTranslationY(120);
-            setTitle("Inspeccion Antigua");
+            setTitle("Datos Inspección");
         }
 
         EvaluacionDAO evaluacionDAO = new EvaluacionDAO(this);
@@ -340,7 +340,7 @@ public class ActivityVisita extends AppCompatActivity implements
 
         listViewEvaluaciones.setAdapter(baseAdapter);
         setListViewHeightBasedOnChildren(listViewEvaluaciones);
-
+/*
         if(evaluacionVOList.size()==0){
             Toast.makeText(
                     this,
@@ -348,7 +348,7 @@ public class ActivityVisita extends AppCompatActivity implements
                     Toast.LENGTH_SHORT)
                     .show();
         }
-
+*/
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -514,7 +514,7 @@ public class ActivityVisita extends AppCompatActivity implements
 
         if(isEditable){
             if(!evaluacionVOList.isEmpty()) {
-                Toast.makeText(ctx, "Usted ya tiene evaluaciones agregadas",Toast.LENGTH_LONG).show();
+                Toast.makeText(ctx, "No pudes editar, ya tiene evaluaciones agregadas",Toast.LENGTH_LONG).show();
             }else{
                 Intent intent = new Intent(this,ActivityBasic.class);
                 Bundle mybundle = new Bundle();
@@ -557,11 +557,13 @@ public class ActivityVisita extends AppCompatActivity implements
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             lastTipoRecomendacionSelected = which;
+                           /*
                             Toast.makeText(
                                     getBaseContext(),
                                     "Seleccionaste: " + listTipoRecomendaciones.get(which).getName(),
                                     Toast.LENGTH_SHORT)
                                     .show();
+                           */
                             TipoRecomendacionVO temp = listTipoRecomendaciones.get(which);
                             Intent i = new Intent(getBaseContext(), ActivityRecomendacion.class);
                             i.putExtra("idVisita",visita.getId());

@@ -123,7 +123,7 @@ public class AdapterListVisitas extends BaseAdapter{
                 final Dialog dialogClose = new Dialog(ctx);
                 dialogClose.setContentView(R.layout.dialog_danger);
                 TextView mensaje = (TextView)  dialogClose.findViewById(R.id.textView11);
-                mensaje.setText("Esta apunto de eliminar una inspección\n¿DESEA CONTINUAR?");
+                mensaje.setText("Esta a punto de eliminar una inspección\n¿DESEA CONTINUAR?");
                 Button btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_close);
                 Button btnDialogAcept = (Button) dialogClose.findViewById(R.id.buton_acept);
                 ImageView iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);
