@@ -147,15 +147,14 @@ public class AdapterListVisitas extends BaseAdapter{
                     @Override
                     public void onClick(View v) {
 
-                        boolean x=new MuestrasDAO(ctx).borrarMuestraById(listVisitas.get(position).getId());
-                        if(!x){
-                            Toast.makeText(ctx,"Error al eliminar",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(ctx,"Eliminado",Toast.LENGTH_SHORT).show();
+
+
+                        if(new VisitaDAO(ctx).borrarById(visitaVO.getId())){
+                            listVisitas.remove(position);
+                            AdapterListVisitas.super.notifyDataSetChanged();
+                        }else {
+                            Toast.makeText(ctx,"No se pudo Eliminar",Toast.LENGTH_LONG).show();
                         }
-                        listVisitas.remove(position);
-                        AdapterListVisitas.super.notifyDataSetChanged();
-                        new VisitaDAO(ctx).borrarById(visitaVO.getId());
                         dialogClose.dismiss();
                     }
                 });

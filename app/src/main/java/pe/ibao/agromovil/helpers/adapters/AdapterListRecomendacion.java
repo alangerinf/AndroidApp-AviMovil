@@ -57,6 +57,15 @@ public class AdapterListRecomendacion extends BaseAdapter{
         return recomendacionList.get(position).getId();
     }
 
+    public boolean isAllValid(){
+        for(RecomendacionVO vo : recomendacionList){
+            if(vo.getCantidad().isEmpty()){
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ctx = parent.getContext();

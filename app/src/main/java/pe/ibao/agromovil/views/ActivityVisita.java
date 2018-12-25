@@ -430,6 +430,10 @@ public class ActivityVisita extends AppCompatActivity implements
     }
 */
 
+
+
+
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -474,7 +478,7 @@ public class ActivityVisita extends AppCompatActivity implements
                     tViewContacto.setText(temp);
                     visita = new VisitaDAO(ctx).buscarById((long)visita.getId());
                 }else{
-                    Toast.makeText(ctx,"Editicion no Guardada",Toast.LENGTH_LONG).show();
+                    Toast.makeText(ctx,"Edición no Guardada",Toast.LENGTH_LONG).show();
                 }
 
             break;
@@ -514,7 +518,7 @@ public class ActivityVisita extends AppCompatActivity implements
 
         if(isEditable){
             if(!evaluacionVOList.isEmpty()) {
-                Toast.makeText(ctx, "No pudes editar, ya tiene evaluaciones agregadas",Toast.LENGTH_LONG).show();
+                Toast.makeText(ctx, "No puede editar, ya tiene evaluaciones agregadas",Toast.LENGTH_LONG).show();
             }else{
                 Intent intent = new Intent(this,ActivityBasic.class);
                 Bundle mybundle = new Bundle();
@@ -540,7 +544,8 @@ public class ActivityVisita extends AppCompatActivity implements
 
     public void showListTipoRecomendacion(View view){
 
-        //if(isEditable){
+        if(visita.getIdFundo()>0 && visita.getIdVariedad()>0){
+            //if(isEditable){
             listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdFundoIdVariedad(visita.getIdFundo(),visita.getIdVariedad());
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
 
@@ -549,7 +554,6 @@ public class ActivityVisita extends AppCompatActivity implements
             for(int i = 0; i< listTipoRecomendaciones.size(); i++){
                 items[i]= listTipoRecomendaciones.get(i).getName();
             }
-
 
             dialogo.setTitle("Tipos de Recomendación")
                     .setSingleChoiceItems(items, lastTipoRecomendacionSelected, new DialogInterface.OnClickListener() {
@@ -576,7 +580,11 @@ public class ActivityVisita extends AppCompatActivity implements
                         }
                     });
             dialogo.show();
-        //}
+            //}
+        }else{
+                Toast.makeText(ctx,"Primero configura tus Datos Basicos",Toast.LENGTH_LONG).show();
+        }
+
 
     }
 

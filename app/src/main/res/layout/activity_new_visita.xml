@@ -177,7 +177,7 @@
                     android:id="@+id/textView28"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hora de Inicio"
+                    android:text="Hora Inicio"
                     app:layout_constraintEnd_toEndOf="@+id/textView27"
                     app:layout_constraintTop_toTopOf="@+id/textView18" />
 

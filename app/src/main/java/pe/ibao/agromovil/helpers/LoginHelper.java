@@ -89,7 +89,7 @@ public class LoginHelper {
                                     }
                                 }
                             }else{
-                                Toast.makeText(ctx,"Credenciales Incorrectas",Toast.LENGTH_LONG).show();
+                                Toast.makeText(ctx,"Verifique su Usuario y/o Contraseña",Toast.LENGTH_LONG).show();
                                 Log.d("autentification","success0");
                                 Log.d("autentification",user);
                                 Log.d("autentification",pass);

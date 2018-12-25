@@ -67,9 +67,15 @@ public class ActivityRecomendacion extends Activity {
         lViewRecomendaciones.setAdapter(adapterListRecomendacion);
 
         if(!isEditable){
-            FloatingActionButton plus = (FloatingActionButton) findViewById(R.id.fButton_ReturnVisita);
-            plus.setClickable(false);
+            addInvisible();
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void addInvisible(){
+        FloatingActionButton plus = (FloatingActionButton) findViewById(R.id.fButton_ReturnVisita);
+        plus.setClickable(false);
+        plus.setVisibility(View.INVISIBLE);
     }
 
     public void end(View view) {
@@ -78,7 +84,9 @@ public class ActivityRecomendacion extends Activity {
 
 
     public void showListTipoRecomendacion(View view){
-       // if(isEditable){
+
+        if(adapterListRecomendacion.isAllValid()){
+            // if(isEditable){
             listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdFundoIdVariedad(visita.getIdFundo(),visita.getIdVariedad());
             AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
 
@@ -93,6 +101,9 @@ public class ActivityRecomendacion extends Activity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
+                            if(ActivityVisita.lastTipoRecomendacionSelected!=which){
+                                lastCriterioRecomendacionSelect=0;
+                            }
                             ActivityVisita.lastTipoRecomendacionSelected = which;
                             /*
                             Toast.makeText(
@@ -107,14 +118,21 @@ public class ActivityRecomendacion extends Activity {
                             listRecomendaciones = new RecomendacionDAO(getBaseContext())
                                     .listarByIdTipoRecomendacionIdVisita(tipoRecomendacion.getId()
                                             ,visita.getId());
-                           // Toast.makeText(getBaseContext(),""+listRecomendaciones.size(),Toast.LENGTH_LONG).show();
+                            // Toast.makeText(getBaseContext(),""+listRecomendaciones.size(),Toast.LENGTH_LONG).show();
                             //actualizar adaptador
                             adapterListRecomendacion = new AdapterListRecomendacion(getBaseContext(),listRecomendaciones,isEditable);
                             lViewRecomendaciones.setAdapter(adapterListRecomendacion);
                         }
                     });
             dialogo.show();
-        //}
+            //}
+
+        }else {
+            Toast.makeText(getBaseContext(),"Llene todo los campos Cantidad para continuar",Toast.LENGTH_SHORT).show();
+        }
+
+
+
 
     }
 
@@ -162,9 +180,13 @@ public class ActivityRecomendacion extends Activity {
 
     @Override
     public void onBackPressed() {
-        Intent returnIntent = new Intent();
-        setResult(Activity.RESULT_OK,returnIntent);
-        finish();
-        overridePendingTransition(R.anim.fade_in, R.anim.top_out);
+        if(adapterListRecomendacion.isAllValid()){
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK,returnIntent);
+            finish();
+            overridePendingTransition(R.anim.fade_in, R.anim.top_out);
+        }else {
+            Toast.makeText(getBaseContext(),"Llene todo los campos Cantidad para continuar",Toast.LENGTH_SHORT).show();
+        }
     }
 }

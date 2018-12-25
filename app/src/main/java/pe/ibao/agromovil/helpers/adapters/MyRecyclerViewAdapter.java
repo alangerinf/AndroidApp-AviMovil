@@ -73,8 +73,12 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        btnDelete.setVisibility(View.VISIBLE);
-                        Toast.makeText(ctx,"seleccionado"+position,Toast.LENGTH_SHORT).show();
+                        if(isEditable){
+                            btnDelete.setVisibility(View.VISIBLE);
+                        }else {
+                            btnDelete.setVisibility(View.INVISIBLE);
+                        }
+                        //Toast.makeText(ctx,"seleccionado"+position,Toast.LENGTH_SHORT).show();
                         Bitmap bitmap = BitmapFactory.decodeFile(listFotos.get(position).getPath());
                         idFotoFocus = listFotos.get(position).getId();
                         int rotate = 0;

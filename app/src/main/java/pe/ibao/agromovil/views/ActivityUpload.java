@@ -28,7 +28,7 @@ public class ActivityUpload extends AppCompatActivity {
         porcentaje = (TextView) findViewById(R.id.update_tViewPorcentaje);
         mensaje = (TextView) findViewById(R.id.update_tViewMensaje);
 
-        Toast.makeText(getBaseContext(),"Enviando Data",
+        Toast.makeText(getBaseContext(),"Enviando Data...",
                 Toast.LENGTH_SHORT).show();
         UploadMaster.status=0;
 

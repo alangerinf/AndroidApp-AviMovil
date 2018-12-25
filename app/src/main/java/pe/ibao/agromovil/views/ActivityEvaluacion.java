@@ -228,7 +228,10 @@ public class ActivityEvaluacion extends AppCompatActivity {
                     new EvaluacionDAO(getBaseContext()).editarIdTipoInspeccion(idEvaluacion,idTipoInspeccion);
                     lastItemSelected=0;
                 }else{
-                    Toast.makeText(getBaseContext(),"Seleccione una evalución para visualizar  los criterios",Toast.LENGTH_SHORT).show();
+                    idTipoInspeccion=0;
+                    new EvaluacionDAO(getBaseContext()).editarIdTipoInspeccion(idEvaluacion,idTipoInspeccion);
+                    lastItemSelected=0;
+                    Toast.makeText(getBaseContext(),"Seleccione una evaluación para visualizar  los criterios",Toast.LENGTH_SHORT).show();
                 }
             }
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -239,22 +242,18 @@ public class ActivityEvaluacion extends AppCompatActivity {
     }
 
 
-
     public static void setListViewHeightBasedOnChildren(ListView listView) {
         ListAdapter listAdapter = listView.getAdapter();
-
         Log.d("tamano",""+listAdapter.getCount());
         if (listAdapter == null) {
             return;
         }
-
         int totalHeight = 0;
         for (int i = 0; i < listAdapter.getCount(); i++) {
             View listItem = listAdapter.getView(i, null, listView);
             listItem.measure(0, 0);
             totalHeight += listItem.getMeasuredHeight();
         }
-
         ViewGroup.LayoutParams params = listView.getLayoutParams();
         params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
         listView.setLayoutParams(params);
@@ -269,7 +268,6 @@ public class ActivityEvaluacion extends AppCompatActivity {
 
         }
     }*/
-
     @Override
     public boolean onSupportNavigateUp() {
        // super.onSupportNavigateUp();
@@ -279,8 +277,6 @@ public class ActivityEvaluacion extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-
-
         if(new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getIdTipoInspeccion()==0){
             new EvaluacionDAO(getBaseContext()).borrarById(idEvaluacion);
         }
@@ -288,23 +284,18 @@ public class ActivityEvaluacion extends AppCompatActivity {
         Intent returnIntent = new Intent();
         setResult(Activity.RESULT_CANCELED,returnIntent);
         finish();
-
-
     }
-
-
 
     public void getQRCode(View view){
 
         //pedir permisos
         //verificar permisos
 
-    if(validarPermisos() && isEditable) {
-        /*Intent i = new Intent(this, QRScannerActivity.class);*/
-        Intent i = new Intent(this, ActivityEscanerQR.class);
-        startActivityForResult(i, REQUEST_QR_CODE);//cambie  aqui de 1
-    }
-
+        if(validarPermisos() && isEditable) {
+            /*Intent i = new Intent(this, QRScannerActivity.class);*/
+            Intent i = new Intent(this, ActivityEscanerQR.class);
+            startActivityForResult(i, REQUEST_QR_CODE);//cambie  aqui de 1
+        }
 
     }
 
@@ -406,48 +397,54 @@ public class ActivityEvaluacion extends AppCompatActivity {
 
     public void showList(View view){
 
-        if(isEditable){
-            CRITERIOS = new CriterioDAO(getBaseContext()).listarByIdTipoInspeccionIdFundoIdVariedad(idTipoInspeccion,idFundo,idVariedad);
-            AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
+        if(idTipoInspeccion>0){
+            if(isEditable){
+                CRITERIOS = new CriterioDAO(getBaseContext()).listarByIdTipoInspeccionIdFundoIdVariedad(idTipoInspeccion,idFundo,idVariedad);
+                AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
 
-            final CharSequence[] items = new CharSequence[ CRITERIOS.size()];
+                final CharSequence[] items = new CharSequence[ CRITERIOS.size()];
 
-            for(int i = 0; i< CRITERIOS.size(); i++){
-                items[i]= CRITERIOS.get(i).getName();
-            }
+                for(int i = 0; i< CRITERIOS.size(); i++){
+                    items[i]= CRITERIOS.get(i).getName();
+                }
 
 
-            dialogo.setTitle("Criterios de Evaluación")
-                    .setSingleChoiceItems(items, lastItemSelected, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            lastItemSelected=which;
+                dialogo.setTitle("Criterios de Evaluación")
+                        .setSingleChoiceItems(items, lastItemSelected, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                lastItemSelected=which;
                             /*Toast.makeText(
                                     getBaseContext(),
                                     "Seleccionaste: " + CRITERIOS.get(which).getName(),
                                     Toast.LENGTH_SHORT)
                                     .show();
                             */
-                            CriterioVO temp = CRITERIOS.get(which);
-                            Log.d("locomata","antes de mandar "+idEvaluacion+" "+temp.getId());
-                            MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId(),new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getIdTipoInspeccion());
-                            saveMuestras.add(temp2);
-                            adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas,spnTipoInspeccion,isEditable);
-                            listViewMuestas.setAdapter(adapterListMuestras);
-                            setListViewHeightBasedOnChildren(listViewMuestas);
-                            spnTipoInspeccion.setEnabled(false);
-                            final ScrollView scrollView = findViewById(R.id.ScrollEva);
-                            scrollView.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                                }
-                            });
-                        }
-                    });
-            dialogo.show();
+                                CriterioVO temp = CRITERIOS.get(which);
+                                Log.d("locomata","antes de mandar "+idEvaluacion+" "+temp.getId());
+                                MuestraVO temp2 = new MuestrasDAO(getBaseContext()).nuevoByIdEvaluacionIdCriterio(idEvaluacion,temp.getId(),new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getIdTipoInspeccion());
+                                saveMuestras.add(temp2);
+                                adapterListMuestras = new AdapterListMuestras(getBaseContext(), saveMuestras,listViewMuestas,spnTipoInspeccion,isEditable);
+                                listViewMuestas.setAdapter(adapterListMuestras);
+                                setListViewHeightBasedOnChildren(listViewMuestas);
+                                spnTipoInspeccion.setEnabled(false);
+                                final ScrollView scrollView = findViewById(R.id.ScrollEva);
+                                scrollView.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                                    }
+                                });
+                            }
+                        });
+                dialogo.show();
+            }
+        }else {
+            Toast.makeText(getBaseContext(),"Seleccione una evaluación para visualizar  los criterios",Toast.LENGTH_SHORT).show();
         }
+
+
 
     }
 

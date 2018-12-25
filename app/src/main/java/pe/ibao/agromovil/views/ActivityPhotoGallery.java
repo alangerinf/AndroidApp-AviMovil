@@ -93,23 +93,20 @@ public class ActivityPhotoGallery extends AppCompatActivity {
             @Override
             public void onClick(View v) {
             //    Toast.makeText(getBaseContext(),"id foto :"+MyRecyclerViewAdapter.idFotoFocus,Toast.LENGTH_SHORT).show();
+                boolean delete=false;
+                try {
+                    File file = new File(new FotoDAO(getBaseContext()).consultarById(MyRecyclerViewAdapter.idFotoFocus).getPath());
+                    delete = file.delete();
+                }catch (Exception e) {
+                    Toast.makeText(getBaseContext(),e.toString(),Toast.LENGTH_LONG).show();
+                }
+
                 if(new FotoDAO(getBaseContext()).borrarById(MyRecyclerViewAdapter.idFotoFocus)){
-                    int tam=0;
-                    try{
-                        File file = new File(new FotoDAO(getBaseContext()).consultarById(MyRecyclerViewAdapter.idFotoFocus).getPath());
-                        boolean delete = file.delete();
                         if(!delete){
-                            tam++;
                             Log.d("fotoxdxd"," Error eliminando");
                         }else{
                             Log.d("fotoxdxd","eliminado");
                         }
-                    }catch (Exception e){
-                        tam++;
-                    }
-                    if(tam>0){
-                        Toast.makeText(getBaseContext(),"No se pudo Eliminar "+tam+" Foto"+(tam>1?"s":" !"),Toast.LENGTH_LONG).show();
-                    }
 
                     listFotos = new FotoDAO(getBaseContext()).listarByIdMuestra(idMuestra);
                     adapter = new MyRecyclerViewAdapter(getBaseContext(),listFotos,iViewLienzo,isEditable,idFotoFocus,btnDelete);

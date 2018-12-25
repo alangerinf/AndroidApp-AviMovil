@@ -171,7 +171,7 @@ public class ActivityMain extends AppCompatActivity
                     Toast.makeText(getBaseContext(), "   ¡ No puede cerrar sesión\nculmine su inspección actual!", Toast.LENGTH_LONG).show();
                 }
             } else {
-                Toast.makeText(getBaseContext(), "Cerrando Sesión", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Cerrando Sesión...", Toast.LENGTH_LONG).show();
                 new UsuarioDAO(getBaseContext()).borrarTable();
                 Intent intent = new Intent(getBaseContext(), ActivityPreloader.class);
                 startActivity(intent);
