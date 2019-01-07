@@ -13,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,8 +24,12 @@ import java.util.Map;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.app.AppController;
+import pe.ibao.agromovil.helpers.LoginHelper;
+import pe.ibao.agromovil.models.dao.UsuarioDAO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO_COL_ID;
@@ -48,7 +53,7 @@ public class DownloaderConfiguracionCriterio {
 
     public boolean clearConfiguracionCriterioUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = conn.getWritableDatabase();
 
         int res = db.delete(TABLE_CONFIGURACIONCRITERIO,null,null);
@@ -120,7 +125,7 @@ public class DownloaderConfiguracionCriterio {
                                 insert=insert+"("+id+","+idCriterio+","+idFundoVariedad+")";
                                 if(i%1000==0){
                                     try{
-                                        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                                        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
                                         SQLiteDatabase db = conn.getWritableDatabase();
                                         db.execSQL(insert);
                                         db.close();
@@ -140,11 +145,9 @@ public class DownloaderConfiguracionCriterio {
                                         insert=insert+",";
                                     }
                                 }
-
                             }
-
                             try{
-                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
                                 SQLiteDatabase db = conn.getWritableDatabase();
                                 db.execSQL(insert);
                                 db.close();
@@ -174,6 +177,9 @@ public class DownloaderConfiguracionCriterio {
                /* params.put(POST_USER, user);
                 params.put(POST_PASSWORD, pass);
                 */
+                UsuarioVO temp = new LoginHelper(ctx).verificarLogueo();
+                params.put("id",String.valueOf(temp.getId()));
+                params.put("idInspector",String.valueOf(temp.getCodigo()));
 
                 return params;
             }
@@ -218,7 +224,7 @@ public class DownloaderConfiguracionCriterio {
                                 int idCriterio = data.getInt("idCriterioInspeccion");
                                 Log.d("CONFCRITERIODOWN","fila "+i+" : "+id+" "+idFundoVariedad+" "+idCriterio);
 
-                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
                                 SQLiteDatabase db = conn.getWritableDatabase();
 
                                 ContentValues values = new ContentValues();

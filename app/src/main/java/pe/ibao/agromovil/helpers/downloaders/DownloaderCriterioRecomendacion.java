@@ -2,6 +2,7 @@ package pe.ibao.agromovil.helpers.downloaders;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,10 +20,27 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.app.AppController;
+import pe.ibao.agromovil.helpers.LoginHelper;
 import pe.ibao.agromovil.models.dao.CriterioDAO;
 import pe.ibao.agromovil.models.dao.CriterioRecomendacionDAO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
+import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_LISTUNIDADES;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_IDTIPOINSPECCION;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_MAGNITUD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_NAME;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_TIPO;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CRITERIORECOMENDACION;
 
@@ -54,6 +72,17 @@ public class DownloaderCriterioRecomendacion {
                                 new CriterioRecomendacionDAO(ctx).clearTableUpload();
                                 status=2;
                             }
+                            String insert = "INSERT INTO " +
+                                    TABLE_CRITERIORECOMENDACION+
+                                    "("+
+                                    TABLE_CRITERIORECOMENDACION_COL_ID+","+
+                                    TABLE_CRITERIORECOMENDACION_COL_NAME+","+
+                                    TABLE_CRITERIORECOMENDACION_COL_LISTUNIDADES+","+
+                                    TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS+","+
+                                    TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+
+                                    ")"+
+                                    "VALUES ";
+
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
@@ -61,11 +90,48 @@ public class DownloaderCriterioRecomendacion {
                                 String unidades = data.getString("unidadmedidas");
                                 String frecuencias = data.getString("frecuencias");
                                 int idTipoRecomendacion = data.getInt("idTipoRecomendacion");
-
+/*
                                 Log.d("CRIRECO-DOWN","fila "+i+" : "+id+" "+nombre+" "+unidades+" "+frecuencias+" "+idTipoRecomendacion);
                                 if(new CriterioRecomendacionDAO(ctx).insertar(id,nombre,unidades,frecuencias,idTipoRecomendacion) != null){
                                     Log.d("CRIRECO-DOWN","logro insertar");
                                 }
+                                */
+                                insert=insert+"("+id+",\""+nombre+"\",\""+unidades+"\",\""+frecuencias+"\","+idTipoRecomendacion+")";
+                                if(i%1000==0&& i>0){
+                                    try{
+                                        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
+                                        SQLiteDatabase db = conn.getWritableDatabase();
+                                        db.execSQL(insert);
+                                        db.close();
+                                        conn.close();
+                                        insert = "INSERT INTO " +
+                                                TABLE_CRITERIORECOMENDACION+
+                                                "("+
+                                                TABLE_CRITERIORECOMENDACION_COL_ID+","+
+                                                TABLE_CRITERIORECOMENDACION_COL_NAME+","+
+                                                TABLE_CRITERIORECOMENDACION_COL_LISTUNIDADES+","+
+                                                TABLE_CRITERIORECOMENDACION_COL_LISTFRECUENCIAS+","+
+                                                TABLE_CRITERIORECOMENDACION_COL_IDTIPORECOMENDACION+
+                                                ")"+
+                                                "VALUES ";
+                                    }catch (Exception e){
+                                        Log.d("errorCR",e.toString());
+                                    }
+                                }else {
+                                    if(main.length()-1!=i ){
+                                        insert=insert+",";
+                                    }
+                                }
+
+                            }
+                            try{
+                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
+                                SQLiteDatabase db = conn.getWritableDatabase();
+                                db.execSQL(insert);
+                                db.close();
+                                conn.close();
+                            }catch (Exception e){
+                                Log.d("errorCR",e.toString());
                             }
                             status = 3;
 
@@ -89,6 +155,10 @@ public class DownloaderCriterioRecomendacion {
                /* params.put(POST_USER, user);
                 params.put(POST_PASSWORD, pass);
                 */
+
+                UsuarioVO temp = new LoginHelper(ctx).verificarLogueo();
+                params.put("id",String.valueOf(temp.getId()));
+                params.put("idInspector",String.valueOf(temp.getCodigo()));
 
                 return params;
             }

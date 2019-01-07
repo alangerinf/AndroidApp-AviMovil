@@ -13,6 +13,7 @@ import java.util.List;
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.ZonaVO;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_ZONA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_ZONA_COL_ID;
@@ -23,14 +24,14 @@ public class ZonaDAO {
     Context ctx;
     ConexionSQLiteHelper c;
     public ZonaDAO(Context ctx) {
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB );
         this.ctx=ctx;
     }
 
 
     public boolean borrarTable(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_ZONA,null,null);
         if(res>0){
@@ -43,7 +44,7 @@ public class ZonaDAO {
 
     public boolean insertarZona(int id, String name){
 
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         try {
             ContentValues values = new ContentValues();
@@ -112,7 +113,7 @@ public class ZonaDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_ZONA,null,null);
         if(res>0){

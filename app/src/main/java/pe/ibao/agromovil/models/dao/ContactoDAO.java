@@ -13,6 +13,7 @@ import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.ContactoVO;
 
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONTACTO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONTACTO_COL_ID;
@@ -28,7 +29,7 @@ public class ContactoDAO {
 
     public ContactoVO consultarContactoByid(int id){
         ConexionSQLiteHelper c;
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         ContactoVO temp = null;
         try{
@@ -58,7 +59,7 @@ public class ContactoDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_CONTACTO,null,null);
         if(res>0){
@@ -71,7 +72,7 @@ public class ContactoDAO {
 
     public List<ContactoVO> listarByIdFundo(int idFundo){
         ConexionSQLiteHelper c;
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = c.getReadableDatabase();
         List<ContactoVO> contactoVOS = new ArrayList<ContactoVO>();
         try{
@@ -105,7 +106,7 @@ public class ContactoDAO {
 
 
     public boolean insertarContacto(int id, String name,int idFundo){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_CONTACTO_COL_ID,id);

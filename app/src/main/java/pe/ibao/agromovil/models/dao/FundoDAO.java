@@ -14,6 +14,7 @@ import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_ID;
@@ -40,7 +41,7 @@ public class FundoDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_FUNDO,null,null);
         if(res>0){
@@ -51,7 +52,7 @@ public class FundoDAO {
         return flag;
     }
     public boolean insertarFundo(int id, String name,int idEmpresa,String sistemaRiego){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_FUNDO_COL_ID,id);
@@ -64,7 +65,7 @@ public class FundoDAO {
     }
     public FundoVO consultarById(int id) {
         ConexionSQLiteHelper c;
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         FundoVO temp = null;
         try{
@@ -96,7 +97,7 @@ public class FundoDAO {
 
     public List<FundoVO> listarByIdEmpresa(int idEmpresa){
         ConexionSQLiteHelper c;
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<FundoVO> fundoVOS = new ArrayList<FundoVO>();
         try{

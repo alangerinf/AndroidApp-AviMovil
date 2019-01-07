@@ -13,6 +13,7 @@ import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.CultivoVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CULTIVO_COL_ID;
@@ -34,7 +35,7 @@ public class CultivoDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_CULTIVO,null,null);
         if(res>0){
@@ -46,7 +47,7 @@ public class CultivoDAO {
     }
 
     public boolean insertarCultivo(int id, String name){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_CULTIVO_COL_ID,id);
@@ -59,7 +60,7 @@ public class CultivoDAO {
 
     public boolean borrarTable(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_CULTIVO,null,null);
         if(res>0){
@@ -72,7 +73,7 @@ public class CultivoDAO {
 
     public CultivoVO consultarCultivoByid(int id){
         ConexionSQLiteHelper c;
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         CultivoVO temp = null;
         try{
@@ -102,7 +103,7 @@ public class CultivoDAO {
 
     public CultivoVO consultarCultivoByIdVariedad(int idVariedad){
         ConexionSQLiteHelper c;
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         CultivoVO cultivoVO = null;
         try{
@@ -124,7 +125,7 @@ public class CultivoDAO {
     }
     public List<CultivoVO> listCultivos(){
         ConexionSQLiteHelper c;
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = c.getReadableDatabase();
         List<CultivoVO> cultivos = new ArrayList<>();
         try{

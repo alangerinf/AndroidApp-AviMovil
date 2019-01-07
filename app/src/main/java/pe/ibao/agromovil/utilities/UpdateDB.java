@@ -29,6 +29,7 @@ import pe.ibao.agromovil.models.dao.TipoInspeccionDAO;
 import pe.ibao.agromovil.models.dao.TipoRecomendacionDAO;
 import pe.ibao.agromovil.models.dao.VariedadDAO;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
@@ -123,7 +124,7 @@ public class UpdateDB {
 
 
     public void cargarContactos(){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         Long temp;
         ContentValues values = new ContentValues();
@@ -145,7 +146,7 @@ public class UpdateDB {
 
     public void cargarEmpresas(){
 
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_EMPRESA_COL_ID,"1");
@@ -161,7 +162,7 @@ public class UpdateDB {
     }
     public void cargarFundos(){
 
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -192,7 +193,7 @@ public class UpdateDB {
 
     public void cargarCultivos(){
 
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -210,7 +211,7 @@ public class UpdateDB {
     }
     public void cargarVariedad(){
 
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -234,7 +235,7 @@ public class UpdateDB {
     }
     public void cargarFundoVariedad(){
 
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -278,7 +279,7 @@ public class UpdateDB {
 
     public void cargarTipoInspeccion(){
 
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -302,7 +303,7 @@ public class UpdateDB {
 
     public void cargarCriterio(){
 
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -394,7 +395,7 @@ public class UpdateDB {
 
     public void cargarConfiguracionCriterio(){
 
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         int k=0;
@@ -413,7 +414,7 @@ public class UpdateDB {
 
 
     public void cargarVisitas(){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         Log.d("cargarVisita","asdasdsad");
         ContentValues values = new ContentValues();
@@ -437,7 +438,7 @@ public class UpdateDB {
 
     public void cargarEvaluaciones(){
         Log.d("cargar","hola00");
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_EVALUACION_COL_ID,"1");
@@ -472,7 +473,7 @@ public class UpdateDB {
     }
 
     public void cargarMuestras(){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_MUESTRA_COL_ID,1);
@@ -484,7 +485,7 @@ public class UpdateDB {
     }
 /*
     public void cargarTipoRecomendaciones(){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_TIPORECOMENDACION_COL_ID,1);
@@ -500,7 +501,7 @@ public class UpdateDB {
     }
 */
     public void cargarCriterioRecomendaciones(){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_CRITERIORECOMENDACION_COL_ID,1);
@@ -531,7 +532,7 @@ public class UpdateDB {
     }
 
     public void cargarConfiguracionRecomendacion(){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID,1);

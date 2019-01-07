@@ -14,6 +14,7 @@ import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.EmpresaVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EMPRESA_COL_ID;
@@ -28,14 +29,14 @@ public class EmpresaDAO {
     Context ctx;
     ConexionSQLiteHelper c;
     public EmpresaDAO(Context ctx) {
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         this.ctx=ctx;
     }
 
 
     public boolean borrarTable(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_EMPRESA,null,null);
         if(res>0){
@@ -47,7 +48,7 @@ public class EmpresaDAO {
     }
 
     public boolean insertarEmpresa(int id, String name,int idZona){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Utilities.TABLE_EMPRESA_COL_ID,id);
@@ -136,7 +137,7 @@ public class EmpresaDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_EMPRESA,null,null);
         if(res>0){

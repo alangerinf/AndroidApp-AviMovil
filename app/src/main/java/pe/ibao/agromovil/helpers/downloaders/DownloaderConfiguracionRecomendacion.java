@@ -23,9 +23,12 @@ import java.util.Map;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.app.AppController;
+import pe.ibao.agromovil.helpers.LoginHelper;
 import pe.ibao.agromovil.models.dao.VariedadDAO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_ID;
@@ -47,7 +50,7 @@ public class DownloaderConfiguracionRecomendacion {
     }
     public boolean clearConfiguracionRecomendacionUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         int res = db.delete(TABLE_CONFIGURACIONRECOMENDACION,null,null);
@@ -113,12 +116,13 @@ public class DownloaderConfiguracionRecomendacion {
                                 int id = data.getInt("id");
                                 int idFundoVariedad = data.getInt("idFundoVariedad");
                                 int idCriterioRecomendacion = data.getInt("idCriterioRecomendacion");
-                                Log.d("CONFRECO",""+id);
+                               // Log.d("CONFRECO",""+id);
                                 insert=insert+"("+id+","+idFundoVariedad+","+idCriterioRecomendacion+")";
 
-                                if(i%1000==0){
+                                if(i%1000==0&& i>0){
                                     try{
-                                        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                                        Log.d("CONFRECO",""+id);
+                                        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
                                         SQLiteDatabase db = conn.getWritableDatabase();
                                         db.execSQL(insert);
                                         db.close();
@@ -148,7 +152,7 @@ public class DownloaderConfiguracionRecomendacion {
 
 
                             try{
-                            ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                            ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
                             SQLiteDatabase db = conn.getWritableDatabase();
                                 db.execSQL(insert);
                                 db.close();
@@ -179,6 +183,10 @@ public class DownloaderConfiguracionRecomendacion {
                /* params.put(POST_USER, user);
                 params.put(POST_PASSWORD, pass);
                 */
+                UsuarioVO temp = new LoginHelper(ctx).verificarLogueo();
+                params.put("id",String.valueOf(temp.getId()));
+                params.put("idInspector",String.valueOf(temp.getCodigo()));
+
 
                 return params;
             }
@@ -222,7 +230,7 @@ public class DownloaderConfiguracionRecomendacion {
                                 int idCriterioRecomendacion = data.getInt("idCriterioRecomendacion");
 
                                 // Log.d("VARIEDADDOWN","fila "+i+" : "+id+" "+nombre+" "+idCultivo);
-                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
                                 SQLiteDatabase db = conn.getWritableDatabase();
 
                                 ContentValues values = new ContentValues();

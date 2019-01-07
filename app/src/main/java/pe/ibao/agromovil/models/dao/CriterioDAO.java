@@ -15,6 +15,7 @@ import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONCRITERIO_COL_ID;
@@ -47,7 +48,7 @@ public class CriterioDAO {
     }
 
     public boolean insertarCriterio(int id, String name,String tipo, String magnitud, int idTipoInspeccion){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_CRITERIO_COL_ID,id);
@@ -62,7 +63,7 @@ public class CriterioDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_CRITERIO,null,null);
         if(res>0){
@@ -75,7 +76,7 @@ public class CriterioDAO {
 
     public boolean borrarTable(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_CRITERIO,null,null);
         if(res>0){
@@ -87,7 +88,7 @@ public class CriterioDAO {
     }
 
     public CriterioVO consultarById(int id) {
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         CriterioVO temp = null;
         try{
@@ -123,7 +124,7 @@ public class CriterioDAO {
     }
 
     public List<CriterioVO> listarByIdTipoInspeccionIdFundoIdVariedad(int idTipoInspeccion, int idFundo, int idVariedad){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<CriterioVO> criterioVOS = new ArrayList<CriterioVO>();
         try{

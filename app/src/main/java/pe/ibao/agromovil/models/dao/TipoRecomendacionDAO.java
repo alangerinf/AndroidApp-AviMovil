@@ -12,6 +12,7 @@ import java.util.List;
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.TipoRecomendacionVO;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION;
@@ -40,7 +41,7 @@ public class TipoRecomendacionDAO {
     }
 
     public boolean insertarTipoRecomendacion(int id, String name){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_TIPORECOMENDACION_COL_ID,id);
@@ -51,7 +52,7 @@ public class TipoRecomendacionDAO {
     }
 
     public TipoRecomendacionVO consultarByid(int id){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         TipoRecomendacionVO temp = null;
         try{
@@ -81,7 +82,7 @@ public class TipoRecomendacionDAO {
     }
 
     public List<TipoRecomendacionVO> listarByIdFundoIdVariedad(int idFundo, int idVariedad){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<TipoRecomendacionVO> tipoRecomendacionVOS = new ArrayList<>();
 
@@ -131,7 +132,7 @@ public class TipoRecomendacionDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         int res = db.delete(TABLE_TIPORECOMENDACION,null,null);

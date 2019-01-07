@@ -10,7 +10,9 @@
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
 
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -282,11 +284,11 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:onClick="openEvaluacion"
-        app:borderWidth="1dp"
-        app:rippleColor="@color/primary"
         android:src="@drawable/ic_add_black_24dp"
+        app:borderWidth="1dp"
         app:layout_constraintBottom_toTopOf="@+id/button_ok"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:rippleColor="@color/primary" />
 
     <Button
         android:id="@+id/button_ok"
@@ -314,4 +316,17 @@
         app:layout_constraintBottom_toTopOf="@+id/floatingNuevoCriterio"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@color/accent" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingComent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="showComent"
+        android:clickable="true"
+        android:src="@drawable/ic_content_paste_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

@@ -19,6 +19,7 @@ import pe.ibao.agromovil.models.vo.entitiesDB.FundoVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD;
@@ -28,6 +29,7 @@ import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDVA
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_SISTEMARIEGO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_COMENTARIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_CONTACTOPERSONALIZADO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_EDITING;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_VISITA_COL_FECHAHORAFIN;
@@ -52,7 +54,7 @@ public class VisitaDAO {
     }
 
     public List<VisitaVO> listarNoEditable(){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<VisitaVO> visitaVOS = new ArrayList<>();
         try{
@@ -70,7 +72,8 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+", "+//9
                             "V."+TABLE_VISITA_COL_FECHAHORAFIN+", "+//10
                             "V."+TABLE_VISITA_COL_LATITUDFIN+", "+//11
-                            "V."+TABLE_VISITA_COL_LONGITUDFIN+//12
+                            "V."+TABLE_VISITA_COL_LONGITUDFIN+", "+//12+
+                            "V."+TABLE_VISITA_COL_COMENTARIO+//13
                         " FROM "+
                             TABLE_VISITA+" as V "+
                         " WHERE "+
@@ -107,6 +110,8 @@ public class VisitaDAO {
                 temp.setLatFin(cursor.getString(11));
                 Log.d(TAG,"12");
                 temp.setLonFin(cursor.getString(12));
+                Log.d(TAG,"13");
+                temp.setComentario(cursor.getString(13));
 
                 if(!temp.isStatusContactoPersonalizado()){
                     temp.setContactoPersonalizado(new ContactoDAO(ctx).consultarContactoByid(temp.getIdContacto()).getName());
@@ -147,7 +152,7 @@ public class VisitaDAO {
                     VariedadDAO variedadDAO = new VariedadDAO(ctx);
                     temp.setNameVariedad(variedadDAO.consultarVariedadById(temp.getIdVariedad()).getName());
                 }
-                ConexionSQLiteHelper c2 = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                ConexionSQLiteHelper c2 = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
                 SQLiteDatabase db2 = c2.getReadableDatabase();
                 Cursor cursor2 = db2.rawQuery(
                         " SELECT " +
@@ -162,12 +167,12 @@ public class VisitaDAO {
                         );
                 if(cursor2.getCount()>0){
                     cursor2.moveToFirst();
-                    temp.setAreaFundoVariedad(cursor2.getString(0));
+                    temp.setAreaFundoVariedad(cursor2.getString(0)==null?"0":cursor2.getString(0));
                 }
                 cursor2.close();
                 db2.close();
 
-                ConexionSQLiteHelper c3 = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                ConexionSQLiteHelper c3 = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
                 SQLiteDatabase db3 = c3.getReadableDatabase();
                 Cursor cursor3 = db3.rawQuery(
                         " SELECT " +
@@ -181,7 +186,7 @@ public class VisitaDAO {
 
                 if(cursor3.getCount()>0){
                     cursor3.moveToFirst();
-                    temp.setSistemaRiego(cursor3.getString(0));
+                    temp.setSistemaRiego(cursor3.getString(0)==null?"0":cursor3.getString(0));
                 }
                 cursor3.close();
                 db3.close();
@@ -199,18 +204,19 @@ public class VisitaDAO {
         return visitaVOS;
     }
 
+
     public List<VisitaVO> listAll() {
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB);
         SQLiteDatabase db = c.getReadableDatabase();
         List<VisitaVO> visitaVOS =  new ArrayList<>();
         try {
             Cursor cursor = db.rawQuery(
                     "SELECT " +
                             "V."+TABLE_VISITA_COL_ID        +", " +//0
-                            "V."+TABLE_VISITA_COL_FECHAHORAINI +", " +//1
+                            "V."+TABLE_VISITA_COL_FECHAHORAINI+", " +//1
                             "V."+TABLE_VISITA_COL_EDITING   +", " +//2
-                            "V."+TABLE_VISITA_COL_LATITUDINI   +", " +//3
-                            "V."+TABLE_VISITA_COL_LONGITUDINI  +", " +//4
+                            "V."+TABLE_VISITA_COL_LATITUDINI +", " +//3
+                            "V."+TABLE_VISITA_COL_LONGITUDINI+", " +//4
                             "V."+TABLE_VISITA_COL_IDFUNDO   +", " +//5
                             "V."+TABLE_VISITA_COL_IDVARIEDAD+", " +//6
                             "V."+TABLE_VISITA_COL_IDCONTACTO+", "+//7
@@ -218,7 +224,8 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+", "+//9
                             "V."+TABLE_VISITA_COL_FECHAHORAFIN+", "+//10
                             "V."+TABLE_VISITA_COL_LATITUDFIN+", "+//11
-                            "V."+TABLE_VISITA_COL_LONGITUDFIN+//12
+                            "V."+TABLE_VISITA_COL_LONGITUDFIN+", "+//12+
+                            "V."+TABLE_VISITA_COL_COMENTARIO+//13
                             " FROM "+
                             TABLE_VISITA+" as V "
                     ,null);
@@ -252,6 +259,8 @@ public class VisitaDAO {
                 temp.setLatFin(cursor.getString(11));
                 Log.d(TAG,"12");
                 temp.setLonFin(cursor.getString(12));
+                Log.d(TAG,"13");
+                temp.setComentario(cursor.getString(13));
                 if(!temp.isStatusContactoPersonalizado()){
                     temp.setContactoPersonalizado(new ContactoDAO(ctx).consultarContactoByid(temp.getIdContacto()).getName());
                     //   Toast.makeText(ctx,temp.getContactoPersonalizado(),Toast.LENGTH_LONG).show();
@@ -291,7 +300,7 @@ public class VisitaDAO {
                     VariedadDAO variedadDAO = new VariedadDAO(ctx);
                     temp.setNameVariedad(variedadDAO.consultarVariedadById(temp.getIdVariedad()).getName());
                 }
-                ConexionSQLiteHelper c2 = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                ConexionSQLiteHelper c2 = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
                 SQLiteDatabase db2 = c2.getReadableDatabase();
                 Cursor cursor2 = db2.rawQuery(
                         " SELECT " +
@@ -311,7 +320,7 @@ public class VisitaDAO {
                 cursor2.close();
                 db2.close();
 
-                ConexionSQLiteHelper c3 = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                ConexionSQLiteHelper c3 = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
                 SQLiteDatabase db3 = c3.getReadableDatabase();
                 Cursor cursor3 = db3.rawQuery(
                         " SELECT " +
@@ -344,7 +353,7 @@ public class VisitaDAO {
 
 
     public VisitaVO getEditing(){
-        ConexionSQLiteHelper c= new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c= new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
 
         VisitaVO temp = null;
@@ -363,7 +372,8 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+", "+//9
                             "V."+TABLE_VISITA_COL_FECHAHORAFIN+", "+//10
                             "V."+TABLE_VISITA_COL_LATITUDFIN+", "+//11
-                            "V."+TABLE_VISITA_COL_LONGITUDFIN+//12
+                            "V."+TABLE_VISITA_COL_LONGITUDFIN+", "+//12+
+                            "V."+TABLE_VISITA_COL_COMENTARIO+//13
                         " FROM "+
                             TABLE_VISITA+" as V "+
 
@@ -401,6 +411,8 @@ public class VisitaDAO {
                         temp.setLatFin(cursor.getString(11));
                         Log.d(TAG,"12");
                         temp.setLonFin(cursor.getString(12));
+                Log.d(TAG,"13");
+                temp.setComentario(cursor.getString(13));
                 if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
 
                             //obteniedo datos d e fundo
@@ -452,7 +464,7 @@ public class VisitaDAO {
 
     public boolean cambiarIdFundoIdVariedadIdContactoIsPersonalizadoContacto(int id,int idFundo, int idVariedad,int idContacto, boolean isPersonalizado, String Contacto){
         boolean flag = false;
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB);
         SQLiteDatabase db = c.getWritableDatabase();
         String[] parametros =
                 {
@@ -473,7 +485,7 @@ public class VisitaDAO {
     }
     public boolean setLatLonIniById(int id,String lat, String lon){
         boolean flag = false;
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB);
         SQLiteDatabase db = c.getWritableDatabase();
         String[] parametros =
                 {
@@ -491,7 +503,7 @@ public class VisitaDAO {
     }
     public boolean setFechaHoraFinById(int id){
         boolean flag = false;
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB);
         SQLiteDatabase db = c.getWritableDatabase();
 
         /*String[] parametros =
@@ -518,9 +530,39 @@ public class VisitaDAO {
         */
         return  flag;
     }
+
+    public boolean setComentario(int id,String coment){
+        boolean flag = false;
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB);
+        SQLiteDatabase db = c.getWritableDatabase();
+
+        /*String[] parametros =
+                {
+                        String.valueOf(id),
+                };
+
+        ContentValues values = new ContentValues();
+        values.put(TABLE_VISITA_COL_LATITUDINI,lat);
+        values.put(TABLE_VISITA_COL_LONGITUDINI,lon);
+        */
+        String sql = "UPDATE "+
+                TABLE_VISITA+
+                " SET "+
+                TABLE_VISITA_COL_COMENTARIO+" = \""+coment+"\""+
+                " WHERE " +
+                TABLE_VISITA_COL_ID+"="+String.valueOf(id);
+        db.execSQL(sql);
+        /*int res = db.update(TABLE_VISITA,values,TABLE_VISITA_COL_ID+"=?",parametros);
+        if(res>0){
+            flag=true;
+        }
+        c.close();
+        */
+        return  flag;
+    }
     public boolean setLatLonFinById(int id,String lat, String lon){
         boolean flag = false;
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB);
         SQLiteDatabase db = c.getWritableDatabase();
         String[] parametros =
                 {
@@ -546,7 +588,7 @@ public class VisitaDAO {
         Long id = null;
         if(resVisita==null){//si retorno vacio osea q no hay editando creamos uno nuevo
             try {
-                ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+                ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB);
                 SQLiteDatabase db = c.getWritableDatabase();
                 ContentValues values = new ContentValues();
                 values.put(Utilities.TABLE_VISITA_COL_EDITING, true);
@@ -568,7 +610,7 @@ public class VisitaDAO {
 
     public boolean borrarById(int id){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -587,7 +629,7 @@ public class VisitaDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         List<VisitaVO> listVisita = new VisitaDAO(ctx).listarNoEditable();
         for(int i=0;i<listVisita.size();i++){
@@ -602,7 +644,7 @@ public class VisitaDAO {
 
 
     public  VisitaVO buscarById(Long id){
-        ConexionSQLiteHelper c= new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c= new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         VisitaVO temp = null;
         try{
@@ -649,7 +691,8 @@ public class VisitaDAO {
                             "V."+TABLE_VISITA_COL_CONTACTOPERSONALIZADO+", "+//9
                             "V."+TABLE_VISITA_COL_FECHAHORAFIN+", "+//10
                             "V."+TABLE_VISITA_COL_LATITUDFIN+", "+//11
-                            "V."+TABLE_VISITA_COL_LONGITUDFIN+//12
+                            "V."+TABLE_VISITA_COL_LONGITUDFIN+", "+//12+
+                            "V."+TABLE_VISITA_COL_COMENTARIO+//13
                             " FROM "+
                             TABLE_VISITA+" as V "+
 
@@ -687,7 +730,8 @@ public class VisitaDAO {
                 temp.setLatFin(cursor.getString(11));
                 Log.d(TAG,"12");
                 temp.setLonFin(cursor.getString(12));
-
+                Log.d(TAG,"13");
+                temp.setComentario(cursor.getString(13));
                 if(temp.getIdContacto()>0){//verifica si devuelve un id fundo
 
                     //obteniedo datos d e fundo
@@ -740,7 +784,7 @@ public class VisitaDAO {
     public boolean save(int id) {
 
         boolean flag = false;
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx,DATABASE_NAME, null, VERSION_DB);
         SQLiteDatabase db = c.getWritableDatabase();
         String[] parametros =
                 {

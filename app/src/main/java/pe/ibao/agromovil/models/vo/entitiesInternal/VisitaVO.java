@@ -27,6 +27,15 @@ public class VisitaVO {
     private String contactoPersonalizado;
     private String areaFundoVariedad;
     private String sistemaRiego;
+    private String comentario;
+
+    public String getComentario() {
+        return comentario;
+    }
+
+    public void setComentario(String comentario) {
+        this.comentario = comentario;
+    }
 
     public String getSistemaRiego() {
         return sistemaRiego;

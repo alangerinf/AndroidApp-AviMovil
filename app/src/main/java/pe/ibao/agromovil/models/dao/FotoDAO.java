@@ -27,6 +27,7 @@ import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 import pe.ibao.agromovil.views.ActivityPhotoGallery;
 import pe.ibao.agromovil.views.ActivityVisita;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FOTO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FOTO_COL_HORAFECHA;
@@ -43,7 +44,7 @@ public class FotoDAO {
     }
 
     public FotoVO nuevoByIdMuestra(int idMuestra,String path) {
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         Log.d("locomata","datos recibidos e funcion : "+idMuestra);
 
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -84,7 +85,7 @@ public class FotoDAO {
     }
 
     public FotoVO consultarById(int id) {
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         FotoVO temp = null;
         try{
@@ -116,7 +117,7 @@ public class FotoDAO {
         return temp;
     }
     public FotoVO consultarById_Upload(int id) {
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         FotoVO temp = null;
         try{
@@ -221,7 +222,7 @@ public class FotoDAO {
 
     public boolean borrarById_UPLOAD(int id){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -240,7 +241,7 @@ public class FotoDAO {
 
 
     public List<FotoVO> listarByIdMuestra(int idMuestra){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<FotoVO> fotoVOS = new ArrayList<FotoVO>();
         try{
@@ -272,7 +273,7 @@ public class FotoDAO {
         return fotoVOS;
     }
     public int contarFotos(int idMuestra){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         Cursor mCount= db.rawQuery(
                 "select " +
@@ -292,7 +293,7 @@ public class FotoDAO {
 
     public boolean borrarById(int id){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -312,7 +313,7 @@ public class FotoDAO {
 
     public boolean borrarByIdMuestra(int idMuestra){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         List<FotoVO> list = new FotoDAO(ctx).listarByIdMuestra(idMuestra);
 
@@ -349,7 +350,7 @@ public class FotoDAO {
     }
 
     public List<FotoVO> listarAll(){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<FotoVO> fotoVOS = new ArrayList<FotoVO>();
         try{
@@ -384,7 +385,7 @@ public class FotoDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         int res = db.delete(TABLE_FOTO,null,null);

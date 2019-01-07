@@ -66,14 +66,15 @@ public class LoginHelper {
                                 Log.d("autentification","success1");
                                 Log.d("autentification",user);
                                 Log.d("autentification",pass);
-
+                                Log.d("autentification",response);
                                 JSONArray main = data.getJSONArray("login");
                                 for(int i=0;i<main.length();i++){
                                     JSONObject temp = new JSONObject(main.get(i).toString());
                                     UsuarioVO usuarioVO = new UsuarioVO();
                                     usuarioVO.setId(temp.getInt("id"));
-                                    usuarioVO.setUser(temp.getString("codigo"));
+                                    usuarioVO.setUser(user);
                                     usuarioVO.setPassword(pass);
+                                    usuarioVO.setCodigo(temp.getString("codigo"));
                                     usuarioVO.setName(temp.getString("inspector"));
                                     usuarioVO.setLastName("");
                                     new UsuarioDAO(ctx).guardarUsuarioNuevo(usuarioVO);

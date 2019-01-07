@@ -15,6 +15,7 @@ import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.RecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIORECOMENDACION_COL_ID;
@@ -38,7 +39,7 @@ public class RecomendacionDAO {
 
 
     public List<RecomendacionVO> listarByIdTipoRecomendacionIdVisita(int idTipoRecomendacion,int idVisita){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<RecomendacionVO> recomendacionVOList =  new ArrayList<>();
         Cursor cursor = db.rawQuery(
@@ -98,7 +99,7 @@ public class RecomendacionDAO {
         List<VisitaVO> listVisitas = new VisitaDAO(ctx).listarNoEditable();
         if(listVisitas.size()>0){
             for(int i=0;i<listVisitas.size();i++){
-                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
                 SQLiteDatabase db = conn.getWritableDatabase();
                 int res = db.delete(TABLE_RECOMENDACION,TABLE_RECOMENDACION_COL_IDVISITA+"="+listVisitas.get(i).getId(),null);
                 if(res==0){
@@ -115,7 +116,7 @@ public class RecomendacionDAO {
     }
 
     public RecomendacionVO nuevoByIdCriterioRecomendacionIdVisita(int idCriterioRecomendacion, int idVisita) {
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         Log.d("locomata","datos recibidos e funcion : "+idCriterioRecomendacion+" "+idVisita);
 
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -184,7 +185,7 @@ public class RecomendacionDAO {
         ConexionSQLiteHelper conn=new ConexionSQLiteHelper( ctx
                                                             , DATABASE_NAME
                                                             ,null
-                                                            ,1 );
+                                                            ,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -206,7 +207,7 @@ public class RecomendacionDAO {
     public Boolean editarUnidadById(int id, int s) {
 
             boolean flag = false;
-            ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+            ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
             SQLiteDatabase db = conn.getWritableDatabase();
             String[] parametros =
                     {
@@ -228,7 +229,7 @@ public class RecomendacionDAO {
     public Boolean editarFrecuenciaById(int id, int s) {
 
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -250,7 +251,7 @@ public class RecomendacionDAO {
     public Boolean editarComentarioById(int id, String s) {
 
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -271,7 +272,7 @@ public class RecomendacionDAO {
     public Boolean editarCantidadById(int id, String s) {
 
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -291,7 +292,7 @@ public class RecomendacionDAO {
     }
 
     public List<RecomendacionVO> listarAll() {
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<RecomendacionVO> recomendacionVOList =  new ArrayList<>();
         Cursor cursor = db.rawQuery(

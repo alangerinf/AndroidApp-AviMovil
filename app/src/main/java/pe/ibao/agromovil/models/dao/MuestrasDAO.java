@@ -15,6 +15,7 @@ import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CRITERIO_COL_ID;
@@ -40,7 +41,7 @@ public class MuestrasDAO {
     }
 
     public List<MuestraVO> listarByIdEvaluacion(int idEvaluacion){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<MuestraVO> muestraVOList =  new ArrayList<>();
         Cursor cursor = db.rawQuery(
@@ -95,7 +96,7 @@ public class MuestrasDAO {
 
     public boolean clearTableUpload(int id){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -116,7 +117,7 @@ public class MuestrasDAO {
 
 
     public MuestraVO nuevoByIdEvaluacionIdCriterio(int idEvaluacion, int idCriterio,int idTipoInspecicon) {
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         Log.d("locomata","datos recibidos e funcion : "+idEvaluacion+" "+idCriterio);
 
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -189,7 +190,7 @@ public class MuestrasDAO {
         return res;
     }
     public MuestraVO consultById(int idMuestra) {
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         Log.d("locomata","datos recibidos e funcion : "+idMuestra);
 
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -256,7 +257,7 @@ public class MuestrasDAO {
     }
     public boolean editarValorById(int id,String valor){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -276,7 +277,7 @@ public class MuestrasDAO {
 
     public boolean editarComentById(int id,String coment){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -295,7 +296,7 @@ public class MuestrasDAO {
 
     public boolean borrarMuestraById(int id){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -319,7 +320,7 @@ public class MuestrasDAO {
 
     public boolean borrarValorByIdEvaluacion(int idEvaluacion){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {
@@ -337,7 +338,7 @@ public class MuestrasDAO {
 
 
     public List<MuestraVO> listarAll(){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<MuestraVO> muestraVOList =  new ArrayList<>();
         Cursor cursor = db.rawQuery(

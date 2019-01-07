@@ -18,6 +18,7 @@ import java.io.File;
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesInternal.ColaUploadFotosVO;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_COLAFOTOS;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_COLAFOTOS_COL_IDDB;
@@ -31,7 +32,7 @@ public class ColaUploadFotosDAO {
     }
 
     public ColaUploadFotosVO nuevo(int idDB, String path) {
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         Log.d("locomata","datos recibidos e funcion : "+idDB);
 
         SQLiteDatabase db = conn.getWritableDatabase();
@@ -67,7 +68,7 @@ public class ColaUploadFotosDAO {
     }
 
     public ColaUploadFotosVO consultarById(int id) {
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         ColaUploadFotosVO res = null;
         try{
@@ -97,7 +98,7 @@ public class ColaUploadFotosDAO {
 
 
     public ColaUploadFotosVO consultarById_Upload(int id) {
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         ColaUploadFotosVO res = null;
         try{
@@ -170,7 +171,7 @@ public class ColaUploadFotosDAO {
     }
 
     public int contarColaUploadFotos(){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         Cursor mCount= db.rawQuery(
                 "select " +
@@ -187,7 +188,7 @@ public class ColaUploadFotosDAO {
 
     public boolean borrarById(int idDB){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros =
                 {

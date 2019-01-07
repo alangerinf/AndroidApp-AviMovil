@@ -11,8 +11,10 @@ import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_USUARIO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_USUARIO_COL_CODIGO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_USUARIO_COL_ID;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_USUARIO_COL_LASTNAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_USUARIO_COL_NAME;
@@ -25,32 +27,32 @@ public class UsuarioDAO {
     String TAG = "autentification";
 
     public UsuarioDAO(Context ctx) {
-
         this.ctx=ctx;
     }
 
-
     public int borrarTable(){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = c.getWritableDatabase();
         int res =db.delete(TABLE_USUARIO,null,null);
         c.close();
         return res;
-
     }
 
 
     public int guardarUsuarioNuevo(UsuarioVO u){
         Log.d("autentification",u.toString());
 
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = c.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+            values.put(TABLE_USUARIO_COL_ID,u.getId());
             values.put(TABLE_USUARIO_COL_USER,u.getUser());
             values.put(TABLE_USUARIO_COL_PASSWORD, u.getPassword());
             values.put(TABLE_USUARIO_COL_NAME,u.getName());
             values.put(TABLE_USUARIO_COL_LASTNAME,u.getLastName());
+            values.put(TABLE_USUARIO_COL_CODIGO,u.getCodigo());
+        //Log.d(TAG,Utilities.CREATE_TABLE_USUARIO);
         int id = (int)db.insert(TABLE_USUARIO, Utilities.TABLE_USUARIO_COL_ID, values);
         c.close();
 
@@ -59,9 +61,9 @@ public class UsuarioDAO {
 
 
     public UsuarioVO verficarLogueo(){
-        ConexionSQLiteHelper c= new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c= new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
-
+        Log.d(TAG,"INTENTANDO LOGUEO");
         UsuarioVO temp = null;
         try{
             Cursor cursor = db.rawQuery(
@@ -69,8 +71,9 @@ public class UsuarioDAO {
                             "U."+TABLE_USUARIO_COL_ID        +", " +//0
                             "U."+TABLE_USUARIO_COL_USER +", " +//1
                             "U."+TABLE_USUARIO_COL_PASSWORD   +", " +//2
-                            "U."+TABLE_USUARIO_COL_NAME   +", " +//3
-                            "U."+TABLE_USUARIO_COL_LASTNAME+//4
+                            "U."+TABLE_USUARIO_COL_NAME   +", "+//3
+                            "U."+TABLE_USUARIO_COL_LASTNAME+", "+//4
+                            "U."+TABLE_USUARIO_COL_CODIGO+ //5
                             " FROM "+
                             TABLE_USUARIO+" as U "
                     ,null);
@@ -88,7 +91,8 @@ public class UsuarioDAO {
                 temp.setName(cursor.getString(3));
                 Log.d(TAG,"4");
                 temp.setLastName(cursor.getString(4));
-
+                Log.d(TAG,"5");
+                temp.setCodigo(String.valueOf(cursor.getInt(5)));
             }
             cursor.close();
 

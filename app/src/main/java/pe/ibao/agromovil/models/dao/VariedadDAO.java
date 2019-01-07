@@ -13,6 +13,7 @@ import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.VariedadVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDO_COL_ID;
@@ -29,13 +30,13 @@ public class VariedadDAO {
     Context ctx;
     ConexionSQLiteHelper c;
     public VariedadDAO(Context ctx) {
-        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         this.ctx=ctx;
     }
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_VARIEDAD,null,null);
         if(res>0){
@@ -48,7 +49,7 @@ public class VariedadDAO {
 
 
     public boolean insertarVariedad(int id, String name,int idCultivo){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_VARIEDAD_COL_ID,id);

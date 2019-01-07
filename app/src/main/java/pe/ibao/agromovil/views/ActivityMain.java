@@ -279,7 +279,8 @@ public class ActivityMain extends AppCompatActivity
                             break;
                     }
                 } else {
-                    Toast.makeText(getBaseContext(), "No hay internet!",
+                    Toast.makeText(getBaseContext(), "Comprueba tu conexión a internet.\n" +
+                                    "Inténtalo nuevamente.",
                             Toast.LENGTH_SHORT).show();
 
                 }

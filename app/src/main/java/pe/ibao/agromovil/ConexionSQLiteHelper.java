@@ -3,17 +3,21 @@ package pe.ibao.agromovil;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import pe.ibao.agromovil.utilities.Utilities;
 
 public class ConexionSQLiteHelper extends SQLiteOpenHelper{
 
+    public static int VERSION_DB = 2;
+
     public ConexionSQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
-
+    String TAG = "CREATE_TABLE";
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d(TAG,Utilities.CREATE_TABLE_USUARIO);
         db.execSQL(Utilities.CREATE_TABLE_USUARIO);
         db.execSQL(Utilities.CREATE_TABLE_ZONA);
         db.execSQL(Utilities.CREATE_TABLE_EMPRESA);
@@ -39,6 +43,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d(TAG,Utilities.CREATE_TABLE_USUARIO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_USUARIO);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_EMPRESA);
         db.execSQL("DROP TABLE IF EXISTS "+Utilities.TABLE_ZONA);

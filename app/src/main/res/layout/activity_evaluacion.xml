@@ -172,11 +172,13 @@
 
                 <Spinner
                     android:id="@+id/spnTipoInspeccion"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:spinnerMode="dialog"
+                    android:layout_marginEnd="8dp"
                     android:entries="@array/inspecciones"
+                    android:spinnerMode="dialog"
+                    android:textAlignment="center"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="@+id/tViewFechaHora"
                     app:layout_constraintTop_toTopOf="@+id/textView16" />
 

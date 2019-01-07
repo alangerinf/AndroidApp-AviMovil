@@ -13,6 +13,7 @@ import java.util.List;
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioRecomendacionVO;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_CONFIGURACIONRECOMENDACION_COL_IDCRITERIORECOMENDACION;
@@ -36,7 +37,7 @@ public class CriterioRecomendacionDAO {
         this.ctx = ctx;
     }
     public CriterioRecomendacionVO consultarById(int  id) {
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         CriterioRecomendacionVO temp = null;
         try{
@@ -70,7 +71,7 @@ public class CriterioRecomendacionDAO {
 
     public boolean clearTableUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_CRITERIORECOMENDACION,null,null);
         if(res>0){
@@ -82,7 +83,7 @@ public class CriterioRecomendacionDAO {
     }
 
     public CriterioRecomendacionVO insertar(int id, String name, String listUnidades,String listFrecuencias,int idTipoRecomendacion){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(TABLE_CRITERIORECOMENDACION_COL_ID,id);
@@ -99,7 +100,7 @@ public class CriterioRecomendacionDAO {
     }
 
     public List<CriterioRecomendacionVO> listarByIdTipoRecomendacionIdFundoIdVariedad(int idTipoRecomendacion,int idFundo,int idVariedad){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = c.getReadableDatabase();
         List<CriterioRecomendacionVO> criterioRecomendacionVOS = new ArrayList<>();
         try{

@@ -62,7 +62,7 @@
                 android:minWidth="15dp"
                 android:paddingVertical="5dp"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -88,7 +88,7 @@
                 android:minWidth="15dp"
                 android:paddingVertical="5dp"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0" />
@@ -114,7 +114,7 @@
                 android:minWidth="15dp"
                 android:paddingVertical="5dp"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0" />
@@ -139,7 +139,7 @@
 
                 android:paddingVertical="5dp"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
@@ -147,14 +147,16 @@
                 android:id="@+id/eTextContacto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/shape_secondary_r15_borderlight_v2"
                 android:hint="Escriba aqui el contacto"
                 android:inputType="text"
-                android:background="@drawable/shape_secondary_r15_borderlight_v2"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 android:paddingVertical="5dp"
-                android:text=""
                 android:singleLine="true"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
+                android:text=""
+                android:textAlignment="textStart"
                 android:textSize="16dp"
                 android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -271,7 +273,7 @@
                 android:minWidth="15dp"
                 android:paddingVertical="5dp"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent" />
         </RelativeLayout>
@@ -299,7 +301,7 @@
                 android:minWidth="15dp"
                 android:paddingVertical="5dp"
                 android:spinnerMode="dialog"
-                android:textAlignment="center"
+                android:textAlignment="textStart"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent" />
 

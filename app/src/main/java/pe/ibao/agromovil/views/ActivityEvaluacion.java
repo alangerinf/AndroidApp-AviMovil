@@ -136,10 +136,6 @@ public class ActivityEvaluacion extends AppCompatActivity {
         cl.setMinWidth(anchoTotal);
         cl.setMinHeight(altoTotal);
 */
-
-
-
-
         spnTipoInspeccion = (Spinner) findViewById(R.id.spnTipoInspeccion);
         eTextQR = (EditText) findViewById(R.id.eTextQR);
         listViewMuestas = (ListView) findViewById(R.id.list_criterios);
@@ -201,7 +197,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
         //seleccional en el spn el q esta seleccionado anteriormente
         for(int i=0;i<listTipoInspeccion.size();i++){
             if(listTipoInspeccion.get(i).getId()==idTipoInspeccion){
-                spnTipoInspeccion.setSelection(i+1);
+                spnTipoInspeccion.setSelection(i/*+1*/);
                 break;
             }
         }
@@ -223,16 +219,16 @@ public class ActivityEvaluacion extends AppCompatActivity {
         }
         spnTipoInspeccion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i != 0){
-                    idTipoInspeccion = listTipoInspeccion.get(i-1).getId();
+                //if(i != 0){
+                    idTipoInspeccion = listTipoInspeccion.get(i/*-1*/).getId();
                     new EvaluacionDAO(getBaseContext()).editarIdTipoInspeccion(idEvaluacion,idTipoInspeccion);
                     lastItemSelected=0;
-                }else{
+                /*}else{
                     idTipoInspeccion=0;
                     new EvaluacionDAO(getBaseContext()).editarIdTipoInspeccion(idEvaluacion,idTipoInspeccion);
                     lastItemSelected=0;
                     Toast.makeText(getBaseContext(),"Seleccione una evaluación para visualizar  los criterios",Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
             public void onNothingSelected(AdapterView<?> adapterView) {
                 return;
@@ -347,7 +343,6 @@ public class ActivityEvaluacion extends AppCompatActivity {
         dialog.show();
     }
 
-
     private void solicitarPermisosManual() {
         final CharSequence[] opciones = {
                 "si",
@@ -382,12 +377,14 @@ public class ActivityEvaluacion extends AppCompatActivity {
 
     private void cargarTipoInspeccion() {
         TipoInspeccionDAO tipoInspeccionDAO = new TipoInspeccionDAO(getBaseContext());
-        listTipoInspeccion = tipoInspeccionDAO.listarByIdFundoAndIdVariedad(idFundo,idVariedad);
+        listTipoInspeccion = tipoInspeccionDAO.listarFaltantesByIdFundoAndIdVariedadIdVisitaIdEvaluacion(idFundo,idVariedad,new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getIdVisita(),idEvaluacion);
         cargarNombreTipoInspeccion();
     }
     private void cargarNombreTipoInspeccion(){
+
+
         listNombreTipoInspeccion = new ArrayList<>();
-        listNombreTipoInspeccion.add("Seleccione Evaluación");
+        //listNombreTipoInspeccion.add("Seleccione Evaluación");
         for(TipoInspeccionVO temp : listTipoInspeccion){
             listNombreTipoInspeccion.add(temp.getName());
         }
@@ -396,18 +393,14 @@ public class ActivityEvaluacion extends AppCompatActivity {
 
 
     public void showList(View view){
-
         if(idTipoInspeccion>0){
             if(isEditable){
                 CRITERIOS = new CriterioDAO(getBaseContext()).listarByIdTipoInspeccionIdFundoIdVariedad(idTipoInspeccion,idFundo,idVariedad);
                 AlertDialog.Builder dialogo = new AlertDialog.Builder(this);
-
                 final CharSequence[] items = new CharSequence[ CRITERIOS.size()];
-
                 for(int i = 0; i< CRITERIOS.size(); i++){
                     items[i]= CRITERIOS.get(i).getName();
                 }
-
 
                 dialogo.setTitle("Criterios de Evaluación")
                         .setSingleChoiceItems(items, lastItemSelected, new DialogInterface.OnClickListener() {

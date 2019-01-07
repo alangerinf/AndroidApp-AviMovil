@@ -6,6 +6,7 @@ public class UsuarioVO {
     private String password;
     private String name;
     private String lastName;
+    private String codigo;
 
     public UsuarioVO(int id, String user, String password) {
         this.id = id;
@@ -55,5 +56,13 @@ public class UsuarioVO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCodigo() {
+        return this.codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 }

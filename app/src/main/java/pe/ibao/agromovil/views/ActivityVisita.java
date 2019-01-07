@@ -17,12 +17,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -692,6 +694,38 @@ public class ActivityVisita extends AppCompatActivity implements
 
     }
 
+    public void showComent(View view){
+        final String coment = new VisitaDAO(getBaseContext()).buscarById((long)visita.getId()).getComentario();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Comentario");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        input.setText(coment);
+
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT );
+        builder.setView(input);
+
+
+// Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(isEditable){
+                    new VisitaDAO(getBaseContext()).setComentario(visita.getId(),input.getText().toString());
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
 
     @Override
     public void onConnectionSuspended(int i) {

@@ -23,11 +23,18 @@ import java.util.Map;
 
 import pe.ibao.agromovil.ConexionSQLiteHelper;
 import pe.ibao.agromovil.app.AppController;
+import pe.ibao.agromovil.helpers.LoginHelper;
 import pe.ibao.agromovil.models.dao.CultivoDAO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.UsuarioVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_AREA;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_ID;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO;
+import static pe.ibao.agromovil.utilities.Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_CULTIVO;
 import static pe.ibao.agromovil.utilities.Utilities.URL_DOWNLOAD_TABLE_FUNDOVARIEDAD;
 
@@ -44,7 +51,7 @@ public class DownloaderFundoVariedad {
 
     public boolean clearFundoVariedadUpload(){
         boolean flag = false;
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         int res = db.delete(TABLE_FUNDOVARIEDAD,null,null);
         if(res>0){
@@ -73,6 +80,16 @@ public class DownloaderFundoVariedad {
                                 clearFundoVariedadUpload();
                                 status=2;
                             }
+                            String insert = "INSERT INTO " +
+                                    TABLE_FUNDOVARIEDAD+
+                                    "("+
+                                    TABLE_FUNDOVARIEDAD_COL_ID+","+
+                                    TABLE_FUNDOVARIEDAD_COL_IDFUNDO+","+
+                                    TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+","+
+                                    TABLE_FUNDOVARIEDAD_COL_AREA+
+                                    ")"+
+                                    "VALUES ";
+
                             for(int i=0;i<main.length();i++){
                                 JSONObject data = new JSONObject(main.get(i).toString());
                                 int id = data.getInt("id");
@@ -80,17 +97,18 @@ public class DownloaderFundoVariedad {
                                 int idVariedad = data.getInt("idVariedad");
                                 String area = data.getString("areaProduccion");
                                 Log.d("FUNDOVARIEDADDOWN","fila "+i+" : "+id+" "+idFundo+" "+idVariedad);
-
+/*
                                 ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
                                 SQLiteDatabase db = conn.getWritableDatabase();
 
+
                                 ContentValues values = new ContentValues();
-                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_ID,id);
+                                values.put(TABLE_FUNDOVARIEDAD_COL_ID,id);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO,idFundo);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_AREA,area);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD,idVariedad);
 
-                                Long temp = db.insert(TABLE_FUNDOVARIEDAD,Utilities.TABLE_FUNDOVARIEDAD_COL_ID,values);
+                                Long temp = db.insert(TABLE_FUNDOVARIEDAD, TABLE_FUNDOVARIEDAD_COL_ID,values);
 
                                 if(temp>0){
                                     Log.d("FUNDOVARIEDADDOWN","logro insertar");
@@ -98,8 +116,43 @@ public class DownloaderFundoVariedad {
 
                                 db.close();
                                 conn.close();
+                                */
+                                insert=insert+"("+id+","+idFundo+","+idVariedad+","+area+")";
+                                if(i%1000==0&& i>0){
+                                    try{
+                                        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
+                                        SQLiteDatabase db = conn.getWritableDatabase();
+                                        db.execSQL(insert);
+                                        db.close();
+                                        conn.close();
+                                        insert = "INSERT INTO " +
+                                                TABLE_FUNDOVARIEDAD+
+                                                "("+
+                                                TABLE_FUNDOVARIEDAD_COL_ID+","+
+                                                TABLE_FUNDOVARIEDAD_COL_IDFUNDO+","+
+                                                TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD+","+
+                                                TABLE_FUNDOVARIEDAD_COL_AREA+
+                                                ")"+
+                                                "VALUES ";
+                                    }catch (Exception e){
+                                        Log.d("errorCR",e.toString());
+                                    }
+                                }else {
+                                    if(main.length()-1!=i ){
+                                        insert=insert+",";
+                                    }
+                                }
                             }
-                        status=3;
+                            try{
+                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
+                                SQLiteDatabase db = conn.getWritableDatabase();
+                                db.execSQL(insert);
+                                db.close();
+                                conn.close();
+                            }catch (Exception e){
+                                Log.d("errorCR",e.toString());
+                            }
+                            status=3;
                         } catch (JSONException e) {
                             Log.d("FUNDOVARIEDADDOWN ",e.toString());
                             status=-1;
@@ -120,6 +173,10 @@ public class DownloaderFundoVariedad {
                /* params.put(POST_USER, user);
                 params.put(POST_PASSWORD, pass);
                 */
+
+                UsuarioVO temp = new LoginHelper(ctx).verificarLogueo();
+                params.put("id",String.valueOf(temp.getId()));
+                params.put("idInspector",String.valueOf(temp.getCodigo()));
 
                 return params;
             }
@@ -164,15 +221,15 @@ public class DownloaderFundoVariedad {
                                 String area = data.getString("areaProduccion");
                                 Log.d("FUNDOVARIEDADDOWN","fila "+i+" : "+id+" "+idFundo+" "+idVariedad);
 
-                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+                                ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB  );
                                 SQLiteDatabase db = conn.getWritableDatabase();
 
                                 ContentValues values = new ContentValues();
-                                values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_ID,id);
+                                values.put(TABLE_FUNDOVARIEDAD_COL_ID,id);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDFUNDO,idFundo);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_IDVARIEDAD,idVariedad);
                                 values.put(Utilities.TABLE_FUNDOVARIEDAD_COL_AREA,area);
-                                Long temp = db.insert(TABLE_FUNDOVARIEDAD,Utilities.TABLE_FUNDOVARIEDAD_COL_ID,values);
+                                Long temp = db.insert(TABLE_FUNDOVARIEDAD, TABLE_FUNDOVARIEDAD_COL_ID,values);
 
                                 if(temp>0){
                                     Log.d("FUNDOVARIEDADDOWN","logro insertar");

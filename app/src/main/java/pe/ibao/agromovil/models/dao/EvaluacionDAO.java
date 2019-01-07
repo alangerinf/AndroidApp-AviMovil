@@ -17,6 +17,7 @@ import pe.ibao.agromovil.models.vo.entitiesInternal.RecomendacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.VisitaVO;
 import pe.ibao.agromovil.utilities.Utilities;
 
+import static pe.ibao.agromovil.ConexionSQLiteHelper.VERSION_DB;
 import static pe.ibao.agromovil.utilities.Utilities.DATABASE_NAME;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EVALUACION;
 import static pe.ibao.agromovil.utilities.Utilities.TABLE_EVALUACION_COL_ID;
@@ -37,7 +38,7 @@ public class EvaluacionDAO {
 
     public boolean editarIdTipoInspeccion(int id,int idTipoInspeccion){
         boolean flag = false;
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, VERSION_DB);
         SQLiteDatabase db = c.getWritableDatabase();
         String[] parametros =
                 {
@@ -53,7 +54,7 @@ public class EvaluacionDAO {
         return flag;
     }
     public int clearTableUpload(int idVisita){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = conn.getWritableDatabase();
 
         List<EvaluacionVO> evas = new EvaluacionDAO(ctx).listarByIdVisita(idVisita);
@@ -78,7 +79,7 @@ public class EvaluacionDAO {
 
     public boolean editarQR(int id,String qr){
         boolean flag = false;
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, 1);
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME, null, VERSION_DB);
         SQLiteDatabase db = c.getWritableDatabase();
         String[] parametros =
                 {
@@ -96,7 +97,7 @@ public class EvaluacionDAO {
     }
 
     public EvaluacionVO consultarById(int  id) {
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = c.getReadableDatabase();
         EvaluacionVO temp = null;
         try{
@@ -171,7 +172,7 @@ public class EvaluacionDAO {
     }
 
     public EvaluacionVO nuevoByIdVisita(Double lat, Double lon, Integer idVisita){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         ContentValues values = new ContentValues();
             values.put(Utilities.TABLE_EVALUACION_COL_LATITUD,lat);
@@ -186,7 +187,7 @@ public class EvaluacionDAO {
     }
 
     public int borrarById(int id){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
         String[] parametros = {String.valueOf(id)};
         int res =db.delete(Utilities.TABLE_EVALUACION,TABLE_EVALUACION_COL_ID+"=?",parametros);
@@ -202,7 +203,7 @@ public class EvaluacionDAO {
     }
 
     public int borrarByIdVisita(int idVisita){
-        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper conn=new ConexionSQLiteHelper(ctx, Utilities.DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = conn.getWritableDatabase();
 
         List<EvaluacionVO> evas = new EvaluacionDAO(ctx).listarByIdVisita(idVisita);
@@ -224,8 +225,12 @@ public class EvaluacionDAO {
     }
 
 
+
+
+
+
     public List<EvaluacionVO> listarByIdVisita(int idVisita){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB );
         SQLiteDatabase db = c.getReadableDatabase();
         List<EvaluacionVO> evaluacionVOS = new ArrayList<>();
         try{
@@ -296,8 +301,11 @@ public class EvaluacionDAO {
         return evaluacionVOS;
     }
 
+
+
+
     public List<EvaluacionVO> listarAll(){
-        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,1 );
+        ConexionSQLiteHelper c = new ConexionSQLiteHelper(ctx, DATABASE_NAME,null,VERSION_DB);
         SQLiteDatabase db = c.getReadableDatabase();
         List<EvaluacionVO> evaluacionVOS = new ArrayList<>();
         try{
@@ -321,7 +329,7 @@ public class EvaluacionDAO {
                     temp.setId(cursor.getInt(0));
                     temp.setTimeIni(cursor.getString(1));
                     temp.setTimeFin(cursor.getString(2));
-                    temp.setQr(cursor.getString(3));
+                    temp.setQr(cursor.getString(3)==null?"No Especifica":cursor.getString(3));
                     temp.setLat(cursor.getDouble(4));
                     temp.setLon(cursor.getDouble(5));
                     temp.setIdTipoInspeccion(cursor.getInt(6));
@@ -331,6 +339,7 @@ public class EvaluacionDAO {
             cursor.close();
         }catch (Exception e){
             Toast.makeText(ctx,e.toString(),Toast.LENGTH_SHORT).show();
+            Log.d("errorCargaEvaluacion",e.toString());
         }
         return evaluacionVOS;
     }

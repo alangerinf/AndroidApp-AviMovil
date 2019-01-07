@@ -95,12 +95,6 @@
 
         </activity>
 
-        <service
-            android:name=".services.GPSService"
-            android:enabled="true"
-            android:process=":my_service"
-            android:exported="true" />
-
         <activity
             android:name=".views.ActivityPhotoGallery"
             android:label="@string/title_activity_photo_gallery"
