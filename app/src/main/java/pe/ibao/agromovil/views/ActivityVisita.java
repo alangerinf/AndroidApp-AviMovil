@@ -143,7 +143,7 @@ public class ActivityVisita extends AppCompatActivity implements
         if(!isEditable){
             btnFinalizar.setVisibility(View.INVISIBLE);
             floatBtnNuevo.setVisibility(View.INVISIBLE);
-            ((FloatingActionButton) findViewById(R.id.floatingActionButton)).setTranslationY(120);
+            //((FloatingActionButton) findViewById(R.id.floatingActionButton)).setTranslationY(120);
             setTitle("Datos Inspección");
         }
 
@@ -334,7 +334,6 @@ public class ActivityVisita extends AppCompatActivity implements
         }else{
                 tViewContacto.setText(visita.getContactoPersonalizado());
         }
-
 
         if(visita.getFechaHoraIni()!=null){
             tViewHora.setText(visita.getFechaHoraIni());
@@ -658,7 +657,38 @@ public class ActivityVisita extends AppCompatActivity implements
         dialogClose.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialogClose.show();
     }
+    public void showComent(View view) {
+        final String coment = new VisitaDAO(getBaseContext()).buscarById((long) visita.getId()).getComentario();
+        dialogClose.setContentView(R.layout.dialog_coment);
+        btnDialogClose = (Button) dialogClose.findViewById(R.id.buton_ok);
+        final EditText eTextcoment = (EditText) dialogClose.findViewById(R.id.eTextComent);
+        iViewDialogClose = (ImageView) dialogClose.findViewById(R.id.iViewDialogClose);
+        eTextcoment.setText(coment);
+        if (!isEditable) {
+            eTextcoment.setClickable(false);
+            eTextcoment.setFocusable(false);
+        }
+        iViewDialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogClose.dismiss();
+            }
+        });
+        btnDialogClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isEditable) {
+                    new VisitaDAO(getBaseContext()).setComentario(visita.getId(), eTextcoment.getText().toString());
+                }
+                dialogClose.dismiss();
+            }
+        });
 
+        dialogClose.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogClose.show();
+
+
+    }
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -688,38 +718,6 @@ public class ActivityVisita extends AppCompatActivity implements
 
     }
 
-    public void showComent(View view){
-        final String coment = new VisitaDAO(getBaseContext()).buscarById((long)visita.getId()).getComentario();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Comentario");
-
-        // Set up the input
-        final EditText input = new EditText(this);
-        input.setText(coment);
-
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT );
-        builder.setView(input);
-
-
-// Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if(isEditable){
-                    new VisitaDAO(getBaseContext()).setComentario(visita.getId(),input.getText().toString());
-                }
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
 
     @Override
     public void onConnectionSuspended(int i) {

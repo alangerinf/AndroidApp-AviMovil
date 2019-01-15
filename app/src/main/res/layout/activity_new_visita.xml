@@ -304,29 +304,31 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingComent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:onClick="showComent"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_content_paste_black_24dp"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
+        app:layout_constraintStart_toStartOf="@+id/floatingActionButton"
+
+        />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
         android:backgroundTint="@color/primary"
         android:clickable="true"
         android:onClick="showListTipoRecomendacion"
         android:src="@drawable/ic_comment_white"
         app:layout_constraintBottom_toTopOf="@+id/floatingNuevoCriterio"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/floatingNuevoCriterio"
+        app:layout_constraintStart_toStartOf="@+id/floatingNuevoCriterio"
         app:rippleColor="@color/accent" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingComent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:onClick="showComent"
-        android:clickable="true"
-        android:src="@drawable/ic_content_paste_black_24dp"
-        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

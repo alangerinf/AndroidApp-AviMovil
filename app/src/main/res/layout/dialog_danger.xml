@@ -35,7 +35,7 @@
 
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/tViewTitulo"
             android:layout_width="0dp"
             android:layout_height="27dp"
             android:layout_marginEnd="45dp"
@@ -62,7 +62,7 @@
             android:src="@drawable/ic_error_outline_50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
+            app:layout_constraintTop_toBottomOf="@+id/tViewTitulo" />
 
         <TextView
             android:id="@+id/textView11"

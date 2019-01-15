@@ -40,6 +40,7 @@ import pe.ibao.agromovil.models.dao.MuestrasDAO;
 import pe.ibao.agromovil.models.dao.TipoInspeccionDAO;
 import pe.ibao.agromovil.models.vo.entitiesDB.CriterioVO;
 import pe.ibao.agromovil.models.vo.entitiesDB.TipoInspeccionVO;
+import pe.ibao.agromovil.models.vo.entitiesInternal.EvaluacionVO;
 import pe.ibao.agromovil.models.vo.entitiesInternal.MuestraVO;
 
 import static android.Manifest.permission.CAMERA;
@@ -272,8 +273,7 @@ public class ActivityEvaluacion extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-
-        if(new EvaluacionDAO(getBaseContext()).consultarById(idEvaluacion).getIdTipoInspeccion()==0){
+        if(saveMuestras.size()==0){
             new EvaluacionDAO(getBaseContext()).borrarById(idEvaluacion);
         }
 
@@ -283,7 +283,6 @@ public class ActivityEvaluacion extends AppCompatActivity {
     }
 
     public void getQRCode(View view){
-
         //pedir permisos
         //verificar permisos
 
