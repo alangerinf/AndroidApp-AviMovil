@@ -389,6 +389,7 @@ public class ActivityVisita extends AppCompatActivity implements
 
                 Log.e(TAG, "Permiso denegado");
             }
+            mGoogleApiClient.connect();
         }
     }
 
@@ -464,6 +465,7 @@ public class ActivityVisita extends AppCompatActivity implements
 
         //Toast.makeText(this,"onactivity resytk",Toast.LENGTH_LONG).show();
        // visita = new VisitaDAO(ctx).getEditing();
+        mGoogleApiClient.connect();
         switch (requestCode){
             case REQUEST_BASICS_DATA :
                 // Make sure the request was successful
@@ -541,11 +543,7 @@ public class ActivityVisita extends AppCompatActivity implements
         }
     }
 
-
-
-
     public void showListTipoRecomendacion(View view){
-
         if(visita.getIdFundo()>0 && visita.getIdVariedad()>0){
             //if(isEditable){
             listTipoRecomendaciones = new TipoRecomendacionDAO(getBaseContext()).listarByIdFundoIdVariedad(visita.getIdFundo(),visita.getIdVariedad());
@@ -577,8 +575,6 @@ public class ActivityVisita extends AppCompatActivity implements
                             i.putExtra("isEditable",isEditable);
                             startActivityForResult(i, REQUEST_RECOMENDACION);//cambie  aqui de 1
                             overridePendingTransition(R.anim.bot_in, R.anim.fade_out);
-
-
                         }
                     });
             dialogo.show();
@@ -586,8 +582,6 @@ public class ActivityVisita extends AppCompatActivity implements
         }else{
                 Toast.makeText(ctx,"Primero configura tus Datos Basicos",Toast.LENGTH_LONG).show();
         }
-
-
     }
 
     public void end(View view){
