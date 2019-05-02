@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints">
 
 
         <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -131,7 +132,7 @@
                     android:id="@+id/textView22"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fundo"
+                    android:text="@string/fundo"
                     app:layout_constraintEnd_toEndOf="@+id/textView5"
                     app:layout_constraintTop_toTopOf="@+id/textView12" />
 
@@ -139,7 +140,7 @@
                     android:id="@+id/textView23"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cultivo"
+                    android:text="@string/cultivo"
                     app:layout_constraintEnd_toEndOf="@+id/textView22"
                     app:layout_constraintTop_toTopOf="@+id/textView14" />
 
@@ -163,7 +164,7 @@
                     android:id="@+id/textView26"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Variedad"
+                    android:text="@string/variedad"
                     app:layout_constraintEnd_toEndOf="@+id/textView23"
                     app:layout_constraintTop_toTopOf="@+id/textView16" />
 
@@ -215,7 +216,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:text="Productor"
+                    android:text="@string/empresa"
                     app:layout_constraintBottom_toBottomOf="@+id/textView3"
                     app:layout_constraintEnd_toStartOf="@+id/textView3"
                     app:layout_constraintHorizontal_bias="0.9"
@@ -310,7 +311,7 @@
         android:clickable="true"
         android:onClick="showComent"
         android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_content_paste_black_24dp"
+        android:src="@drawable/ic_content_paste_white_24dp"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
         app:layout_constraintEnd_toEndOf="@+id/floatingActionButton"
         app:layout_constraintStart_toStartOf="@+id/floatingActionButton"
@@ -322,7 +323,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/primary"
+        android:backgroundTint="@color/accent"
         android:clickable="true"
         android:onClick="showListTipoRecomendacion"
         android:src="@drawable/ic_comment_white"

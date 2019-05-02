@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AgroMovil</string>
+    <string name="app_name">AviMovil</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -55,19 +55,19 @@
 
 
     <!--lenguaje del usuario -->
-    <string name="empresa">Productor</string>
-    <string name="fundo">Fundo</string>
-    <string name="cultivo">Cultivo</string>
-    <string name="variedad">Variedad</string>
+    <string name="empresa">Empresa</string>
+    <string name="fundo">Granja</string>
+    <string name="cultivo">TipoCrianza</string>
+    <string name="variedad">Genética</string>
     <string name="contacto">Contacto</string>
     <string name="zona">Zona</string>
 
     <string name="cabezeraSpnContacto">Seleccione Contacto</string>
-    <string name="cabezeraSpnEmpresa">Seleccione Productor</string>
+    <string name="cabezeraSpnEmpresa">Seleccione Empresa</string>
     <string name="cabezeraSpnZona">Seleccione Zona</string>
-    <string name="cabezeraSpnFundo">Seleccione Fundo</string>
-    <string name="cabezeraSpnCultivo">Seleccione Cultivo</string>
-    <string name="cabezeraSpnVariedad">Seleccione Variedad</string>
+    <string name="cabezeraSpnFundo">Seleccione Granja</string>
+    <string name="cabezeraSpnCultivo">Seleccione TipoCrianza</string>
+    <string name="cabezeraSpnVariedad">Seleccione Genética</string>
 
 
 

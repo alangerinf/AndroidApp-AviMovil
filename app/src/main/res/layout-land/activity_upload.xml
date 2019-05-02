@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary"
+    android:background="@color/primaryDark"
     tools:context=".views.ActivityUpload">
 
     <ImageView
@@ -35,6 +35,7 @@
         android:contentDescription="@string/todo"
         android:scaleX="0.7"
         android:scaleY="0.7"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/imageView6"
         app:layout_constraintStart_toStartOf="@+id/imageView6"
         app:layout_constraintTop_toBottomOf="@+id/imageView6"

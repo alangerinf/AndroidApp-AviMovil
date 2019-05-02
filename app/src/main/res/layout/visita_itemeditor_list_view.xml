@@ -15,6 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+
+        android:textStyle="bold"
         android:text="16/08/08 13:08:09"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,7 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Fundo :"
+        android:textStyle="bold"
+        android:text="@string/fundo"
         app:layout_constraintStart_toStartOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/visita_tViewNameEmpresa" />
 
@@ -33,7 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Productor :"
+        android:text="@string/empresa"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/visita_tViewFechaHora"
         app:layout_constraintTop_toBottomOf="@+id/visita_tViewFechaHora" />
 
@@ -42,7 +46,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Cultivo :"
+        android:text="@string/cultivo"
+
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/textView19"
         app:layout_constraintTop_toBottomOf="@+id/visita_tViewNameFundo" />
 
@@ -51,7 +57,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Variedad :"
+        android:text="@string/variedad"
+
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/textView20"
         app:layout_constraintTop_toBottomOf="@+id/visita_tViewNameCultivo" />
 
@@ -61,7 +69,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginTop="8dp"
-        android:text="Contacto :"
+        android:text="@string/contacto"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView21"
         app:layout_constraintTop_toBottomOf="@+id/visita_tViewNameVariedad" />
@@ -72,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="nameFundo"
+
         app:layout_constraintEnd_toEndOf="@+id/visita_tViewNameEmpresa"
         app:layout_constraintStart_toEndOf="@+id/textView19"
         app:layout_constraintTop_toTopOf="@+id/textView19" />
@@ -144,4 +154,5 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.16000003"
         android:src="@drawable/ic_edit_black_24dp" />
+
 </android.support.constraint.ConstraintLayout>
